@@ -1,0 +1,239 @@
+.register_container {
+  display: flex;
+  justify-content: center; 
+  align-items: center;      
+  height: 100vh;            
+  margin: 0;
+}
+
+.register_wrapper {
+    width: 925px;
+    height: 590px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    padding: 8px 20px;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+    margin-left: auto;
+    margin-right  : auto;
+}
+
+.logo {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-top: 20px;
+
+    h3 {
+        font-size: var(--small-font-size);
+        color: var(--title-color);
+    }
+    
+    p {
+        font-size: var(--smaller-font-size );
+    }
+}
+
+.heading {
+    align-items: center;
+}
+
+
+h1 {
+    color: var(--title-color);
+    margin: 15px 0;
+}
+
+
+.logo img {
+    height: 35px;
+    border-radius: 50%;
+    margin: 0 5px;
+        
+}
+
+/* Default styling (for larger screens, i.e., desktop) */
+.responsive_form {
+  display: flex;
+  flex-direction: column; /* Stack the rows vertically */
+  gap: 20px; /* Space between rows */
+  max-width: 1000px; /* Limit the width of the form */
+  margin: 0 auto; /* Center the form horizontally */
+}
+
+.form_row {
+  display: flex;
+  flex-direction: row; /* Arrange the form fields in a row */
+  justify-content: space-between; /* Space between the fields */
+  gap: 20px; /* Space between individual fields */
+}
+
+.form_field {
+  display: flex;
+  flex-direction: column; /* Stack label and input vertically within each field */
+  width: 33%; /* Each field takes up 30% of the row */
+  min-height: 100px; /* Ensures consistent height even with error messages */
+  position: relative;
+}
+
+.form_field label {
+  margin-bottom: 8px; /* Space between label and input */
+}
+
+.form_field input {
+  padding: 8px;
+  width: 100%; /* Make the input take up full width */
+  border-radius: 8px;
+}
+
+.form_row .register_btn {
+  align-self: flex-end;
+}
+
+.register_text_center {
+  display: flex;
+  justify-content: center;
+  margin-top: 45px;
+}
+
+.register_wrapper .register_btn {
+  margin-top: 20px;
+  width: 130px;
+  height: 40px;
+  background-color: var(--title-color);
+  color: #fff;
+  font-size: var(--normal-font-size);
+  border-radius: 8px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+}
+
+.error_field_register {
+  margin-top: 10px;
+  min-height: 30px;
+  position: relative;
+  text-align: center;
+  align-items: center;
+}
+
+.error_message {
+  color: red;
+  background-color: rgba(255, 0, 0, 0.3);
+  font-size: 14px;
+  margin-top: 5px;
+  min-height: 20px;
+  border-radius: 8px;
+  text-align: center;
+  height: 25px;
+}
+
+
+.form_field:last-child {
+  display: flex;
+}
+
+/* Styling for small screens (mobile devices) */
+@media (max-width: 992px) {
+
+  .register_wrapper {
+    width: 800px;
+  }
+
+}
+
+@media (max-width: 875px) {
+
+  .register_wrapper {
+    width: 700px;
+  }
+
+}
+
+
+@media (max-width: 768px) {
+
+  .form_row:nth-of-type(3) .form_field:nth-of-type(8) {
+    display: none;
+  }
+
+  .register_wrapper {
+    width: 600px;
+    height: auto;
+    padding: 0 30px;
+  }
+
+  .responsive_form {
+    max-width: 100%; /* Allow the form to take the full width */
+  }
+
+  .form_row {
+    flex-direction: column; /* Stack the rows vertically on mobile */
+    gap: -1px; /* Space between fields in a column */
+  }
+
+  .form_field {
+    width: 100%; /* Each field takes up full width on mobile */
+    gap: 5px;
+    min-height: 30px; /* Space between label and input */
+  }
+
+  .form_field label {
+    margin-bottom: 1px; /* Space between label and input */
+  }
+
+  .register_text_center {
+    margin-top: 1px;
+  }
+}
+
+@media (max-width: 645px) {
+  .register_wrapper {
+    width: 500px;
+    height: auto;
+  }
+
+  .register_text_center {
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .register_wrapper {
+    width: 450px;
+    height: auto;
+  }
+
+  .register_text_center {
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 450px) {
+  .register_wrapper {
+    width: 320px;
+    height: auto;
+  }
+
+  .register_text_center {
+    margin-top: 0;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  label, input, p, a, .wrapper .btn {
+    font-size: 0.75rem;
+  }
+
+  .register_wrapper .btn {
+    width: 100px;
+    margin-top: 10px;
+  }
+
+  .register_text_center {
+    margin-top: 1px;
+  }
+
+}
+

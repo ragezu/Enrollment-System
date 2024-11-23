@@ -1,0 +1,111 @@
+.container {
+  background-color: white;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background-color: #1e1e1e;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100px;
+}
+
+.logos {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.logo_its, .logo_shield {
+  width: 50px;
+  height: 50px;
+  margin: 0 30px;
+}
+
+.header_texts {
+  align-items: center;
+  text-align: start;
+  margin-left: 10px;
+}
+
+.header_h3, .header_p {
+  color: white;
+}
+
+.content_wrapper {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+}
+
+/* Ensure full viewport height for centering */
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  /* Vertically center the content */
+  align-items: center;
+  height: calc(100vh - 150px);      /* Horizontally center the content */
+  
+}
+
+
+.content_h1 {
+  font-size: var(--big-font-size);
+}
+
+
+.content_p {
+  width: 600px;
+  margin: 5px auto;
+}
+
+.continue_button {
+  margin-top: 20px;
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  color: white;
+  padding: 5px 0;
+  width: 200px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/***************************************/
+
+/* EmailVerification.module.css */
+
+.otpContainer {
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* Space between boxes */
+  margin-top: 20px;
+}
+
+.otpInput {
+  width: 40px;
+  height: 50px;
+  font-size: 24px;
+  text-align: center;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.otpInput:focus {
+  border-color: #007bff; /* Highlight color when focused */
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+}

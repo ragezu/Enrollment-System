@@ -1,38 +1,100 @@
-.App {
-  text-align: center;
-}
+/* Importing fonts from Google */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
+:root {
+    --header-height: 3rem;
+  
+    /*========== Colors ==========*/
+    /*Color mode HSL(hue, saturation, lightness)*/
+    --hue: 0;
+    --sat: 0%;
+    --title-color: hsl(var(--hue), var(--sat), 20%);
+    --title-color-dark: hsl(var(--hue), var(--sat), 0%);
+    --text-color: hsl(var(--hue), var(--sat), 46%);
+    --body-color: hsl(var(--hue), var(--sat), 98%);
+    --container-color: #fff;
+  
+    /*========== Font and typography ==========*/
+    --body-font: "Poppins", sans-serif;
+  
+    /*.5rem = 8px | 1rem = 16px ...*/
+    --big-font-size: 3.5rem;
+    --h1-font-size: 2.25rem;
+    --h2-font-size: 1.5rem;
+    --h3-font-size: 1.25rem;
+    --normal-font-size: 1rem;
+    --small-font-size: 0.875rem;
+    --smaller-font-size: 0.813rem;
+    --tiny-font-size: 0.625rem;
+  
+    /*========== Font weight ==========*/
+    --font-normal: 400;
+    --font-medium: 500;
+    --font-semi-bold: 600;
+  
+    /*========== Margenes Bottom ==========*/
+    /*.5rem = 8px | 1rem = 16px ...*/
+    --mb-0-25: 0.25rem;
+    --mb-0-5: 0.5rem;
+    --mb-0-75: 0.75rem;
+    --mb-1: 1rem;
+    --mb-1-5: 1.5rem;
+    --mb-2: 2rem;
+    --mb-2-5: 2.5rem;
+    --mb-3: 3rem;
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+    --z-tooltip: 10;
+    --z-fixed: 100;
+    --z-modal: 1000;
   }
-}
+  
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'poppins';
+    color: var(--text-color);
+    transition: 0.5s ease;
   }
-  to {
-    transform: rotate(360deg);
+  
+  html {
+    scroll-behavior: smooth;
   }
+  
+  
+body, html {
+    overflow-x: hidden;
+    height: 100%;
+    margin: 0;
+  }
+
+body {
+        background-image: url(../public/images/backgroundbacoor.png); /* Replace with the path to your image */
+        background-size: cover; /* Makes the image cover the entire viewport */
+        background-position: center; /* Centers the image */
+        background-repeat: no-repeat; /* Prevents the image from repeating */
+        height: 100vh; /* Ensures the body takes the full height */
+
+    }
+  
+a {
+  list-style: none;
+  text-decoration: none;
+  cursor: pointer;
+  color: var(--title-color);
 }
+
+h1 {
+  color: var(--title-color);
+}
+
+p {
+  color: var(--text-color);
+}
+
+
+
+
+
