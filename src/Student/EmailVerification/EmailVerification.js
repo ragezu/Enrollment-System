@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styles from "./EmailVerification.module.css";
 import "../../App.css";
@@ -6,6 +6,11 @@ import "../../App.css";
 const OTPInput = ({ length = 6 }) => {
   const [otp, setOtp] = useState(Array(length).fill(""));
   const inputRefs = useRef([]);
+
+  // Focus the first input field on initial render
+  useEffect(() => {
+    inputRefs.current[0]?.focus();
+  }, []);
 
   const handleChange = (index, value) => {
     if (/^[0-9]?$/.test(value)) {

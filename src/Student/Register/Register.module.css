@@ -11,7 +11,7 @@
     height: 590px;
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 15px;
-    padding: 8px 20px;
+    padding: 15px 30px;
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
     margin-left: auto;
     margin-right  : auto;
@@ -24,12 +24,12 @@
     padding-top: 20px;
 
     h3 {
-        font-size: var(--small-font-size);
+        font-size: var(--normal-font-size);
         color: var(--title-color);
     }
     
     p {
-        font-size: var(--smaller-font-size );
+        font-size: var(--small-font-size );
     }
 }
 
@@ -92,7 +92,7 @@ h1 {
 .register_text_center {
   display: flex;
   justify-content: center;
-  margin-top: 45px;
+  margin-top: 30px;
 }
 
 .register_wrapper .register_btn {
@@ -106,6 +106,10 @@ h1 {
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 10px;
+}
+
+.register_wrapper .register_btn:hover {
+  background-color: var(--title-color-dark);
 }
 
 .error_field_register {
@@ -131,6 +135,18 @@ h1 {
 .form_field:last-child {
   display: flex;
 }
+
+.input:focus {
+  border-color: #007bff; /* Border color when focused */
+  
+  outline: none; /* Remove default browser outline */
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.6); /* Add a glow effect */
+}
+
+.required_field {
+  color: red;
+}
+
 
 /* Styling for small screens (mobile devices) */
 @media (max-width: 992px) {

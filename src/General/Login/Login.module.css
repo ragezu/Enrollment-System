@@ -11,7 +11,7 @@
     height: 510px;
     background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white for contrast */
     border-radius: 15px;
-    padding: 8px 20px;
+    padding: 15px 30px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-left: auto;
     margin-right  : auto;
@@ -23,14 +23,18 @@
     justify-content: flex-start;
     align-items: center;
     padding-top: 20px;
+    vertical-align: middle;
 
     h3 {
-        font-size: var(--small-font-size);
+        font-size: var(--normal-font-size);
         color: var(--title-color);
+        vertical-align: middle;
     }
     
     p {
-        font-size: var(--smaller-font-size );
+        font-size: var(--small-font-size);
+        margin-top: -5px;
+        vertical-align: middle;
     }
 }
 
@@ -72,23 +76,35 @@ label {
     padding-top: 5px;
     padding-bottom: 5px;
     color: var(--title-color);
-}   
+} 
+
+.input:focus {
+  border-color: #007bff; /* Border color when focused */
+  
+  outline: none; /* Remove default browser outline */
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.6); /* Add a glow effect */
+}
+
+
+.button_holder {
+  display: flex;
+  justify-content: center; /* Center the button horizontally */
+  width: 100%;
+}
 
 .wrapper .btn {
-    margin-top: 50px;
     width: 130px;
     height: 40px;
     background-color: var(--title-color);
     color: #fff;
     font-size: var(--normal-font-size);
     border-radius: 8px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 10px;
+    margin-top: 10px;
+    
 }
 
 .wrapper .btn:hover {
-    background-color: #180104;
+    background-color: var(--title-color-dark);
 }
 
 .text_end {
@@ -109,18 +125,18 @@ span {
 
 .error_message_login {
   width: 100%;
+  padding: 5px;
   background-color: rgba(255, 0, 0, 0.3);
   color: red;
   font-size: var(--small-font-size);  /* Use your defined font sizes */
   text-align: center;  /* Center-align the error message */
   border-radius: 8px; 
-  height: 25px;
 }
 
 .error_field { /* Ensures consistent height even with error messages */
   width: 100%;
   margin-top: 10px;
-  min-height: 30px;
+  min-height: 40px;
   position: relative;
   text-align: center;
   align-items: center;
