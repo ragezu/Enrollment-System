@@ -3,6 +3,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  
 }
 
 .header {
@@ -10,28 +11,42 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  height: 100px;
+  height: 90px;
 }
 
 .logos {
   display: flex;
   justify-content: flex-start;
+  align-items: center;
+  
 }
 
-.logo_its, .logo_shield {
+.logo_its {
   width: 50px;
   height: 50px;
-  margin: 0 30px;
+  margin: 0 10px;
 }
+
+.logo_shield {
+  width: 60px;
+  height: 60px;
+  margin-left: 20px;
+}
+
+
 
 .header_texts {
   align-items: center;
   text-align: start;
-  margin-left: 10px;
+  margin-left: 5px;
 }
 
 .header_h3, .header_p {
   color: white;
+}
+
+.header_p {
+  margin-top: -8px;
 }
 
 .content_wrapper {
@@ -47,8 +62,19 @@
   flex-direction: column;
   justify-content: center; 
   align-items: center;
-  height: calc(100vh - 150px);  
+  height: calc(100vh - 200px);  
   
+}
+
+.content::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 55vh; /* Increase the height for a longer shadow */
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0)); /* Subtle fading */
+  pointer-events: none; /* Prevent interaction with the shadow */
 }
 
 

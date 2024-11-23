@@ -54,10 +54,18 @@ function EmailVerification() {
       <div className={styles.header}>
         <div className={styles.logos}>
           <Link to="/">
-            <img src="./CSlogo.png" alt="BSCS Logo" />
+            <img
+              src="./images/CSlogo.png"
+              alt="BSCS Logo"
+              className={styles.logo_shield}
+            />
           </Link>
           <Link to="/">
-            <img src="./ITlogo.png" alt="BSIT Logo" />
+            <img
+              src="./images/ITlogo.png"
+              alt="BSIT Logo"
+              className={styles.logo_its}
+            />
           </Link>
         </div>
         <div className={styles.header_texts}>

@@ -8,7 +8,7 @@
 
 .register_wrapper {
     width: 925px;
-    height: 590px;
+    height: auto;
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 15px;
     padding: 15px 30px;
@@ -30,6 +30,7 @@
     
     p {
         font-size: var(--small-font-size );
+        margin-top: -5px;
     }
 }
 
@@ -128,7 +129,7 @@ h1 {
   min-height: 20px;
   border-radius: 8px;
   text-align: center;
-  height: 25px;
+  padding: 5px;
 }
 
 
