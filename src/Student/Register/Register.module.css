@@ -109,29 +109,9 @@ h1 {
   margin-bottom: 10px;
 }
 
-.register_wrapper .register_btn:hover {
+.register_wrapper  .register_btn:hover {
   background-color: var(--title-color-dark);
 }
-
-.error_field_register {
-  margin-top: 10px;
-  min-height: 30px;
-  position: relative;
-  text-align: center;
-  align-items: center;
-}
-
-.error_message {
-  color: red;
-  background-color: rgba(255, 0, 0, 0.3);
-  font-size: 14px;
-  margin-top: 5px;
-  min-height: 20px;
-  border-radius: 8px;
-  text-align: center;
-  padding: 5px;
-}
-
 
 .form_field:last-child {
   display: flex;
@@ -147,6 +127,63 @@ h1 {
 .required_field {
   color: red;
 }
+
+
+/* Modal Styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3); /* Dark background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it's above other elements */
+}
+
+.modalContent {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 500px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.modalContent .top_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modalContent h1 {
+  color:var(--title-color-dark);
+}
+
+.modalContent ul {
+  list-style: none;
+}
+
+.modalContent ul li {
+  color: red;
+}
+
+
+.modalContent .top_container .closeModalBtn {
+  background-color: transparent !important;
+  font-size: 24px;
+  border: none;
+  cursor: pointer;
+  height: 30px;
+  width: 30px;
+}
+
+.closeModalBtn:hover {
+  background-color: transparent !important; /* No background on hover */
+}
+
 
 
 /* Styling for small screens (mobile devices) */

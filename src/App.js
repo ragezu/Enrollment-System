@@ -3,6 +3,7 @@ import Login from './General/Login/Login';
 import Homepage from './Homepage';
 import Register from './Student/Register/Register';
 import EmailVerification from './Student/EmailVerification/EmailVerification';
+import SubmissionAndSubject from './Student/SubmissionAndSubject/SubmissionAndSubject';
 import Landingpage from './General/LandingPage/Landingpage';
 import AnnouncementsPage from './General/Announcement/AnnouncementsPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -17,6 +18,7 @@ function App() {
                 <Route path="/emailverification" element={<EmailVerification />} />
                 <Route path="/announcements" element={<AnnouncementsPage />} />
                 <Route path="/homepage" element={<Homepage />} />
+                <Route path="/submissionandsubject" element={<SubmissionAndSubject />} />
             </Routes>
         </Router>
     );

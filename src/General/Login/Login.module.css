@@ -8,7 +8,7 @@
 
 .wrapper {
     width: 500px;
-    height: 510px;
+    height: auto;
     background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white for contrast */
     border-radius: 15px;
     padding: 15px 30px;
@@ -196,5 +196,3 @@ span {
 }
  }
 
-
- 

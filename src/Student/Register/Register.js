@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import styles from '../Register/Register.module.css';
 import '../../App.css';
 import { useNavigate } from "react-router-dom";
+import Modal from "react-modal"; // Importing Modal library
+
+Modal.setAppElement('#root'); // For accessibility reasons
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -16,6 +19,7 @@ export default function Register() {
   });
 
   const [errors, setErrors] = useState({}); // State for validation errors
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
   const navigate = useNavigate();
 
   // Focus the first input field on component mount
@@ -81,6 +85,7 @@ export default function Register() {
     const validationErrors = validate(); // Validate form fields
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors); // Set errors if any validation fails
+      setIsModalOpen(true); // Open the modal when there are errors
       return;
     }
 
@@ -104,10 +109,35 @@ export default function Register() {
     }
   };
 
+  const renderErrorModal = () => {
+    return (
+      <Modal 
+        isOpen={isModalOpen} 
+        onRequestClose={() => setIsModalOpen(false)} 
+        contentLabel="Validation Errors"
+        className={styles.modalContent} // Custom modal content styles
+        overlayClassName={styles.modalOverlay} // Custom overlay styles
+      >
+        <div className={styles.top_container}>
+        <h1>Cannot proceed</h1> 
+        <button onClick={() => setIsModalOpen(false)} className={styles.closeModalBtn}>
+        <i className="fa-solid fa-xmark"></i>
+        </button>
+        </div>
+        <ul>
+          {Object.keys(errors).map((key) => (
+            <li key={key}>{errors[key]}</li>
+          ))}
+        </ul>
+      </Modal>
+    );
+  };
+  
+
   return (
     <div className={styles.register_container}>
       <div className={styles.register_wrapper}>
-        {/* Logo Section */}
+
         <div className={styles.logo}>
           <Link to="/">
             <img src="./images/bscslogo.jpg" alt="BSCS Logo" />
@@ -121,7 +151,6 @@ export default function Register() {
           </div>
         </div>
 
-        {/* Registration Form */}
         <h1>Registration Form</h1>
         <form className={styles.responsive_form} onSubmit={handleSubmit}>
           <div className={styles.form_row}>
@@ -135,7 +164,6 @@ export default function Register() {
                 value={formData.firstName}
                 onChange={handleChange}
               />
-              {errors.firstName && <small className={styles.error_message}>{errors.firstName}</small>}
             </div>
 
             <div className={styles.form_field}>
@@ -160,7 +188,6 @@ export default function Register() {
                 value={formData.lastName}
                 onChange={handleChange}
               />
-              {errors.lastName && <small className={styles.error_message}>{errors.lastName}</small>}
             </div>
           </div>
 
@@ -175,7 +202,6 @@ export default function Register() {
                 value={formData.email}
                 onChange={handleChange}
               />
-              {errors.email && <small className={styles.error_message}>{errors.email}</small>}
             </div>
 
             <div className={styles.form_field}>
@@ -189,7 +215,6 @@ export default function Register() {
                 value={formData.contactNumber}
                 onChange={handleChange}
               />
-              {errors.contactNumber && <small className={styles.error_message}>{errors.contactNumber}</small>}
             </div>
 
             <div className={styles.form_field}>
@@ -202,7 +227,6 @@ export default function Register() {
                 value={formData.dob}
                 onChange={handleChange}
               />
-              {errors.dob && <small className={styles.error_message}>{errors.dob}</small>}
             </div>
           </div>
 
@@ -217,21 +241,22 @@ export default function Register() {
                 value={formData.password}
                 onChange={handleChange}
               />
-              {errors.password && <small className={styles.error_message}>{errors.password}</small>}
             </div>
 
             <div className={styles.form_field}>
               <button className={styles.register_btn} type="submit">
-               Register
+               Proceed
               </button>
             </div>
           </div>
         </form>
-
         <div className={styles.register_text_center}>
           <Link to="/login">Already have an account? <span>Login</span></Link>
         </div>
       </div>
+
+      {/* Render Modal */}
+      {renderErrorModal()}
     </div>
   );
 }
