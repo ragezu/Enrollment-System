@@ -62,7 +62,8 @@
   flex-direction: column;
   justify-content: center; 
   align-items: center;
-  height: calc(100vh - 200px);  
+  height: calc(100vh - 200px); 
+  padding: 0 50px; 
   
 }
 
@@ -88,14 +89,7 @@
   margin: 5px auto;
 }
 
-.continue_button {
-  margin-top: 20px;
-  background-color: #1e1e1e;
-  border-radius: 8px;
-  color: white;
-  padding: 5px 0;
-  width: 200px;
-}
+
 
 /* EmailVerification.module.css */
 
@@ -121,3 +115,163 @@
   border-color: #007bff;
   box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
 }
+
+
+
+
+
+
+
+
+/*******************************/
+
+/* Container for the success message */
+.successMessage {
+  text-align: center;
+  border-radius: 10px;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+/* Checkmark animation (circle with tick) */
+.checkmark {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+  background-color: white;
+  border: 3px solid #1e1e1e; 
+  border-radius: 50%;
+  position: relative;
+  animation: scaleIn 0.5s ease-in-out;
+}
+
+.checkmark::before {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 50px;
+  border: solid #1e1e1e;
+  border-width: 0 8px 8px 0;
+  transform: rotate(45deg);
+  padding: 3px;
+  top: -10px;
+  right: 12px;
+  
+}
+
+/* Animation for the checkmark scaling effect */
+@keyframes scaleIn {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Animation for fading in the success message */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Style for the continue button in success message */
+.continue_button {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: var(--title-color); 
+  color: white;
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 20px;
+}
+
+.continue_button:hover {
+  background-color: var(--title-color-dark); 
+}
+
+/*====== BREAKPOINTS =====*/
+
+
+@media screen and (max-width: 992px) {
+  
+  
+
+ }
+
+
+ @media screen and (max-width: 768px) {
+
+ }
+
+ @media screen and (max-width: 576px) {
+
+  .header {
+    height: auto;
+    padding: 10px 0;
+    padding-right: 10px;
+  }
+
+  .header_texts {
+    width: 100%;
+  }
+
+  .header_h3 {
+    font-size: var(--normal-font-size);
+  }
+
+  .header_p {
+    font-size: var(--small-font-size);
+    margin-top: 0;
+  }
+  
+  .content_h1 {
+    font-size: var(--h1-font-size);
+  }
+
+  .content_p {
+    width: 100%;
+  }
+
+  .continue_button {
+    padding: 10px 22px;
+  }
+
+ }
+
+
+ @media screen and (max-width: 450px) {
+
+  .header_h3 {
+    font-size: var(--normal-font-size);
+  }
+
+  .header_p {
+    font-size: var(--smaller-font-size);
+    margin-top: 0;
+  }
+  
+  .checkmark {
+    width: 60px;
+    height: 60px;
+
+ 
+  }
+  
+  .checkmark::before {
+  
+    width: 10px;
+    height: 40px;
+    top: -10px;
+    right: 8px;
+    
+  }
+  
+ }
