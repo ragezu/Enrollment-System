@@ -1,0 +1,725 @@
+/* Overall container */
+.container {
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+.dashboardHeader {
+  margin-bottom: -14px;
+}
+
+/* h1 styling */
+.dashboardHeader h1 {
+  font-size: 50px;
+  margin-left: 70px;
+  margin-top: 0px;
+  text-align: left;
+  color: #333;
+}
+
+/* Existing grid adjustments */
+.grid {
+  margin-top: 0;
+}
+
+/* Header styles */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1e1e1e;
+  padding: 15px 40px;
+}
+
+.logos {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
+}
+
+.logoMargin {
+  margin-left: 10px;
+}
+
+.navLinks {
+  display: flex;
+  gap: 160px;
+  margin-right: 200px;
+}
+
+.navLink {
+  color: white;
+  text-decoration: none;
+  font-size: 21px;
+}
+
+.logout {
+  color: white;
+}
+
+/* Dashboard grid layout */
+.dashboardContent {
+  padding: 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Grid settings */
+.grid {
+  display: grid;
+  grid-template-columns: 50% 25% 25%;
+  grid-template-rows: auto auto;
+  gap: 20px;
+  padding: 40px;
+  margin-top: -40px;
+}
+
+/* Card Styles */
+.card {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 40px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.cardTitle, .cardTitles {
+  font-size: 20px;
+  margin-top: 0;
+  padding-top: 0;
+  position: relative;
+  top: -15px;
+}
+
+/* Enrolled Students Card */
+.card.enrolledStudents {
+  grid-column: span 1;
+  background-color: #f8f9fa;
+}
+
+.card.enrolledStudents p {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
+  margin: 10px 0;
+  padding: 0 10px;
+}
+
+.card.enrolledStudents strong {
+  font-size: 40px;
+  color: #000000;
+}
+
+.card.enrolledStudents a.viewList {
+  margin-top: 10px;
+  display: inline-block;
+  color: #000000;
+  text-decoration: none;
+  float: right;
+  margin-right: 10px;
+}
+
+.card.enrolledStudents a.viewList:hover {
+  text-decoration: underline;
+}
+
+/* Regular, Irregular Students and Gender Card */
+.card.regularIrregularGender {
+  grid-column: span 2;
+}
+
+/* Announcement Card */
+.card.announcementCard {
+  grid-column: span 1;
+  background-color: #f8f9fa;
+}
+
+.card.announcementCard textarea {
+  width: 100%;
+  height: 120px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.card.announcementCard button {
+  margin-top: 10px;
+  padding: 10px 45px;
+  background-color: #030507;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+  margin-right: 10px;
+}
+
+.card.announcementCard button:hover {
+  background-color: #000000;
+}
+
+/* Total Paid IT and CS Cards */
+.card.totalPaid, .card.totalPaidCS {
+  grid-column: span 1;
+  background-color: #fff;
+}
+
+.card.totalPaid .paidValue, .card.totalPaidCS .paidValue {
+  font-size: 100px;
+  font-weight: bold;
+  justify-content: center;
+  display: flex;
+}
+
+.card.totalPaid .paidValue {
+  color: #28a745;
+}
+
+.card.totalPaidCS .paidValue {
+  color: #631b09;
+}
+
+/* Gender and Total Paid cards have same size */
+.card.totalPaid, .card.totalPaidCS {
+  width: 90%;
+}
+
+.card.genderCard {
+  width: 95%;
+}
+
+/* Progress Bar */
+.progressBar {
+  display: flex;
+  height: 20px;
+  background-color: #e9ecef;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+.progressBarGreen {
+  background-color: #28a745;
+  text-align: center;
+  color: white;
+  font-size: 12px;
+}
+
+.progressBarRed {
+  background-color: #dc3545;
+  text-align: center;
+  color: white;
+  font-size: 12px;
+}
+
+.progressBarBlue {
+  background-color: #007bff;
+  text-align: center;
+  color: white;
+  font-size: 12px;
+}
+
+.progressBarPink {
+  background-color: #ff85b2;
+  text-align: center;
+  color: white;
+  font-size: 12px;
+}
+
+/* Button and Interaction Styles */
+.announcementButton {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.announcementButton:hover {
+  background-color: #000000;
+}
+
+.viewList {
+  display: inline-block;
+  margin-top: 10px;
+  text-decoration: none;
+  color: #007bff;
+}
+
+.viewList:hover {
+  text-decoration: underline;
+}
+
+p, h5, span, strong {
+  color: black;
+}
+
+.notificationWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+.notificationIcon {
+  font-size: 24px;
+  color: white;
+}
+
+.notificationBadge {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  background-color: red;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 50%;
+  padding: 2px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* General Reset for Responsive Layout */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+/* Overall Container */
+.container {
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+/* Dashboard Header Styling */
+.dashboardHeader {
+  margin-bottom: -14px;
+  text-align: left;
+}
+
+.dashboardHeader h1 {
+  font-size: 40px;
+  margin-left: 70px;
+  margin-top: 0;
+  color: #333;
+  font-size: clamp(24px, 5vw, 40px); /* Responsive title font size */
+}
+
+/* Header Styles (including Logos and Nav Links) */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1e1e1e;
+  padding: 15px 40px;
+  flex-wrap: wrap; /* Ensure elements stack on smaller screens */
+}
+
+.logos {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
+}
+
+.navLinks {
+  display: flex;
+  gap: 160px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.navLink {
+  color: white;
+  text-decoration: none;
+  font-size: 21px;
+}
+
+.navLink:hover {
+  text-decoration: underline;
+}
+
+.logout {
+  color: rgb(255, 255, 255);
+}
+
+/* General Reset for Responsive Layout */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+/* Overall Container */
+.container {
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+/* Dashboard Header Styling */
+.dashboardHeader {
+  margin-bottom: -14px;
+  text-align: left;
+}
+
+.dashboardHeader h1 {
+  font-size: 40px;
+  margin-left: 70px;
+  margin-top: 100;
+  color: #333;
+  font-size: clamp(24px, 5vw, 40px); /* Responsive title font size */
+}
+
+/* Header Styles (including Logos and Nav Links) */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1e1e1e;
+  padding: 15px 40px;
+  flex-wrap: wrap; /* Ensure elements stack on smaller screens */
+}
+
+/* Header Styling for Medium Screens */
+
+@media (max-width: 1680px) {
+  .header {
+    padding: 10px 30px; /* Adjust padding */
+  }
+
+  .navLinks {
+    gap: 50px; /* Reduce gap between links */
+    margin-right: 0; /* Remove excess margin */
+    justify-content: space-between; /* Align links evenly */
+  }
+
+  .logout, .notificationWrapper {
+    margin-left: 10px; /* Ensure enough spacing between elements */
+  }
+
+  .logos {
+    gap: 5px; /* Reduce gap between logos */
+  }
+
+  .notificationWrapper {
+    position: relative;
+    margin-left: auto; /* Align logout and notification to the right */
+  }
+}
+
+
+
+@media (max-width: 1480px) {
+  .header {
+    padding: 10px 30px; /* Adjust padding */
+  }
+
+  .navLinks {
+    gap: 50px; /* Reduce gap between links */
+    margin-right: 0; /* Remove excess margin */
+    justify-content: space-between; /* Align links evenly */
+  }
+
+  .logout, .notificationWrapper {
+    margin-left: 10px; /* Ensure enough spacing between elements */
+  }
+
+  .logos {
+    gap: 5px; /* Reduce gap between logos */
+  }
+
+  .notificationWrapper {
+    position: relative;
+    margin-left: auto; /* Align logout and notification to the right */
+  }
+}
+
+
+@media (max-width: 1280px) {
+  .header {
+    padding: 10px 30px; /* Adjust padding */
+  }
+
+  .navLinks {
+    gap: 50px; /* Reduce gap between links */
+    margin-right: 0; /* Remove excess margin */
+    justify-content: space-between; /* Align links evenly */
+  }
+
+  .logout, .notificationWrapper {
+    margin-left: 10px; /* Ensure enough spacing between elements */
+  }
+
+  .logos {
+    gap: 5px; /* Reduce gap between logos */
+  }
+
+  .notificationWrapper {
+    position: relative;
+    margin-left: auto; /* Align logout and notification to the right */
+  }
+}
+/* Adjust header content */
+@media (max-width: 1024px) {
+  .header {
+    padding: 10px 0px; /* Reduced padding */
+    justify-content: space-between;
+  }
+
+  .navLinks {
+    gap: 0px;
+    margin: 0;
+    justify-content: center;
+  }
+
+  .dashboardHeader h1 {
+    font-size: 20px;
+    text-align: center;
+    margin: 10px 0;
+  }
+
+  .logos {
+    gap: 5px;
+  }
+
+  .logo {
+    width: 40px;
+    height: 40px;
+  }
+
+  .navLinks {
+    flex-direction: row;
+    gap: 15px;
+  }
+}
+
+/* Responsive for Small Screens (Mobile Devices) */
+@media (max-width: 768px) {
+  /* Grid Layout for Small Screens */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Single column layout */
+    grid-template-rows: auto; /* Automatic row heights */
+    gap: 20px; /* Space between rows */
+    padding: 10px; /* Add padding around the grid */
+    width: 100%; /* Ensure grid takes full width */
+  }
+
+  /* Enrolled Students Card (Row 1) */
+  .card.enrolledStudents {
+    grid-column: span 1;
+    width: 100%; /* Full width */
+    margin: 0 auto; /* Center card */
+    padding: 20px; /* Adjust padding for better fit */
+  }
+
+  /* Announcement Card (Row 3) */
+  .card.announcementCard {
+    grid-column: span 1;
+    width: 100%; /* Full width */
+    margin: 0 auto; /* Center card */
+    padding: 20px; /* Adjust padding for better fit */
+  }
+
+  .card.announcementCard textarea {
+    width: 100%; /* Ensure textarea fits the card */
+    max-width: 100%; /* Prevent overflow */
+    box-sizing: border-box; /* Include padding in width */
+  }
+
+  /* Regular/Irregular + Gender Card (Row 2) */
+  .card.regularIrregularGender {
+    grid-column: span 1;
+    width: 100%; /* Full width */
+    margin: 0 auto;
+  }
+
+  /* Paid IT and Paid CS Cards (Row 4) */
+  .card.totalPaid,
+  .card.totalPaidCS {
+    width: 48%; /* Side-by-side cards, each 50% width */
+    margin: 0; /* Remove extra margins */
+  }
+
+  /* Flex layout for Paid IT and Paid CS in Row 4 */
+  .grid:last-child {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+}
+
+/* Extra Small Screens (Mobile Phones in Portrait Mode) */
+@media (max-width: 480px) {
+  /* Header content */
+  .header {
+    padding: 10px;
+    text-align: center;
+  }
+
+  .logos {
+    justify-content: center;
+  }
+
+  .logo {
+    width: 30px;
+    height: 30px;
+  }
+
+  .navLinks {
+    flex-direction: column;
+    gap: 0px;
+    margin-top: 10px;
+  }
+
+  .dashboardHeader h1 {
+    font-size: 20px;
+    margin: 10px 0;
+    text-align: center;
+  }
+
+  .grid {
+    grid-template-columns: 1fr; /* Single column for small screens */
+    gap: 10px;
+  }
+
+  .card {
+    padding: 10px;
+    font-size: 12px; /* Smaller font for cards */
+  }
+
+  .card.totalPaid .paidValue,
+  .card.totalPaidCS .paidValue {
+    font-size: 50px;
+  }
+
+  .viewList,
+  .card.announcementCard button {
+    width: 100%;
+    margin: 10px auto;
+    text-align: center;
+  }
+
+  .card.announcementCard textarea {
+    height: 80px; /* Smaller text area on small screens */
+  }
+
+  .notificationWrapper {
+    margin: 5px 0;
+  }
+}
+
+/* Ensuring Responsive Cards */
+.card {
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.02); /* Hover effect for card */
+}
+
+
+.card.announcementCard button {
+  transition: background-color 0.3s ease;
+}
+
+
+.card.announcementCard button:hover {
+  background-color: #000000;
+  color: white;
+}
+
+/* Typography Responsiveness */
+p, h5, span, strong {
+  font-size: clamp(12px, 2vw, 18px); /* Dynamic font size */
+  line-height: 1.5;
+}
+
+/* Buttons and Form Elements */
+.announcementButton {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #000000;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.announcementButton:hover {
+  background-color: #000000;
+}
+
+.viewList {
+  display: inline-block;
+  margin-top: 10px;
+  text-decoration: none;
+  color: #000000;
+}
+
+.viewList:hover {
+  text-decoration: underline;
+}
+
+.notificationWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+.notificationIcon {
+  font-size: 24px;
+  color: white;
+}
+
+.notificationBadge {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  background-color: red;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 50%;
+  padding: 2px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
