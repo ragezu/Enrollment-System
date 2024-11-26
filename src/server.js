@@ -38,23 +38,55 @@ app.post("/register", async (req, res) => {
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const query = `
-      INSERT INTO tbl_useraccount (first_name, middle_name, last_name, date_of_birth, phone_number, email, password)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
-    `;
+    const addressQuery = `
+  INSERT INTO address (street, city, state, postal_code)
+  VALUES (?, ?, ?, ?)
+`;
 
-    connection.query(
-      query,
-      [firstName, middleName, lastName, dob, contactNumber, email, hashedPassword],
-      (error, results) => {
-        if (error) {
-          console.error("Database error:", error.message);
-          res.status(500).json({ message: "Database error" });
-        } else {
-          res.status(200).json({ message: "User registered successfully!", id: results.insertId });
+connection.query(
+  addressQuery,
+  [address.street, address.city, address.state, address.postalCode],
+  (error, results) => {
+    if (error) {
+      console.error("Address insert error:", error.message);
+      res.status(500).json({ message: "Database error while inserting address" });
+    } else {
+      // Get the address id
+      const addressId = results.insertId;
+
+      // Now, insert the user account and reference the address id
+      const userQuery = `
+        INSERT INTO tbl_user_account (first_name, middle_name, last_name, date_of_birth, phone_number, username, password, address)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      `;
+
+      connection.query(
+        userQuery,
+        [
+          user.firstName,
+          user.middleName,
+          user.lastName,
+          user.dob,
+          user.contactNumber,
+          user.email,
+          user.hashedPassword,
+          addressId, // The foreign key reference to the address table
+        ],
+        (userError, userResults) => {
+          if (userError) {
+            console.error("User insert error:", userError.message);
+            res.status(500).json({ message: "Database error while inserting user" });
+          } else {
+            res.status(200).json({
+              message: "User registered successfully!",
+              userId: userResults.insertId,
+            });
+          }
         }
-      }
-    );
+      );
+    }
+  }
+);
   } catch (error) {
     console.error("Error hashing password:", error.message);
     res.status(500).json({ message: "Server error" });

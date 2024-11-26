@@ -7,14 +7,13 @@
 }
 
 .register_wrapper {
-    width: 925px;
+    width: 700px;
     height: auto;
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 15px;
-    padding: 15px 30px;
+    padding: 10px 50px;
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
-    margin-left: auto;
-    margin-right  : auto;
+    margin: 0 auto;
 }
 
 .logo {
@@ -52,32 +51,68 @@ h1 {
         
 }
 
-/* Default styling (for larger screens, i.e., desktop) */
 .responsive_form {
   display: flex;
-  flex-direction: column; /* Stack the rows vertically */
-  gap: 20px; /* Space between rows */
-  max-width: 1000px; /* Limit the width of the form */
-  margin: 0 auto; /* Center the form horizontally */
+  flex-direction: column;
+  max-width: 1000px; 
+  margin: 0 auto;
 }
 
 .form_row {
   display: flex;
-  flex-direction: row; /* Arrange the form fields in a row */
-  justify-content: space-between; /* Space between the fields */
-  gap: 20px; /* Space between individual fields */
+  flex-direction: row; 
+  justify-content: space-between;
+  gap: 20px; 
+}
+
+.form_row .solo_row {
+  display: flex;
+  flex-direction: column; 
+  width: 100%; 
+  position: relative;
+}
+
+.form_row .two_rows {
+  display: flex;
+  flex-direction: column; 
+  width: 50%; 
+  position: relative;
 }
 
 .form_field {
   display: flex;
-  flex-direction: column; /* Stack label and input vertically within each field */
-  width: 33%; /* Each field takes up 30% of the row */
-  min-height: 100px; /* Ensures consistent height even with error messages */
+  flex-direction: column;
+  width: 33%; 
   position: relative;
 }
 
+
+.solo_row .radio {
+  display: inline-flex;     
+  align-items: center;      
+  gap: 8px;                 
+  line-height: 1;   
+  margin: 0 10px;
+}
+
+.radio label { 
+  margin: 0 !important;
+  display: inline-block; 
+}
+
+.radio input[type="radio"] {
+  margin: 0;          
+}
+
+.solo_row .radio_container {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+}
+
+
 .form_field label {
-  margin-bottom: 8px; /* Space between label and input */
+  margin-top: 8px;
 }
 
 .form_field input {
@@ -86,14 +121,11 @@ h1 {
   border-radius: 8px;
 }
 
-.form_row .register_btn {
-  align-self: flex-end;
-}
 
 .register_text_center {
   display: flex;
   justify-content: center;
-  margin-top: 30px;
+  margin-top: 20px;
 }
 
 .register_wrapper .register_btn {
@@ -104,11 +136,7 @@ h1 {
   color: #fff;
   font-size: var(--normal-font-size);
   border-radius: 8px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 10px;
 }
-
 .register_wrapper  .register_btn:hover {
   background-color: var(--title-color-dark);
 }
@@ -122,6 +150,10 @@ h1 {
   
   outline: none; /* Remove default browser outline */
   box-shadow: 0 0 4px rgba(0, 123, 255, 0.6); /* Add a glow effect */
+}
+
+.register_submit_btn {
+  margin: 0 10px;
 }
 
 .required_field {
@@ -183,8 +215,6 @@ h1 {
 .closeModalBtn:hover {
   background-color: transparent !important; /* No background on hover */
 }
-
-
 
 /* Styling for small screens (mobile devices) */
 @media (max-width: 992px) {
