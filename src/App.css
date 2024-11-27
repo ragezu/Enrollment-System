@@ -86,7 +86,7 @@ a {
   color: var(--title-color);
 }
 
-button {
+a, button, input[type="radio"] {
   cursor: pointer;
 }
 
