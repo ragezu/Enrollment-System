@@ -117,7 +117,9 @@ const Login = () => {
             />
           </div>
           <div className={styles.text_end}>
+            <Link to="/EmailVerification">
             <a href="#">Forgot password?</a>
+            </Link>
           </div>
           <div className={styles.button_holder}>
             <button type="submit" className={styles.btn}>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import styles from "../Register/Register.module.css";
 import "../../App.css";
@@ -6,6 +6,59 @@ import { useNavigate } from "react-router-dom";
 import Modal from "react-modal"; // Importing Modal library
 
 Modal.setAppElement("#root"); // For accessibility reasons
+
+
+
+const OTPInput = ({ length = 6, onVerify }) => {  // Added onVerify prop
+  const [otp, setOtp] = useState(Array(length).fill(""));
+  const inputRefs = useRef([]);
+
+  // Focus the first input field on initial render
+  useEffect(() => {
+    inputRefs.current[0]?.focus();
+  }, []);
+
+  const handleChange = (index, value) => {
+    if (/^[0-9]?$/.test(value)) {
+      const newOtp = [...otp];
+      newOtp[index] = value;
+      setOtp(newOtp);
+
+      if (value && index < length - 1) {
+        inputRefs.current[index + 1].focus();
+      }
+
+      // Check OTP after all fields are filled
+      if (newOtp.every((digit) => digit !== "")) {
+        onVerify(newOtp.join(""));  // Pass entered OTP to parent
+      }
+    }
+  };
+
+  const handleKeyDown = (index, e) => {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
+      inputRefs.current[index - 1].focus();
+    }
+  };
+
+  return (
+    <div className={styles.otpContainer}>
+      {otp.map((digit, index) => (
+        <input
+          key={index}
+          ref={(ref) => (inputRefs.current[index] = ref)}
+          type="text"
+          maxLength="1"
+          value={digit}
+          onChange={(e) => handleChange(index, e.target.value)}
+          onKeyDown={(e) => handleKeyDown(index, e)}
+          className={styles.otpInput}
+        />
+      ))}
+    </div>
+  );
+};
+
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -93,6 +146,18 @@ export default function Register() {
 
     return newErrors;
   };
+
+
+  const [isVerified, setIsVerified] = useState(false);  // State for verification status
+
+  const handleVerify = (enteredOtp) => {
+    if (enteredOtp === "492625") {  // Replace with actual verification logic
+      setIsVerified(true);  // Show success message
+    } else {
+      alert("Invalid OTP. Please try again.");  // Handle incorrect OTP
+    }
+  };
+
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -193,7 +258,7 @@ export default function Register() {
               <div className={styles.form_row}>
                 <div className={styles.form_field}>
                   <label htmlFor="firstName">
-                    First Name<span className={styles.required_field}>*</span>
+                    First Name
                   </label>
                   <input
                     type="text"
@@ -206,7 +271,9 @@ export default function Register() {
                 </div>
 
                 <div className={styles.form_field}>
-                  <label htmlFor="middleName">Middle Name</label>
+                  <label htmlFor="middleName">
+                    Middle Name
+                    </label>
                   <input
                     type="text"
                     name="middleName"
@@ -219,7 +286,7 @@ export default function Register() {
 
                 <div className={styles.form_field}>
                   <label htmlFor="lastName">
-                    Last Name<span className={styles.required_field}>*</span>
+                    Last Name
                   </label>
                   <input
                     type="text"
@@ -236,7 +303,6 @@ export default function Register() {
                 <div className={`${styles.form_field} ${styles.solo_row}`}>
                   <label htmlFor="dob">
                     Date of Birth
-                    <span className={styles.required_field}>*</span>
                   </label>
                   <input
                     type="date"
@@ -253,7 +319,6 @@ export default function Register() {
                 <div className={styles.form_field}>
                   <label htmlFor="sex">
                     Sex
-                    <span className={styles.required_field}>*</span>
                   </label>
                   <div className={styles.radio_container}>
                     <div className={styles.radio}>
@@ -274,9 +339,9 @@ export default function Register() {
               </div>
 
               <div className={`${styles.form_row}`}>
-                <div className={`${styles.form_field} ${styles.solo_row}`}>
+                <div className={`${styles.form_field} ${styles.two_rows}`}>
                   <label htmlFor="address">
-                    Address<span className={styles.required_field}>*</span>{" "}
+                    House No.
                   </label>
                   <input
                     type="text"
@@ -287,13 +352,27 @@ export default function Register() {
                     onChange={handleChange}
                   />
                 </div>
+
+
+               <div className={`${styles.form_field} ${styles.two_rows}`}>
+                  <label htmlFor="address">
+                    Street
+                  </label>
+                  <input
+                    type="text"
+                    name="address"
+                    id="address"
+                    className={styles.input}
+                    onChange={handleChange}
+                  />
+                </div>
+
               </div>
 
               <div className={`${styles.form_row}`}>
                 <div className={`${styles.form_field} ${styles.two_rows}`}>
                   <label htmlFor="city">
                     City
-                    <span className={styles.required_field}>*</span>
                   </label>
                   <input
                     type="text"
@@ -308,7 +387,6 @@ export default function Register() {
                 <div className={`${styles.form_field} ${styles.two_rows}`}>
                   <label htmlFor="province">
                     Province
-                    <span className={styles.required_field}>*</span>
                   </label>
                   <input
                     type="province"
@@ -325,7 +403,6 @@ export default function Register() {
                 <div className={`${styles.form_field} ${styles.two_rows}`}>
                   <label htmlFor="postal">
                     Postal Code
-                    <span className={styles.required_field}>*</span>
                   </label>
                   <input
                     type="text"
@@ -340,7 +417,6 @@ export default function Register() {
                 <div className={`${styles.form_field} ${styles.two_rows}`}>
                   <label htmlFor="country">
                     Country
-                    <span className={styles.required_field}>*</span>
                   </label>
                   <input
                     type="text"
@@ -357,7 +433,6 @@ export default function Register() {
                 <div className={`${styles.form_field} ${styles.solo_row}`}>
                   <label htmlFor="contact">
                     Contact Number
-                    <span className={styles.required_field}>*</span>{" "}
                   </label>
                   <input
                     type="text"
@@ -391,7 +466,7 @@ export default function Register() {
               <div className={`${styles.form_row}`}>
                 <div className={`${styles.form_field} ${styles.solo_row}`}>
                   <label htmlFor="email">
-                    Email<span className={styles.required_field}>*</span>
+                    Email
                   </label>
                   <input
                     type="email"
@@ -407,7 +482,7 @@ export default function Register() {
               <div className={`${styles.form_row}`}>
                 <div className={`${styles.form_field} ${styles.solo_row}`}>
                   <label htmlFor="password">
-                    Password<span className={styles.required_field}>*</span>
+                    Password
                   </label>
                   <input
                     type="password"
@@ -424,7 +499,6 @@ export default function Register() {
                 <div className={`${styles.form_field} ${styles.solo_row}`}>
                   <label htmlFor="confirmPassword">
                     Confirm Password
-                    <span className={styles.required_field}>*</span>
                   </label>
                   <input
                     type="password"
@@ -443,11 +517,45 @@ export default function Register() {
                 >
                   Back
                 </button>
-                <button className={`${styles.register_btn} ${styles.register_submit_btn}`} type="submit">
-                  Submit
-                </button>
+                <button
+                className={styles.register_btn}
+                type="submit"
+                onClick={handleNextStep}
+              >
+                Next
+              </button>
             </div>
           )}
+
+
+
+          {currentStep === 3 && (
+            <div className={styles.content}>
+            {!isVerified ? (  // Conditional rendering for OTP form and success message
+              <div className={styles.content_wrapper}>
+                <div className={styles.content_texts}>
+                  <h1 className={styles.content_h1}>Verify your email address</h1>
+                  <p className={styles.content_p}>
+                    We have sent a verification code to youremail@gmail.com. Please
+                    check your inbox and insert the code in the fields below to verify
+                    your email.
+                  </p>
+                </div>
+                <div className={styles.content_otp}>
+                  <OTPInput length={6} onVerify={handleVerify} />  {/* Pass verification handler */}
+                </div>
+              </div>
+            ) : (
+              <div className={styles.successMessage}>
+                <div className={styles.checkmark}></div>  {/* You can style this checkmark */}
+                <h1 className={styles.content_h1}>REGISTRATION SUCCESSFUL!</h1>
+                <p className={styles.content_p}>Your account has been successfully created. You may log in with the credentials you provided.</p>
+                <Link to="/login" className={styles.continue_button}>Go to Login</Link>
+              </div>
+            )}
+          </div>
+          )}
+          
         </form>
 
         {renderErrorModal()}
