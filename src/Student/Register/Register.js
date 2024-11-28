@@ -9,11 +9,11 @@ Modal.setAppElement("#root"); // For accessibility reasons
 
 
 
-const OTPInput = ({ length = 6, onVerify }) => {  // Added onVerify prop
+
+const OTPInput = ({ length = 6, onVerify }) => {
   const [otp, setOtp] = useState(Array(length).fill(""));
   const inputRefs = useRef([]);
 
-  // Focus the first input field on initial render
   useEffect(() => {
     inputRefs.current[0]?.focus();
   }, []);
@@ -28,9 +28,9 @@ const OTPInput = ({ length = 6, onVerify }) => {  // Added onVerify prop
         inputRefs.current[index + 1].focus();
       }
 
-      // Check OTP after all fields are filled
+      // Trigger verification once all OTP fields are filled
       if (newOtp.every((digit) => digit !== "")) {
-        onVerify(newOtp.join(""));  // Pass entered OTP to parent
+        onVerify(newOtp.join(""));
       }
     }
   };
@@ -80,8 +80,10 @@ export default function Register() {
 
   const [errors, setErrors] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isOtpSent, setIsOtpSent] = useState(false);
   const [currentStep, setCurrentStep] = useState(1); // Track the current step
   const navigate = useNavigate();
+ 
 
   // Focus the first input field on component mount
   useEffect(() => {
@@ -150,14 +152,33 @@ export default function Register() {
 
   const [isVerified, setIsVerified] = useState(false);  // State for verification status
 
-  const handleVerify = (enteredOtp) => {
-    if (enteredOtp === "492625") {  // Replace with actual verification logic
-      setIsVerified(true);  // Show success message
-    } else {
-      alert("Invalid OTP. Please try again.");  // Handle incorrect OTP
+  const handleVerify = async (enteredOtp) => {
+    try {
+      const response = await fetch("http://localhost:5000/verify-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: formData.email, otp: enteredOtp }),
+      });
+  
+      const result = await response.json();
+      if (response.ok && result.message === "OTP verified successfully.") {
+        // Update isVerified to true to show the success message
+        setIsVerified(true);
+  
+        // Optionally perform the redirection (if needed) after some delay
+        setTimeout(() => {
+          navigate("/login"); // Redirect to login after 2 seconds
+        }, 2000);
+      } else {
+        // In case OTP verification fails, show error message
+        alert(result.message || "Invalid OTP. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Failed to verify OTP. Please try again.");
     }
   };
-
+  
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -178,8 +199,8 @@ export default function Register() {
 
       const result = await response.json();
       if (response.ok) {
-        alert("Registration successful!");
-        navigate("/login");
+        // alert("Registration successful!");
+        // navigate("/login");
       } else {
         alert(result.message || "Failed to register.");
       }
@@ -216,20 +237,37 @@ export default function Register() {
     );
   };
 
-  const handleNextStep = () => {
+  const handleNextStep = async () => {
     const validationErrors = validate();
-
-    // If there are errors, show the modal and do not move to the next step
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-      setIsModalOpen(true);
       return;
     }
-
-    // If no errors, proceed to the next step
-    setCurrentStep((prevStep) => prevStep + 1);
+  
+    if (currentStep === 2) {
+      try {
+        // Send OTP to user's email when moving to Step 3
+        const response = await fetch("http://localhost:5000/send-otp", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: formData.email }),
+        });
+  
+        if (response.ok) {
+          setIsOtpSent(true);
+          setCurrentStep((prev) => prev + 1);  // Proceed to Step 3
+        } else {
+          alert("Failed to send OTP. Please try again.");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Failed to connect to the server.");
+      }
+    } else {
+      setCurrentStep((prev) => prev + 1);  // Otherwise, just move to next step
+    }
   };
-
+  
   const handlePreviousStep = () => {
     setCurrentStep((prevStep) => prevStep - 1);
   };
@@ -341,7 +379,7 @@ export default function Register() {
               <div className={`${styles.form_row}`}>
                 <div className={`${styles.form_field} ${styles.two_rows}`}>
                   <label htmlFor="address">
-                    House No.
+                    Address
                   </label>
                   <input
                     type="text"
@@ -350,19 +388,21 @@ export default function Register() {
                     className={styles.input}
                     value={formData.address}
                     onChange={handleChange}
+                    placeholder="Block 4 Lot 13, Madrigal Compound"
                   />
                 </div>
 
 
                <div className={`${styles.form_field} ${styles.two_rows}`}>
-                  <label htmlFor="address">
-                    Street
+                  <label htmlFor="street">
+                    Barangay
                   </label>
                   <input
                     type="text"
-                    name="address"
-                    id="address"
+                    name="barangay"
+                    id="barangay"
                     className={styles.input}
+                    value={formData.barangay}
                     onChange={handleChange}
                   />
                 </div>
@@ -531,30 +571,23 @@ export default function Register() {
 
           {currentStep === 3 && (
             <div className={styles.content}>
-            {!isVerified ? (  // Conditional rendering for OTP form and success message
+              {!isVerified ? (
               <div className={styles.content_wrapper}>
-                <div className={styles.content_texts}>
-                  <h1 className={styles.content_h1}>Verify your email address</h1>
-                  <p className={styles.content_p}>
-                    We have sent a verification code to youremail@gmail.com. Please
-                    check your inbox and insert the code in the fields below to verify
-                    your email.
-                  </p>
-                </div>
-                <div className={styles.content_otp}>
-                  <OTPInput length={6} onVerify={handleVerify} />  {/* Pass verification handler */}
-                </div>
+                <h1 className={styles.content_h1}>Verify your email address</h1>
+                <p className={styles.content_p}>
+                We have sent a verification code to {formData.email}. Please check your inbox and insert the code in the fields below to verify your email.
+                </p>
+                <OTPInput length={6} onVerify={handleVerify} />
               </div>
             ) : (
-              <div className={styles.successMessage}>
-                <div className={styles.checkmark}></div>  {/* You can style this checkmark */}
-                <h1 className={styles.content_h1}>REGISTRATION SUCCESSFUL!</h1>
-                <p className={styles.content_p}>Your account has been successfully created. You may log in with the credentials you provided.</p>
-                <Link to="/login" className={styles.continue_button}>Go to Login</Link>
-              </div>
+            <div className={styles.successMessage}>
+              <h1 className={styles.content_h1}>REGISTRATION SUCCESSFUL!</h1>
+              <p className={styles.content_p}>Your account has been successfully created. Redirecting to login...</p>
+            </div>
             )}
-          </div>
+            </div>
           )}
+          
           
         </form>
 
