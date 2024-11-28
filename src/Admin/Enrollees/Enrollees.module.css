@@ -1,0 +1,169 @@
+.content_holder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  min-height: calc(100vh - 90px);
+  width: 100%;
+  padding: 20px 50px;
+}
+
+.content {
+    padding: 20px 50px;
+    width: 100%;
+}
+
+
+.label {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s ease;
+}
+
+.input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Table styles */
+.tableContainer {
+  max-height:400px;
+  overflow-y: auto;
+}
+
+.searchContainer {
+  display: flex;
+  align-items: center;
+}
+
+.searchContainer .input {
+  width: 300px;
+  border-radius: 25px;
+  height: 35px;
+  margin: 15px 10px;
+}
+
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table tbody tr td:last-child {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px;
+}
+
+.table thead tr th {
+  position: sticky;    /* Make header sticky */
+  top: 0;              /* Stick the header at the top of the container */
+  z-index: 1;  
+}
+
+.table thead tr th,
+.table tbody tr td {
+  text-align: center;
+  color: var(--title-color-dark);
+}
+
+.thTd {
+  background-color: #f4f4f4;
+  font-weight: bold;
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.td:last-child {
+  text-align: center;
+}
+
+/* Buttons in the table */
+.button {
+  background-color: #007bff;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+/* Filter bar */
+.filterBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+
+.filterBar .select {
+  height: 35px;
+  padding: 8px;
+  border-radius: 25px;
+}
+
+.select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Modal overlay */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;  /* Above header */
+}
+
+.modalContent {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.closeButton {
+  background-color: #d9534f;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.closeButton:hover {
+  background-color: #c9302c;
+}

@@ -6,8 +6,8 @@ import styles from "./Dashboard.module.css";
 const Dashboard = () => {
   return (
     <div className={styles.container}>
-  <DashboardHeader />
-  <div className={styles.dashboardHeader}>
+    <DashboardHeader />
+    <div className={styles.dashboardHeader}>
     <h1>Dashboard</h1>
   </div>
   <div className={styles.dashboardContent}>
