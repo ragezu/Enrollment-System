@@ -8,6 +8,7 @@ import Landingpage from './General/LandingPage/Landingpage';
 import AnnouncementsPage from './General/Announcement/AnnouncementsPage';
 import Dashboard from './Admin/Dashboard/Dashboard';
 import Home from './Student/Home/Home';
+import Enrollees from './Admin/Enrollees/Enrollees';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/submissionandsubject" element={<SubmissionAndSubject />} />
                 <Route path="/home" element={<Home />} />
+                <Route path="/enrollee" element={<Enrollees />} />
             </Routes>
         </Router>
     );

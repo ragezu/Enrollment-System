@@ -37,7 +37,7 @@ const Login = () => {
 
       if (response.ok) {
         toast.success("Login successful!"); // Success toast
-        navigate("/"); // Replace with your intended path
+        navigate("/home"); // Replace with your intended path
       } else {
         toast.error(result.message || "Invalid credentials."); // Error toast
       }
