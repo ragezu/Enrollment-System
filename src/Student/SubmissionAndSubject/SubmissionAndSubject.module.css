@@ -98,6 +98,7 @@
   padding: 8px;
 }
 
+
 .student_info_right .next_button {
   width: 75%;
   margin: 0 auto;
@@ -120,3 +121,183 @@
   background-color: var(--title-color-dark);
   color: white;
 }
+
+
+.step2_container {
+  background-color: #e9e7e7;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  height: 650px;
+  padding: 0 50px;
+}
+
+.step2_container .step2_content {
+  height: 100%;
+}
+
+
+.step2_container .subject_container{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  height: 100%;
+}
+
+.subject_container .subject_table {
+  border-spacing: 20px 2px;
+}
+
+.subject_container .add_subject {
+  display: flex;
+  flex-direction: column;
+
+}
+
+.add_subject .dropdown,
+.add_subject .num_units {
+  height: 30px;
+  border-radius: 8px;
+  padding: 5px;
+  border: 1px solid black;
+}
+
+.add_subject .dropdown {
+  width: 350px;
+}
+
+.add_subject .num_units {
+  width: 150px;
+}
+
+.subject_container .add_subject_button {
+  height: 30px;
+  padding: 0 20px;
+  background-color: var(--title-color);
+  border-radius: 8px;
+  color: white;
+}
+
+.subject_container .add_subject_button:hover {
+  background-color: var(--title-color-dark);
+  color: white;
+}
+
+.subject_table .remove_button {
+  background-color: none !important;
+  border: none;
+  color: var(--title-color);
+}
+
+.subject_table .remove_button:hover {
+
+  background-color: none !important;
+  color: var(--title-color-dark) !important;
+}
+
+
+.navigate_buttons .button {
+  height: 35px;
+  padding: 0 30px;
+  background-color: var(--title-color);
+  color: white;
+  border-radius: 8px;
+  margin: 0 5px;
+}
+
+.navigate_buttons .button:hover {
+  background-color: var(--title-color-dark);
+  color: white;
+}
+
+
+.step2_container .navigate_buttons {
+  display: flex;             /* Make it a flex container */
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+
+.step3_container {
+  background-color: #e9e7e7;
+  border-radius: 12px;
+  height: 600px;
+  padding: 0 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.step3_container .upload_file_section {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.step3_container .schedule_section {
+  display: flex;
+  height: auto;
+}
+
+.schedule_section .select_advising_date {
+  display: flex;
+  width: 550px;
+  justify-content: space-between;
+  margin-left: 135px;
+  align-items: center;
+}
+
+
+.select_advising_date select {
+  height: 35px;
+  width: 300px;
+  border-radius: 8px;
+  cursor: pointer;
+} 
+
+
+/****************/
+
+.upload_file_section .upload_button {
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+  background-color: #a6a6a6;
+  color: black;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+  padding: 15px 40px;
+  margin: 0 !important;
+}
+
+.upload_button i {
+  margin: 0 3px;
+  color: black;
+}
+.hidden_input {
+  display: none;
+}
+
+.upload_description {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+
+.step3_container .button_container_section {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.button_container_section .back_button,
+.button_container_section .submit_button {
+  height: 35px;
+  color: white;
+  background-color: var(--title-color);
+  width: 90px;
+  border-radius: 8px;
+  margin: 0 5px;
+}
+
+
+
