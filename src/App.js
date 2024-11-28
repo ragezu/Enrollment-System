@@ -7,6 +7,7 @@ import SubmissionAndSubject from './Student/SubmissionAndSubject/SubmissionAndSu
 import Landingpage from './General/LandingPage/Landingpage';
 import AnnouncementsPage from './General/Announcement/AnnouncementsPage';
 import Dashboard from './Admin/Dashboard/Dashboard';
+import Home from './Student/Home/Home';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
                 <Route path="/homepage" element={<Homepage />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/submissionandsubject" element={<SubmissionAndSubject />} />
+                <Route path="/home" element={<Home />} />
             </Routes>
         </Router>
     );
