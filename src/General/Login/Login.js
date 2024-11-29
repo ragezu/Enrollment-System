@@ -25,19 +25,19 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
       const response = await fetch("http://localhost:5000/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-
+  
       const result = await response.json();
-
+  
       if (response.ok) {
         toast.success("Login successful!"); // Success toast
-        navigate("/home"); // Replace with your intended path
+        navigate("/home", { state: { userId: result.user.user_id } });
       } else {
         toast.error(result.message || "Invalid credentials."); // Error toast
       }
