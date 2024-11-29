@@ -20,9 +20,6 @@ function Landingpage() {
           <div className={styles.landing_page_buttons}>
                 <Link to="/login"><button>Log In</button></Link>
                 <Link to="/register"><button>Register</button></Link>
-                <Link to="/submissionandsubject"><button>Submission</button></Link>
-                <Link to="/enrollee"><button>Enrollee</button></Link>
-                <Link to="/dashboard"><button>Admin</button></Link>
             </div>
         </div>
           

@@ -550,6 +550,7 @@ export default function Register() {
                   />
                 </div>
               </div>
+                <div className={styles.navigation_button_holder}>
                 <button
                   className={`${styles.register_btn} ${styles.register_back_btn}`}
                   type="button"
@@ -564,6 +565,7 @@ export default function Register() {
               >
                 Next
               </button>
+                </div>
             </div>
           )}
 
