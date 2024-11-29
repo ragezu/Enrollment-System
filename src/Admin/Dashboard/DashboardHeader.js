@@ -24,8 +24,8 @@ const DashboardHeader = () => {
           </Link>
         </div>
         <nav className={styles.nav}>
-          <a className={styles.navLink}>Dashboard</a>
-          <a className={styles.navLink}>Enrollees</a>
+        <Link to="/dashboard"><a className={styles.navLink}>Dashboard</a></Link>
+        <Link to="/enrollee"><a className={styles.navLink}>Enrollees</a></Link>
           <a className={styles.navLink}>Students</a>
           <a className={styles.navLink}>Enrollment Team</a>
           <a className={styles.navLink}>Log Out</a>
