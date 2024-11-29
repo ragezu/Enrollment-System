@@ -9,6 +9,7 @@ import AnnouncementsPage from './General/Announcement/AnnouncementsPage';
 import Dashboard from './Admin/Dashboard/Dashboard';
 import Home from './Student/Home/Home';
 import Enrollees from './Admin/Enrollees/Enrollees';
+import { Navigate } from 'react-router-dom';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -25,6 +26,12 @@ function App() {
                 <Route path="/submissionandsubject" element={<SubmissionAndSubject />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/enrollee" element={<Enrollees />} />
+                <Route path="/home" element={
+// Protect the Home route
+            localStorage.getItem("isLoggedIn") ? <Home /> : <Navigate to="/login" />
+          }
+        />
+      
             </Routes>
         </Router>
     );
