@@ -52,16 +52,27 @@ const OTPInput = ({ length = 6, onVerify }) => {
 };
 
 function EmailVerification() {
+  const [email, setEmail] = useState(""); // New state for email input
   const [isVerified, setIsVerified] = useState(false);
-  const [newPassword, setNewPassword] = useState(""); // State for new password
-  const [confirmPassword, setConfirmPassword] = useState(""); // State for confirm password
-  const [step, setStep] = useState(1); // To manage the step of the process
-  const [passwordError, setPasswordError] = useState(""); // Error state for password mismatch
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [step, setStep] = useState(1);
+  const [passwordError, setPasswordError] = useState("");
+
+  const handleEmailSubmit = () => {
+    // Add logic to send OTP to the provided email address.
+    // For now, proceed directly to the OTP verification step.
+    if (email) {
+      setStep(2); // Move to the next step (OTP verification)
+    } else {
+      alert("Please enter your email address.");
+    }
+  };
 
   const handleVerify = (enteredOtp) => {
     if (enteredOtp === "492625") {
       setIsVerified(true);
-      setStep(2); // Move to the next step (password change)
+      setStep(3); // Move to the password change step
     } else {
       alert("Invalid OTP. Please try again.");
     }
@@ -78,7 +89,7 @@ function EmailVerification() {
       return;
     }
     // Perform the password change logic here (e.g., update database)
-    setStep(3); // Go to the success step
+    setStep(4); // Go to the success step
   };
 
   return (
@@ -99,30 +110,49 @@ function EmailVerification() {
       </div>
 
       <div className={styles.content}>
-        {step === 1 && !isVerified && (
+        {/* Step 1: Email Input */}
+        {step === 1 && (
+          <div className={styles.content_wrapper}>
+            <div className={styles.content_texts}>
+              <h1 className={styles.content_h1}>Forgot Password</h1>
+              <p className={styles.content_p}>Enter your email address to receive a verification code.</p>
+            </div>
+            <input
+              type="email"
+              placeholder="Email Address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className={styles.emailInput}
+            />
+            <button onClick={handleEmailSubmit} className={styles.continue_button}>
+              Send Verification Code
+            </button>
+          </div>
+        )}
+
+        {/* Step 2: OTP Verification */}
+        {step === 2 && !isVerified && (
           <div className={styles.content_wrapper}>
             <div className={styles.content_texts}>
               <h1 className={styles.content_h1}>Change Password</h1>
               <p className={styles.content_p}>
-                We have sent a verification code to youremail@gmail.com. Please check your inbox and insert the code in the fields below to change your password.
+                We have sent a verification code to {email}. Please check your inbox and insert the code in the fields below to change your password.
               </p>
             </div>
             <div className={styles.content_otp}>
               <OTPInput length={6} onVerify={handleVerify} />
             </div>
-            <a className={styles.continue_button}>Continue</a>
           </div>
         )}
 
-        {step === 2 && isVerified && (
+        {/* Step 3: Set New Password */}
+        {step === 3 && isVerified && (
           <div className={styles.content_wrapper}>
             <div className={styles.content_texts}>
               <h1 className={styles.content_h1}>Set New Password</h1>
               <p className={styles.content_p}>Enter your new password and confirm it below.</p>
             </div>
-            <label>
-              New Password
-            </label>
+            <label>New Password</label>
             <input
               type="password"
               placeholder="New Password"
@@ -131,9 +161,7 @@ function EmailVerification() {
               className={styles.passwordInput}
             />
 
-            <label>
-              Confirm New Password
-            </label>
+            <label>Confirm New Password</label>
             <input
               type="password"
               placeholder="Confirm Password"
@@ -148,7 +176,8 @@ function EmailVerification() {
           </div>
         )}
 
-        {step === 3 && isVerified && (
+        {/* Step 4: Success Message */}
+        {step === 4 && isVerified && (
           <div className={styles.successMessage}>
             <div className={styles.checkmark}></div>
             <h1 className={styles.content_h1}>Password has been changed!</h1>

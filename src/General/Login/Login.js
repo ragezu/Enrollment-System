@@ -31,19 +31,30 @@ const Login = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
+        credentials: "include", // Include cookies/session
       });
   
       const result = await response.json();
   
       if (response.ok) {
-        toast.success("Login successful!"); // Success toast
-        navigate("/home", { state: { userId: result.user.user_id } });
+        // Navigate based on role
+        if (result.role === "student") {
+          navigate("/home", { state: { userId: result.user.user_id } });
+        } else if (result.role === "admin") {
+          navigate("/dashboard", { state: { userId: result.user.user_id } });
+        } else {
+          throw new Error("Unexpected role received.");
+        }
+  
+        // Only show success toast after successful navigation
+        toast.success("Login successful!");
       } else {
-        toast.error(result.message || "Invalid credentials."); // Error toast
+        // Display backend error message
+        throw new Error(result.message || "Login failed.");
       }
     } catch (error) {
-      console.error("Error:", error);
-      toast.error("Failed to connect to the server."); // Error toast
+      console.error("Error during login:", error.message);
+      toast.error(error.message || "Failed to connect to server.");
     }
   };
 

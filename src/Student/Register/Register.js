@@ -69,9 +69,10 @@ export default function Register() {
     contactNumber: "",
     email: "",
     password: "",
-    confirmPassword: "", // Added for confirmPassword field
+    confirmPassword: "",
     sex: "",
     address: "",
+    barangay: "", // Added field
     city: "",
     province: "",
     postal: "",
@@ -161,21 +162,19 @@ export default function Register() {
       });
   
       const result = await response.json();
-      if (response.ok && result.message === "OTP verified successfully.") {
-        // Update isVerified to true to show the success message
-        setIsVerified(true);
-  
-        // Optionally perform the redirection (if needed) after some delay
-        setTimeout(() => {
-          navigate("/login"); // Redirect to login after 2 seconds
-        }, 2000);
+      if (response.ok) {
+        if (result.message === "OTP verified successfully.") {
+          setIsVerified(true); // Set verification state
+          setTimeout(() => navigate("/login"), 2000); // Redirect after success
+        } else {
+          setErrors({ otp: result.message || "Invalid OTP. Please try again." });
+        }
       } else {
-        // In case OTP verification fails, show error message
-        alert(result.message || "Invalid OTP. Please try again.");
+        setErrors({ otp: result.message || "Verification failed." });
       }
     } catch (error) {
-      console.error("Error:", error);
-      alert("Failed to verify OTP. Please try again.");
+      console.error("Verification Error:", error);
+      setErrors({ otp: "Error verifying OTP. Please try again later." });
     }
   };
   
@@ -186,24 +185,16 @@ export default function Register() {
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-      setIsModalOpen(true);
       return;
     }
-
+  
     try {
       const response = await fetch("http://localhost:5000/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-
-      const result = await response.json();
-      if (response.ok) {
-        // alert("Registration successful!");
-        // navigate("/login");
-      } else {
-        alert(result.message || "Failed to register.");
-      }
+  
     } catch (error) {
       console.error("Error:", error);
       alert("Failed to connect to the server.");
@@ -571,24 +562,27 @@ export default function Register() {
 
 
 
-          {currentStep === 3 && (
-            <div className={styles.content}>
-              {!isVerified ? (
-              <div className={styles.content_wrapper}>
-                <h1 className={styles.content_h1}>Verify your email address</h1>
-                <p className={styles.content_p}>
-                We have sent a verification code to {formData.email}. Please check your inbox and insert the code in the fields below to verify your email.
-                </p>
-                <OTPInput length={6} onVerify={handleVerify} />
-              </div>
-            ) : (
-            <div className={styles.successMessage}>
-              <h1 className={styles.content_h1}>REGISTRATION SUCCESSFUL!</h1>
-              <p className={styles.content_p}>Your account has been successfully created. Redirecting to login...</p>
-            </div>
-            )}
-            </div>
-          )}
+{currentStep === 3 && (
+  <div className={styles.content}>
+    {!isVerified ? (
+      <div className={styles.content_wrapper}>
+        <h1 className={styles.content_h1}>Verify your email address</h1>
+        <p className={styles.content_p}>
+          We have sent a verification code to {formData.email}. Please check your inbox and insert the code in the fields below to verify your email.
+        </p>
+        {errors.otp && <p className={styles.error}>{errors.otp}</p>} {/* Show error */}
+        <OTPInput length={6} onVerify={handleVerify} />
+      </div>
+    ) : (
+      <div className={styles.successMessage}>
+        <h1 className={styles.content_h1}>REGISTRATION SUCCESSFUL!</h1>
+        <p className={styles.content_p}>
+          Your account has been successfully created. Redirecting to login...
+        </p>
+      </div>
+    )}
+  </div>
+)}
           
           
         </form>
