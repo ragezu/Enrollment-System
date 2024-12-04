@@ -11,6 +11,10 @@ import Home from "./Student/Home/Home";
 import Enrollees from "./Admin/Enrollees/Enrollees";
 import { Navigate } from "react-router-dom";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import SuccessRegular from "./Student/SubmissionAndSubject/SuccessRegular";
+import SuccessIrregular from "./Student/SubmissionAndSubject/SuccessIrregular";
+import UploadRegular from  "./Student/SubmissionAndSubject/UploadRegular";
+import UploadIrregular from  "./Student/SubmissionAndSubject/UploadIrregular";
 
 function App() {
   return (
@@ -28,6 +32,10 @@ function App() {
           element={<SubmissionAndSubject />}
         />
         <Route path="/home" element={<Home />} />
+        <Route path="/SuccessRegular" element={<SuccessRegular />} />
+        <Route path="/SuccessIrregular" element={<SuccessIrregular />} />
+        <Route path="/UploadRegular" element={<UploadRegular />} />
+        <Route path="/UploadIrregular" element={<UploadIrregular />} />
         <Route path="/enrollee" element={<Enrollees />} />
         <Route path="/home" element={<Home />} />
       </Routes>
