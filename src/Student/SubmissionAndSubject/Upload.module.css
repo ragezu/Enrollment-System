@@ -1,0 +1,155 @@
+/* SubmissionsAndSubjects.module.css */
+/* Overall Container */
+.container {
+    background-color: #f2f0ef;
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .title {
+    width: 100%;
+    margin-left: 100px;
+  }
+  
+  .container .header {
+    width: 100%;
+    background-color: #1a1a1a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 90px;
+  }
+  
+ 
+  
+  .section {
+    width: 80%; /* Adjust the width as needed (e.g., 80%, 60%, or a fixed value like 600px) */
+    max-width: 1400px; /* Optional: Set a maximum width for better responsiveness */
+    border: 1px dashed #000000;
+    padding: 15px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    background-color: white; /* Optional: Add a background color */
+    
+  }
+  
+  .preEnrollment {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    margin-top: 20px;
+    width: 80%;
+    max-width: 1400px;
+  }
+  
+  .paragraph {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+  }
+  .sectionTitle {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .sectionContent {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  
+  .uploadBox {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   
+    border-radius: 8px;
+    height: 120px; /* Increased height for better usability */
+    background-color: #a5a4a4;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.uploadBox:hover {
+    background-color: #9e9e9e; /* Highlight on hover */
+}
+
+.uploadButton {
+    font-size: 5rem; /* Slightly larger */
+    color: #333; /* Neutral color */
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.uploadButton:hover {
+    color: #000; /* Darker on hover */
+}
+
+.hiddenInput {
+    display: none;
+}
+  
+  .feedback {
+    flex: 1;
+  }
+  
+  .feedbackName {
+    font-weight: bold;
+  }
+  
+  .feedbackText {
+    font-style: italic;
+  }
+  
+  .feedbackStatus {
+    display: inline-block;
+    background-color: #a1e9a1;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 0.9rem;
+    font-weight: bold;
+  }
+  
+  .recentFiles {
+    flex: 1;
+  }
+  
+  .file {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+  }
+  
+  .pdfIcon {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .formButtons {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .formButton {
+    padding: 10px 20px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
+  .formButton:hover {
+    background-color: #555;
+  }
+  
