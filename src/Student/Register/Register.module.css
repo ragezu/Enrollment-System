@@ -132,13 +132,13 @@
 .register_wrapper .navigation_button_holder {
   width: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
 }
 
 .register_wrapper .register_btn {
   margin: 20px 3px;
   width: 130px;
-  height: 35px;
+  height: 40px;
   background-color: var(--title-color);
   color: #fff;
   font-size: var(--normal-font-size);

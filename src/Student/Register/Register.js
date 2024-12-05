@@ -279,9 +279,11 @@ export default function Register() {
                 </button>
               </div>
               <div className={styles.register_text_center}>
+                <p>
                 <Link to="/login">
                   Already have an account? <span>Login</span>
                 </Link>
+                </p>
               </div>
             </div>
           )}

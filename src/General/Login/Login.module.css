@@ -100,7 +100,7 @@ label {
     font-size: var(--normal-font-size);
     border-radius: 8px;
     margin-top: 10px;
-    
+    border: none;
 }
 
 .wrapper .btn:hover {
@@ -115,7 +115,7 @@ label {
 .text_center {
     display: flex;
     justify-content: center;
-    margin-top: 40px;
+    margin: 10px 0;
 }
 
 span {
