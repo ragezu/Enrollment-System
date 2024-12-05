@@ -1,12 +1,15 @@
 const express = require("express");
 const cors = require("cors");
 const bcrypt = require("bcryptjs");
+const bodyParser = require('body-parser');
 const mysql = require("mysql2");
 const app = express();
 const crypto = require("crypto");
 const nodemailer = require("nodemailer"); // Import Nodemailer
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
+
+app.use(bodyParser.json());
 
 // Middleware
 app.use(
@@ -39,9 +42,35 @@ app.use(
 const db = mysql.createConnection({
   host: "localhost", // Replace with your DB host
   user: "root", // Replace with your MySQL username
-  password: "Jerald_11783", // Replace with your MySQL password
+  password: "Wearefamily03", // Replace with your MySQL password
   database: "enrollment_system", // Replace with your DB name
 });
+
+// Promise-based connection
+const dbPromise = db.promise();
+
+// Route with callback-style connection
+app.get('/callback-route', (req, res) => {
+  db.query('SELECT * FROM tbl_user_account', (err, results) => {
+    if (err) {
+      console.error('Error executing query:', err);
+      return res.status(500).json({ message: 'Internal server error.' });
+    }
+    res.status(200).json(results);
+  });
+});
+
+// Route with promise-based connection
+app.post('/promise-route', async (req, res) => {
+  try {
+    const [rows] = await dbPromise.query('SELECT * FROM tbl_user_account WHERE email = ?', [req.body.email]);
+    res.status(200).json(rows);
+  } catch (err) {
+    console.error('Error executing query:', err);
+    res.status(500).json({ message: 'Internal server error.' });
+  }
+});
+
 
 db.connect((err) => {
   if (err) {
@@ -76,6 +105,10 @@ const transporter = nodemailer.createTransport({
     pass: "hkol avhd afwa iawy",   // Replace with your Gmail App Password
   },
 });
+
+function generateOtp() {
+  return crypto.randomInt(100000, 999999).toString();
+}
 
 // Endpoint to send OTP
 app.post("/send-otp", async (req, res) => {
@@ -222,6 +255,90 @@ app.post("/verify-otp", (req, res) => {
     }
   });
 });
+
+app.post("/request-password-reset", async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ message: "Email is required." });
+  }
+
+  try {
+    const [rows] = await dbPromise.query(
+      "SELECT * FROM tbl_email_verification WHERE email = ?",
+      [email]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ message: "Email not found." });
+    }
+
+    const otp = crypto.randomInt(100000, 999999).toString();
+    await dbPromise.query(
+      `UPDATE tbl_email_verification 
+       SET otp = ?, expires_at = DATE_ADD(NOW(), INTERVAL 15 MINUTE) 
+       WHERE email = ?`,
+      [otp, email]
+    );
+
+    await transporter.sendMail({
+      from: "Enrollment System <your_email@example.com>",
+      to: email,
+      subject: "Password Reset Verification Code",
+      text: `Your verification code is: ${otp}. It will expire in 15 minutes.`,
+    });
+
+    res.status(200).json({ message: "Verification code sent successfully." });
+  } catch (error) {
+    console.error("Error during password reset request:", error.message);
+    res.status(500).json({ message: "Internal server error." });
+  }
+});
+
+app.post("/reset-password", async (req, res) => {
+  const { email, otp, newPassword } = req.body;
+
+  if (!email || !otp || !newPassword) {
+    return res.status(400).json({ message: "All fields are required." });
+  }
+
+  try {
+    // Validate the OTP
+    const [result] = await dbPromise.query(
+      `SELECT * FROM tbl_email_verification
+       WHERE LOWER(email) = LOWER(?) AND otp = ? AND expires_at > NOW()`,
+      [email, otp]
+    );
+
+    if (result.length === 0) {
+      return res.status(400).json({ message: "Invalid or expired OTP." });
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update the password in the users table
+    const [updateResult] = await dbPromise.query(
+      "UPDATE tbl_user_account SET password = ? WHERE LOWER(email) = LOWER(?)",
+      [hashedPassword, email]
+    );
+
+    if (updateResult.affectedRows === 0) {
+      return res.status(400).json({ message: "Failed to update the password. User not found." });
+    }
+
+    // Delete the OTP record to prevent reuse
+    await dbPromise.query("DELETE FROM tbl_email_verification WHERE LOWER(email) = LOWER(?)", [
+      email,
+    ]);
+
+    res.status(200).json({ message: "Password reset successful." });
+  } catch (err) {
+    console.error("Error resetting password:", err.message);
+    res.status(500).json({ message: "Internal server error." });
+  }
+});
+
 
 
 

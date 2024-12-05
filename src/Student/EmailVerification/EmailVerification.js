@@ -52,45 +52,85 @@ const OTPInput = ({ length = 6, onVerify }) => {
 };
 
 function EmailVerification() {
-  const [email, setEmail] = useState(""); // New state for email input
+  const [email, setEmail] = useState("");
   const [isVerified, setIsVerified] = useState(false);
+  const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [step, setStep] = useState(1);
   const [passwordError, setPasswordError] = useState("");
+  const [message, setMessage] = useState("");
 
-  const handleEmailSubmit = () => {
-    // Add logic to send OTP to the provided email address.
-    // For now, proceed directly to the OTP verification step.
-    if (email) {
-      setStep(2); // Move to the next step (OTP verification)
-    } else {
+  const handleEmailSubmit = async () => {
+    if (!email) {
       alert("Please enter your email address.");
+      return;
+    }
+  
+    try {
+      console.log("Sending email to backend:", email); // Debugging log
+      const response = await fetch("http://localhost:5000/request-password-reset", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+  
+      const data = await response.json();
+      console.log("Response from backend:", data); // Debugging log
+  
+      if (response.ok) {
+        setStep(2);
+        setMessage("Verification code sent to your email.");
+      } else {
+        alert(data.message || "An error occurred.");
+      }
+    } catch (error) {
+      console.error("Error sending verification code:", error);
+      alert("Failed to send verification code. Please try again.");
     }
   };
 
-  const handleVerify = (enteredOtp) => {
-    if (enteredOtp === "492625") {
+  const handleVerify = async (enteredOtp) => {
+    setOtp(enteredOtp);
+
+    if (enteredOtp.length === 6) {
+      setStep(3);
       setIsVerified(true);
-      setStep(3); // Move to the password change step
-    } else {
-      alert("Invalid OTP. Please try again.");
     }
   };
 
-  const handlePasswordChange = () => {
+  const handlePasswordChange = async () => {
     if (newPassword.length < 6) {
       alert("Password must be at least 6 characters.");
       return;
     }
-
+  
     if (newPassword !== confirmPassword) {
       setPasswordError("Passwords do not match.");
       return;
     }
-    // Perform the password change logic here (e.g., update database)
-    setStep(4); // Go to the success step
+  
+    try {
+      const response = await fetch("http://localhost:5000/reset-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, otp, newPassword }),
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        setStep(4); // Go to the success step
+      } else {
+        console.error("Failed to reset password:", data.message);
+        alert(data.message || "Failed to reset password. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error during password reset:", error);
+      alert("Failed to reset password. Please try again.");
+    }
   };
+
 
   return (
     <div className={styles.container}>
