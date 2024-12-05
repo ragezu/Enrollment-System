@@ -7,11 +7,11 @@
 }
 
 .register_wrapper {
-    width: 700px;
+    width: 500px;
     height: auto;
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 15px;
-    padding: 0 50px 20px 50px;
+    padding: 15px 30px;
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
     margin: 0 auto;
 }
@@ -112,7 +112,7 @@
 
 .form_field label {
   margin-top: 8px;
-  font-size: var(--small-font-size);
+  font-size: var(--normal-font-size);
 }
 
 .form_field input {
@@ -120,12 +120,19 @@
   width: 100%; /* Make the input take up full width */
   border-radius: 8px;
   height: 35px;
+  font-size: var(--normal-font-size);
 }
 
 
 .register_text_center {
   display: flex;
   justify-content: center;
+}
+
+.register_wrapper .navigation_button_holder {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .register_wrapper .register_btn {
@@ -136,6 +143,7 @@
   color: #fff;
   font-size: var(--normal-font-size);
   border-radius: 8px;
+  border: none;
 }
 .register_wrapper  .register_btn:hover {
   background-color: var(--title-color-dark);
