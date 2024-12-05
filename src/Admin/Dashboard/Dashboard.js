@@ -1,9 +1,42 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import DashboardHeader from "./DashboardHeader";
+import { checkSession, logout } from "../../utils/session";
 import styles from "./Dashboard.module.css";
 
-
 const Dashboard = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const userId = location.state?.userId;
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const initialize = async () => {
+      const isValidSession = await checkSession(navigate); // Check if session is valid
+      if (!isValidSession) {
+        console.error("Invalid session.");
+        navigate("/login"); // Redirect to login if session is invalid
+      } else if (!userId) {
+        console.error("No userId found in location state.");
+        navigate("/login"); // Redirect if userId is missing
+      } else {
+        console.log("Session is valid. UserId:", userId);
+        setIsLoading(false); // Session is valid, stop loading
+      }
+    };
+
+    initialize();
+  }, [navigate, userId]);
+
+  const handleLogout = () => {
+    logout(navigate); // Log out and redirect to login
+  };
+
+  if (isLoading) {
+    return <div>Loading...</div>; // Show loading spinner while validating session
+  }
+
   return (
     <div className={styles.container}>
     <DashboardHeader />

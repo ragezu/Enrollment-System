@@ -14,66 +14,91 @@ const Enrollees = () => {
       details: "Detailed information about Jerald Labalan",
     },
     {
-      id: "20231001",
+      id: "20231002",
       lastName: "Fernandez",
       firstName: "Alex",
-      middleName: "tingenhawak",
+      middleName: "Hawak",
       type: "S6",
       yearStanding: "3rd year",
-      details: "Detailed information about Jerald Labalan",
+      details: "Detailed information about Alex Fernandez",
     },
     {
-      id: "20231001",
+      id: "20231003",
       lastName: "Galvez",
       firstName: "Dioren",
       middleName: "Golem",
       type: "S6",
       yearStanding: "3rd year",
-      details: "Detailed information about Jerald Labalan",
+      details: "Detailed information about Dioren Galvez",
     },
-
     {
-      id: "20231002",
+      id: "20231004",
       lastName: "Dasalla",
       firstName: "Keith",
       middleName: "Sikip",
-      type: "S6",
+      type: "S5",
       yearStanding: "3rd year",
       details: "Detailed information about Keith Dasalla",
     },
     {
-      id: "20231003",
+      id: "20231005",
       lastName: "Bides",
       firstName: "Matthew",
       middleName: "Tigastite",
       type: "S5",
-      yearStanding: "3rd year",
-      details: "Detailed information about John Cortez",
+      yearStanding: "2nd year",
+      details: "Detailed information about Matthew Bides",
     },
-    {
-      id: "20231003",
-      lastName: "Bides",
-      firstName: "Matthew",
-      middleName: "Tigastite",
-      type: "S5",
-      yearStanding: "3rd year",
-      details: "Detailed information about John Cortez",
-    },
-    {
-      id: "20231003",
-      lastName: "Bides",
-      firstName: "Matthew",
-      middleName: "Tigastite",
-      type: "S5",
-      yearStanding: "3rd year",
-      details: "Detailed information about John Cortez",
-    }
   ]);
 
+  const [searchQuery, setSearchQuery] = useState(""); // For search input
+  const [sortCriteria, setSortCriteria] = useState("id"); // Default sorting criteria
+  const [filterType, setFilterType] = useState(""); // For student type filter
+  const [filterYear, setFilterYear] = useState(""); // For year standing filter
   const [showModal, setShowModal] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
-  const [showRejectModal, setShowRejectModal] = useState(false); // New state for reject modal
-  const [rejectReason, setRejectReason] = useState(""); // To store the reason input
+  const [showRejectModal, setShowRejectModal] = useState(false);
+  const [rejectReason, setRejectReason] = useState("");
+
+  const filteredAndSortedStudents = students
+    .filter((student) => {
+      const query = searchQuery.toLowerCase();
+      const matchesSearch =
+        student.id.toLowerCase().includes(query) ||
+        student.lastName.toLowerCase().includes(query) ||
+        student.firstName.toLowerCase().includes(query);
+
+      const matchesType = filterType ? student.type === filterType : true;
+      const matchesYear = filterYear ? student.yearStanding === filterYear : true;
+
+      return matchesSearch && matchesType && matchesYear;
+    })
+    .sort((a, b) => {
+      if (sortCriteria === "id") {
+        return a.id.localeCompare(b.id);
+      } else if (sortCriteria === "lastName") {
+        return a.lastName.localeCompare(b.lastName);
+      } else if (sortCriteria === "firstName") {
+        return a.firstName.localeCompare(b.firstName);
+      }
+      return 0;
+    });
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleSortChange = (e) => {
+    setSortCriteria(e.target.value);
+  };
+
+  const handleFilterTypeChange = (e) => {
+    setFilterType(e.target.value);
+  };
+
+  const handleFilterYearChange = (e) => {
+    setFilterYear(e.target.value);
+  };
 
   const handleViewChecklist = (student) => {
     setSelectedStudent(student);
@@ -82,7 +107,7 @@ const Enrollees = () => {
 
   const handleRejectClick = (student) => {
     setSelectedStudent(student);
-    setShowRejectModal(true); // Open reject modal
+    setShowRejectModal(true);
   };
 
   const closeRejectModal = () => {
@@ -91,14 +116,12 @@ const Enrollees = () => {
   };
 
   const handleRejectSubmit = () => {
-    // Handle the rejection logic here (e.g., send data to backend)
     console.log(`Rejected student ${selectedStudent.id} with reason: ${rejectReason}`);
     closeRejectModal();
   };
 
   return (
     <div className={styles.container}>
-      {/* Header */}
       <div>
         <DashboardHeader />
       </div>
@@ -113,8 +136,13 @@ const Enrollees = () => {
               type="text"
               placeholder="Search..."
               className={styles.input}
+              value={searchQuery}
+              onChange={handleSearchChange}
             />
           </div>
+
+          {/* Filters */}
+          
 
           {/* Table */}
           <div className={styles.tableContainer}>
@@ -131,7 +159,7 @@ const Enrollees = () => {
                 </tr>
               </thead>
               <tbody>
-                {students.map((student) => (
+                {filteredAndSortedStudents.map((student) => (
                   <tr key={student.id}>
                     <td className={styles.td}>{student.id}</td>
                     <td className={styles.td}>{student.lastName}</td>
@@ -163,44 +191,50 @@ const Enrollees = () => {
           <div className={styles.filterBar}>
             <div className={styles.sort}>
               <label className={styles.label}>Sort by:</label>
-              <select className={styles.select}>
-                <option>Enrollment Date</option>
+              <select className={styles.select} value={sortCriteria} onChange={handleSortChange}>
+                <option value="id">Student ID</option>
+                <option value="lastName">Last Name</option>
+                <option value="firstName">First Name</option>
               </select>
             </div>
-            {/* Add other filters */}
 
             <div className={styles.sort}>
               <label className={styles.label}>Student Type:</label>
-              <select className={styles.select}>
-                <option>S1</option>
-                <option>S2</option>
-                <option>S3</option>
-                <option>S4</option>
-                <option>S5</option>
-                <option>S6</option>
-                {/* Add more options */}
+              <select
+                className={styles.select}
+                value={filterType}
+                onChange={handleFilterTypeChange}
+              >
+                <option value="">All</option>
+                <option value="S1">S1</option>
+                <option value="S2">S2</option>
+                <option value="S3">S3</option>
+                <option value="S4">S4</option>
+                <option value="S5">S5</option>
+                <option value="S6">S6</option>
               </select>
             </div>
 
             <div className={styles.sort}>
               <label className={styles.label}>Year Standing:</label>
-              <select className={styles.select}>
-                <option>1st Year</option>
-                <option>2nd Year</option>
-                <option>3rd Year</option>
-                <option>4th Year</option>
-                {/* Add more options */}
+              <select
+                className={styles.select}
+                value={filterYear}
+                onChange={handleFilterYearChange}
+              >
+                <option value="">All</option>
+                <option value="1st year">1st Year</option>
+                <option value="2nd year">2nd Year</option>
+                <option value="3rd year">3rd Year</option>
+                <option value="4th year">4th Year</option>
               </select>
             </div>
 
-            <button className={styles.export_button}>
-              Export as Spreadsheet
-            </button>
+            <button className={styles.export_button}>Export as Spreadsheet</button>
           </div>
         </div>
       </div>
-
-      {/* Existing Modal */}
+      {/* View Checklist Modal */}
       {showModal && selectedStudent && (
         <div className={styles.modal}>
           <div className={styles.modalContent}>
@@ -208,7 +242,7 @@ const Enrollees = () => {
             <p>
               <strong>Student ID:</strong> {selectedStudent.id}
             </p>
-            {/* Add more student details */}
+            {/* Add more details */}
             <button className={styles.closeButton} onClick={() => setShowModal(false)}>
               Close
             </button>
@@ -216,7 +250,7 @@ const Enrollees = () => {
         </div>
       )}
 
-      {/* New Reject Modal */}
+      {/* Reject Modal */}
       {showRejectModal && selectedStudent && (
         <div className={styles.modal}>
           <div className={styles.modalContent}>
@@ -226,15 +260,13 @@ const Enrollees = () => {
               placeholder="Enter rejection reason..."
               value={rejectReason}
               onChange={(e) => setRejectReason(e.target.value)}
-            />
-            <div className={styles.buttonGroup}>
-              <button className={styles.button} onClick={handleRejectSubmit}>
-                Submit
-              </button>
-              <button className={styles.closeButton} onClick={closeRejectModal}>
-                Cancel
-              </button>
-            </div>
+            ></textarea>
+            <button className={styles.button} onClick={handleRejectSubmit}>
+              Submit
+            </button>
+            <button className={styles.closeButton} onClick={closeRejectModal}>
+              Cancel
+            </button>
           </div>
         </div>
       )}

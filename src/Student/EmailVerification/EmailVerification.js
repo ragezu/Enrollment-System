@@ -100,36 +100,36 @@ function EmailVerification() {
   };
 
   const handlePasswordChange = async () => {
-    if (newPassword.length < 6) {
-      alert("Password must be at least 6 characters.");
-      return;
+  if (newPassword.length < 6) {
+    alert("Password must be at least 6 characters.");
+    return;
+  }
+
+  if (newPassword !== confirmPassword) {
+    setPasswordError("Passwords do not match.");
+    return;
+  }
+
+  try {
+    const response = await fetch("http://localhost:5000/reset-password", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, otp, newPassword }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      setStep(4); // Go to the success step
+    } else {
+      console.error("Failed to reset password:", data.message);
+      alert(data.message || "Failed to reset password. Please try again.");
     }
-  
-    if (newPassword !== confirmPassword) {
-      setPasswordError("Passwords do not match.");
-      return;
-    }
-  
-    try {
-      const response = await fetch("http://localhost:5000/reset-password", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, otp, newPassword }),
-      });
-  
-      const data = await response.json();
-  
-      if (response.ok) {
-        setStep(4); // Go to the success step
-      } else {
-        console.error("Failed to reset password:", data.message);
-        alert(data.message || "Failed to reset password. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error during password reset:", error);
-      alert("Failed to reset password. Please try again.");
-    }
-  };
+  } catch (error) {
+    console.error("Error during password reset:", error);
+    alert("Failed to reset password. Please try again.");
+  }
+};
 
 
   return (

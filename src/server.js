@@ -328,9 +328,6 @@ app.post("/reset-password", async (req, res) => {
     }
 
     // Delete the OTP record to prevent reuse
-    await dbPromise.query("DELETE FROM tbl_email_verification WHERE LOWER(email) = LOWER(?)", [
-      email,
-    ]);
 
     res.status(200).json({ message: "Password reset successful." });
   } catch (err) {
@@ -530,6 +527,94 @@ app.post("/logout", (req, res) => {
 
     res.clearCookie("connect.sid");
     res.status(200).json({ message: "Logout successful." });
+  });
+});
+
+// Create a new student
+app.post("/students", (req, res) => {
+  const { firstName, lastName, email, phoneNumber } = req.body;
+
+  if (!firstName || !lastName || !email || !phoneNumber) {
+    return res.status(400).json({ message: "All fields are required." });
+  }
+
+  const query = `
+    INSERT INTO tbl_user_account (first_name, last_name, email, phone_number)
+    VALUES (?, ?, ?, ?)
+  `;
+
+  db.query(query, [firstName, lastName, email, phoneNumber], (err, results) => {
+    if (err) {
+      console.error("Error inserting student:", err.message);
+      return res.status(500).json({ message: "Database error." });
+    }
+
+    res.status(201).json({ message: "Student added successfully!" });
+  });
+});
+
+// Read all students
+app.get("/students", (req, res) => {
+  const query = "SELECT * FROM tbl_user_account";
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error fetching students:", err.message);
+      return res.status(500).json({ message: "Database error." });
+    }
+
+    res.status(200).json(results);
+  });
+});
+
+// Update a student
+app.put("/students/:id", (req, res) => {
+  const { id } = req.params;
+  const { firstName, lastName, email, phoneNumber } = req.body;
+
+  if (!firstName || !lastName || !email || !phoneNumber) {
+    return res.status(400).json({ message: "All fields are required." });
+  }
+
+  const query = `
+    UPDATE tbl_user_account
+    SET first_name = ?, last_name = ?, email = ?, phone_number = ?
+    WHERE user_id = ?
+  `;
+
+  db.query(query, [firstName, lastName, email, phoneNumber, id], (err, results) => {
+    if (err) {
+      console.error("Error updating student:", err.message);
+      return res.status(500).json({ message: "Database error." });
+    }
+
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ message: "Student not found." });
+    }
+
+    res.status(200).json({ message: "Student updated successfully!" });
+  });
+});
+
+// Delete a student
+app.delete("/students/:id", (req, res) => {
+  const { id } = req.params;
+
+  const query = `
+    DELETE FROM tbl_user_account WHERE user_id = ?
+  `;
+
+  db.query(query, [id], (err, results) => {
+    if (err) {
+      console.error("Error deleting student:", err.message);
+      return res.status(500).json({ message: "Database error." });
+    }
+
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ message: "Student not found." });
+    }
+
+    res.status(200).json({ message: "Student deleted successfully!" });
   });
 });
 
