@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./Enrollees.module.css"; // Make sure this file exists
+import styles from "./Enrollees.module.css"; // Ensure this file exists
 import DashboardHeader from "../Dashboard/DashboardHeader";
 
 const Enrollees = () => {
@@ -69,17 +69,31 @@ const Enrollees = () => {
       details: "Detailed information about John Cortez",
     }
   ]);
+
   const [showModal, setShowModal] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
+  const [showRejectModal, setShowRejectModal] = useState(false); // New state for reject modal
+  const [rejectReason, setRejectReason] = useState(""); // To store the reason input
 
   const handleViewChecklist = (student) => {
     setSelectedStudent(student);
     setShowModal(true);
   };
 
-  const closeModal = () => {
-    setShowModal(false);
-    setSelectedStudent(null);
+  const handleRejectClick = (student) => {
+    setSelectedStudent(student);
+    setShowRejectModal(true); // Open reject modal
+  };
+
+  const closeRejectModal = () => {
+    setShowRejectModal(false);
+    setRejectReason(""); // Clear textarea when modal closes
+  };
+
+  const handleRejectSubmit = () => {
+    // Handle the rejection logic here (e.g., send data to backend)
+    console.log(`Rejected student ${selectedStudent.id} with reason: ${rejectReason}`);
+    closeRejectModal();
   };
 
   return (
@@ -95,7 +109,6 @@ const Enrollees = () => {
 
           {/* Search */}
           <div className={styles.searchContainer}>
-            <label className={styles.label}>Search</label>
             <input
               type="text"
               placeholder="Search..."
@@ -133,9 +146,13 @@ const Enrollees = () => {
                       >
                         View Checklist
                       </button>
-                      {/* Add more buttons if needed */}
                       <button className={styles.button}>View ISCOR</button>
-                      <button className={styles.button}>Reject</button>
+                      <button
+                        className={styles.button}
+                        onClick={() => handleRejectClick(student)}
+                      >
+                        Reject
+                      </button>
                       <button className={styles.button}>Accept</button>
                     </td>
                   </tr>
@@ -144,37 +161,46 @@ const Enrollees = () => {
             </table>
           </div>
           <div className={styles.filterBar}>
-          <label className={styles.label}>Sort by:</label>
-          <select className={styles.select}>
-            <option>Enrollment Date</option>
-          </select>
-          {/* Add other filters */}
+            <div className={styles.sort}>
+              <label className={styles.label}>Sort by:</label>
+              <select className={styles.select}>
+                <option>Enrollment Date</option>
+              </select>
+            </div>
+            {/* Add other filters */}
 
-          <label className={styles.label}>Student Type:</label>
-          <select className={styles.select}>
-            <option>S1</option>
-            <option>S2</option>
-            <option>S3</option>
-            <option>S4</option>
-            <option>S5</option>
-            <option>S6</option>
-            {/* Add more options */}
-          </select>
+            <div className={styles.sort}>
+              <label className={styles.label}>Student Type:</label>
+              <select className={styles.select}>
+                <option>S1</option>
+                <option>S2</option>
+                <option>S3</option>
+                <option>S4</option>
+                <option>S5</option>
+                <option>S6</option>
+                {/* Add more options */}
+              </select>
+            </div>
 
-          <label className={styles.label}>Year Standing:</label>
-          <select className={styles.select}>
-            <option>1st Year</option>
-            <option>2nd Year</option>
-            <option>3rd Year</option>
-            <option>4th Year</option>
-            {/* Add more options */}
-          </select>
+            <div className={styles.sort}>
+              <label className={styles.label}>Year Standing:</label>
+              <select className={styles.select}>
+                <option>1st Year</option>
+                <option>2nd Year</option>
+                <option>3rd Year</option>
+                <option>4th Year</option>
+                {/* Add more options */}
+              </select>
+            </div>
+
+            <button className={styles.export_button}>
+              Export as Spreadsheet
+            </button>
+          </div>
         </div>
-        </div>
-        
       </div>
 
-      {/* Modal */}
+      {/* Existing Modal */}
       {showModal && selectedStudent && (
         <div className={styles.modal}>
           <div className={styles.modalContent}>
@@ -183,9 +209,32 @@ const Enrollees = () => {
               <strong>Student ID:</strong> {selectedStudent.id}
             </p>
             {/* Add more student details */}
-            <button className={styles.closeButton} onClick={closeModal}>
+            <button className={styles.closeButton} onClick={() => setShowModal(false)}>
               Close
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* New Reject Modal */}
+      {showRejectModal && selectedStudent && (
+        <div className={styles.modal}>
+          <div className={styles.modalContent}>
+            <h3>Reject Student: {selectedStudent.firstName} {selectedStudent.lastName}</h3>
+            <textarea
+              className={styles.textarea}
+              placeholder="Enter rejection reason..."
+              value={rejectReason}
+              onChange={(e) => setRejectReason(e.target.value)}
+            />
+            <div className={styles.buttonGroup}>
+              <button className={styles.button} onClick={handleRejectSubmit}>
+                Submit
+              </button>
+              <button className={styles.closeButton} onClick={closeRejectModal}>
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       )}

@@ -15,6 +15,7 @@ import SuccessRegular from "./Student/SubmissionAndSubject/SuccessRegular";
 import SuccessIrregular from "./Student/SubmissionAndSubject/SuccessIrregular";
 import UploadRegular from  "./Student/SubmissionAndSubject/UploadRegular";
 import UploadIrregular from  "./Student/SubmissionAndSubject/UploadIrregular";
+import Profile from "./Student/Profile/Profile";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
         <Route path="/UploadIrregular" element={<UploadIrregular />} />
         <Route path="/enrollee" element={<Enrollees />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </Router>
   );

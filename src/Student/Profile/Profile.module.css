@@ -1,0 +1,104 @@
+.profile_wrapper {
+  background-color: #F2F0EF;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.profile_container {
+  display: flex;
+  padding: 20px;
+  gap: 20px;
+  height: 100vh;
+  width: 100%;
+  justify-content: center;
+}
+
+.profile_sidebar {
+  width: 25%;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile_photo {
+  position: relative;
+  width: 150px; /* Adjust to your desired size */
+  height: 150px;
+  margin: 0 auto;
+  border: 2px solid black;
+  border-radius: 50%;
+  padding: 2px;
+}
+
+.file_input {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0; /* Hides the file input */
+  cursor: pointer;
+}
+
+.cameraIconWrapper {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background-color: rgba(255, 255, 255, 0.6); /* Slight background for visibility */
+  border-radius: 50%;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.cameraIcon {
+  font-size: 20px; /* Adjust the icon size */
+  color: #000; /* Adjust the icon color */
+}
+
+.uploaded_image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%; /* Makes the profile photo circular */
+  object-fit: cover;
+}
+
+.profile_info h3 {
+  margin: 10px 0;
+}
+
+.view_profile_btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.profile_content {
+  width: 70%;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tabs {
+  display: flex;
+  justify-content: space-around;
+  height: 40px;
+  align-items: center;
+}
+
+
+.tab_content {
+  background-color: white;
+  padding: 20px;
+}
+
+.info_wrapper {
+  height: 100%;
+}
