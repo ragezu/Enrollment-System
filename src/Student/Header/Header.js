@@ -25,13 +25,13 @@ function Header() {
         <Link to="/home">
           <a className={styles.navLink}>Home</a>
         </Link>
-        <Link to="">
+        <Link to="/profile">
           <a className={styles.navLink}>Profile</a>
         </Link>
         <Link to="/submissionandsubject">
           <a className={styles.navLink}>Submission and Subject</a>
         </Link>
-        <Link to="">
+        <Link to="/statusandscheduling">
           <a className={styles.navLink}>Status and Scheduling</a>
         </Link>
         <Link to="">

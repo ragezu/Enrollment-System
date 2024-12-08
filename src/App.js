@@ -16,6 +16,7 @@ import SuccessIrregular from "./Student/SubmissionAndSubject/SuccessIrregular";
 import UploadRegular from  "./Student/SubmissionAndSubject/UploadRegular";
 import UploadIrregular from  "./Student/SubmissionAndSubject/UploadIrregular";
 import Profile from "./Student/Profile/Profile";
+import StatusAndScheduling from "./Student/StatusAndScheduling/StatusAndScheduling";
 
 function App() {
   return (
@@ -31,6 +32,11 @@ function App() {
         <Route
           path="/submissionandsubject"
           element={<SubmissionAndSubject />}
+        />
+
+        <Route
+          path="/statusandscheduling"
+          element={<StatusAndScheduling />}
         />
         <Route path="/home" element={<Home />} />
         <Route path="/SuccessRegular" element={<SuccessRegular />} />

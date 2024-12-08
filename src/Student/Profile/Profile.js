@@ -56,7 +56,7 @@ const Profile = () => {
             </div>
           </div>
           <div className={styles.profile_info}>
-            <h3></h3>
+        
           </div>
         </div>
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import { checkSession, logout } from "../../utils/session";
 import styles from "./Home.module.css";
 import Header from "../Header/Header";
@@ -83,7 +83,9 @@ const Home = () => {
           <p className={`${styles.info} ${styles.marginBelow}`}>N/A</p>
           <strong className={styles.info}>Year Level</strong>
           <p className={`${styles.info} ${styles.marginBelow}`}>N/A</p>
+          <Link to="/profile" target="_blank">
           <button className={styles.view_button}>View Details</button>
+          </Link>
         </div>
 
         <div className={styles.content_right}>

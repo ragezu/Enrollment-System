@@ -5,7 +5,9 @@ import "../../App.css";
 import { useNavigate } from "react-router-dom";
 import Modal from "react-modal"; // Importing Modal library
 
+
 Modal.setAppElement("#root"); // For accessibility reasons
+
 
 const OTPInput = ({ length = 6, onVerify }) => {
   const [otp, setOtp] = useState(Array(length).fill(""));
@@ -293,7 +295,7 @@ export default function Register() {
               {!isVerified ? (
                 <div className={styles.content_wrapper}>
                   <h1 className={styles.content_h1}>
-                    Verify your email address
+                    Verify email address
                   </h1>
                   <p className={styles.content_p}>
                     We have sent a verification code to {formData.email}. Please
