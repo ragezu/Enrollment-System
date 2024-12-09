@@ -140,8 +140,6 @@ const Enrollees = () => {
               onChange={handleSearchChange}
             />
           </div>
-
-          {/* Filters */}
           
 
           {/* Table */}

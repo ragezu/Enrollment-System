@@ -16,7 +16,14 @@ function EnrollmentTeam() {
       <div className={styles.enrollment_team_content}>
         <h1 className={styles.title}>Enrollment Team</h1>
         <div className={styles.table_header}>
-          <h4 className={styles.subtitle}>Enrolment Team Lists</h4>
+          
+        <div className={styles.searchContainer}>
+            <input
+              type="text"
+              placeholder="Search..."
+              className={styles.input}
+            />
+          </div>
 
           <div className={styles.add_user_button_container}>
             <button className={styles.add_user_button} onClick={openModal}>
@@ -49,7 +56,44 @@ function EnrollmentTeam() {
             </tbody>
           </table>
         </div>
-        <div className={styles.sorting_options_container}></div>
+        <div className={styles.filterBar}>
+            <div className={styles.sort}>
+              <label className={styles.label}>Sort by:</label>
+              <select className={styles.select}>
+                <option value="" disabled>Roles</option>
+                <option value="admin">Admin</option>
+                <option value="adviser">Adviser</option>
+                <option value="officer">Officer</option>
+                <option value="">All</option>
+              </select>
+            </div>
+
+            {/* <div className={styles.sort}>
+              <label className={styles.label}>Student Type:</label>
+              <select
+                className={styles.select}
+              >
+                <option value="" disabled>Roles</option>
+                <option value="admin">Admin</option>
+                <option value="adviser" disabled>Adviser</option>
+                <option value="officer" disabled>Officer</option>
+                <option value="">All</option>
+              </select>
+            </div>
+
+            <div className={styles.sort}>
+              <label className={styles.label}>Year Standing:</label>
+              <select
+                className={styles.select}
+              >
+                <option value="">All</option>
+                <option value="1st year">1st Year</option>
+                <option value="2nd year">2nd Year</option>
+                <option value="3rd year">3rd Year</option>
+                <option value="4th year">4th Year</option>
+              </select>
+            </div> */}
+          </div>
       </div>
 
       {/* Modal */}
