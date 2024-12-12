@@ -187,13 +187,15 @@ app.post("/send-otp", async (req, res) => {
 });
 
 // Endpoint to verify OTP
-app.post("/verify-otp", (req, res) => {
-  const { email, otp } = req.body;
+app.post("/verify-otp", async (req, res) => {
+  const { email, password, otp } = req.body;
 
-  if (!email || !otp) {
+  console.log("Request Body:", req.body); // Log incoming request data
+
+  if (!email || !password || !otp) {
     return res.status(400).json({
       success: false,
-      message: "Email and OTP are required.",
+      message: "Email, password, and OTP are required.",
     });
   }
 
@@ -201,91 +203,52 @@ app.post("/verify-otp", (req, res) => {
     SELECT * FROM tbl_email_verification
     WHERE email = ? AND otp = ? AND expires_at > NOW()
   `;
-
-  db.query(verifyQuery, [email, otp], (error, results) => {
+  db.query(verifyQuery, [email, otp], async (error, results) => {
     if (error) {
       console.error("Database error:", error.message);
-      return res.status(500).json({
-        success: false,
-        message: "Database error.",
-      });
+      return res.status(500).json({ success: false, message: "Database error." });
     }
 
+    console.log("OTP Verification Results:", results);
     if (results.length === 0) {
-      // If OTP verification fails, delete user and address
-      const getUserQuery = `
-        SELECT id, address_id FROM tbl_user_account WHERE email = ?
+      return res.status(400).json({ success: false, message: "Invalid or expired OTP." });
+    }
+
+    try {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const insertUserQuery = `
+        INSERT INTO tbl_user_account (email, password)
+        VALUES (?, ?)
       `;
 
-      db.query(getUserQuery, [email], (getUserError, userResults) => {
-        if (getUserError) {
-          console.error("Error fetching user data:", getUserError.message);
-          return res.status(500).json({
-            success: false,
-            message: "Database error while fetching user data.",
-          });
-        }
-
-        if (userResults.length > 0) {
-          const { id: userId, address_id: addressId } = userResults[0];
-
-          // Delete user account
-          const deleteUserQuery = `DELETE FROM tbl_user_account WHERE id = ?`;
-          db.query(deleteUserQuery, [userId], (deleteUserError) => {
-            if (deleteUserError) {
-              console.error("Error deleting user:", deleteUserError.message);
-              return res.status(500).json({
-                success: false,
-                message: "Error deleting user account.",
-              });
-            }
-
-            // Delete address
-            const deleteAddressQuery = `DELETE FROM tbl_address WHERE id = ?`;
-            db.query(deleteAddressQuery, [addressId], (deleteAddressError) => {
-              if (deleteAddressError) {
-                console.error("Error deleting address:", deleteAddressError.message);
-                return res.status(500).json({
-                  success: false,
-                  message: "Error deleting address.",
-                });
-              }
-
-              return res.status(400).json({
-                success: false,
-                message: "Invalid or expired OTP. User data has been removed.",
-              });
+      db.query(insertUserQuery, [email, hashedPassword], (userError) => {
+        if (userError) {
+          console.error("Error inserting user:", userError.message);
+          if (userError.code === 'ER_DUP_ENTRY') {
+            return res.status(400).json({
+              success: false,
+              message: "Email already registered.",
             });
-          });
-        } else {
-          return res.status(400).json({
-            success: false,
-            message: "Invalid or expired OTP. No user data found to delete.",
-          });
-        }
-      });
-    } else {
-      // If OTP verification succeeds
-      const updateQuery = `
-        UPDATE tbl_email_verification
-        SET otp_verified = 1
-        WHERE email = ?
-      `;
-
-      db.query(updateQuery, [email], (updateError) => {
-        if (updateError) {
-          console.error("Error updating OTP verification status:", updateError.message);
-          return res.status(500).json({
-            success: false,
-            message: "Database error while updating OTP status.",
-          });
+          }
+          return res.status(500).json({ success: false, message: "Error registering user." });
         }
 
-        res.status(200).json({
-          success: true,
-          message: "OTP verified successfully.",
+        console.log("User inserted successfully");
+
+        const updateQuery = `UPDATE tbl_email_verification SET otp_verified = 1 WHERE email = ?`;
+        db.query(updateQuery, [email], (updateError) => {
+          if (updateError) {
+            console.error("Error updating OTP status:", updateError.message);
+            return res.status(500).json({ success: false, message: "Database error while updating OTP status." });
+          }
+
+          console.log("OTP verification status updated successfully");
+          res.status(200).json({ success: true, message: "OTP verified and registration successful." });
         });
       });
+    } catch (hashError) {
+      console.error("Error hashing password:", hashError.message);
+      return res.status(500).json({ success: false, message: "Server error." });
     }
   });
 });
@@ -498,14 +461,14 @@ app.post("/login", (req, res) => {
       return res.status(401).json({ message: "Invalid password." });
     }
 
-    // Save user data in session
+    const isProfileComplete = user.first_name && user.last_name && user.date_of_birth && user.address_id;
+
     req.session.user = {
       user_id: user.user_id,
       email: user.email,
       account_role: user.account_role,
     };
 
-    // Save the session explicitly
     req.session.save((err) => {
       if (err) {
         console.error("Session save error:", err.message);
@@ -515,7 +478,8 @@ app.post("/login", (req, res) => {
       res.status(200).json({
         message: "Login successful.",
         role: user.account_role === 0 ? "student" : "admin",
-        user,
+        incompleteProfile: user.account_role === 0 && !isProfileComplete,
+        user: { user_id: user.user_id },
       });
     });
   });

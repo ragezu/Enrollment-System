@@ -115,30 +115,26 @@ export default function Register() {
 
   const handleVerify = async (enteredOtp) => {
     try {
-      const response = await fetch("http://localhost:5000/verify-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: formData.email, otp: enteredOtp }),
-      });
+        const response = await fetch("http://localhost:5000/verify-otp", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: formData.email, password: formData.password, otp: enteredOtp }),
+        });
 
-      const result = await response.json();
-      if (response.ok) {
-        if (result.message === "OTP verified successfully.") {
-          setIsVerified(true); // Set verification state
-          setTimeout(() => navigate("/login"), 2000); // Redirect after success
+        const result = await response.json();
+        console.log("Verification Response:", result);
+
+        if (response.ok && result.success) {
+            setIsVerified(true); // Update the UI to show success
+            setTimeout(() => navigate("/login"), 2000); // Redirect to login
         } else {
-          setErrors({
-            otp: result.message || "Invalid OTP. Please try again.",
-          });
+            setErrors({ otp: result.message || "Verification failed." });
         }
-      } else {
-        setErrors({ otp: result.message || "Verification failed." });
-      }
     } catch (error) {
-      console.error("Verification Error:", error);
-      setErrors({ otp: "Error verifying OTP. Please try again later." });
+        console.error("Verification Error:", error);
+        setErrors({ otp: "Error verifying OTP. Please try again later." });
     }
-  };
+};
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -192,12 +188,29 @@ export default function Register() {
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-      setIsModalOpen(true); // Open modal on error
+      setIsModalOpen(true);
       return;
     }
-
-    // Proceed to the next step if validation passes
-    setCurrentStep((prev) => prev + 1);
+  
+    try {
+      // Send OTP to the email
+      const response = await fetch("http://localhost:5000/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: formData.email }),
+      });
+  
+      const result = await response.json();
+      if (response.ok) {
+        setIsOtpSent(true); // Mark OTP as sent
+        setCurrentStep((prev) => prev + 1); // Proceed to the next step
+      } else {
+        setErrors({ email: result.message || "Failed to send OTP. Please try again." });
+      }
+    } catch (error) {
+      console.error("Error sending OTP:", error);
+      setErrors({ email: "Error sending OTP. Please try again later." });
+    }
   };
 
   return (
