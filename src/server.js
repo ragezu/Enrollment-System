@@ -42,7 +42,7 @@ app.use(
 const db = mysql.createConnection({
   host: "localhost", // Replace with your DB host
   user: "root", // Replace with your MySQL username
-  password: "Jerald_11783", // Replace with your MySQL password
+  password: "Wearefamily03", // Replace with your MySQL password
   database: "enrollment_system", // Replace with your DB name
 });
 
@@ -109,6 +109,40 @@ const transporter = nodemailer.createTransport({
 function generateOtp() {
   return crypto.randomInt(100000, 999999).toString();
 }
+
+app.get('/announcements', (req, res) => {
+  // First, delete past announcements
+  const deleteQuery = `DELETE FROM tbl_announcements WHERE date < NOW();`;
+
+  db.query(deleteQuery, (deleteErr) => {
+    if (deleteErr) {
+      console.error('Error deleting old announcements:', deleteErr);
+      return res.status(500).json({ error: 'Failed to delete old announcements' });
+    }
+
+    // Then, fetch the current announcements
+    const selectQuery = `SELECT * FROM tbl_announcements ORDER BY date DESC;`;
+
+    db.query(selectQuery, (selectErr, results) => {
+      if (selectErr) {
+        console.error('Error fetching announcements:', selectErr);
+        return res.status(500).json({ error: 'Failed to fetch announcements' });
+      }
+
+      // Send the results as JSON
+      res.json(results || []);
+    });
+  });
+});
+
+app.get('/latest-announcement', (req, res) => {
+  const query = `SELECT * FROM tbl_announcements ORDER BY date DESC LIMIT 1;`;
+  db.query(query, (err, results) => {
+    if (err) return res.status(500).json(err);
+    console.log('Query Results:', results); // Log results for debugging
+    res.json(results[0] || null);
+  });
+});
 
 // Endpoint to send OTP
 app.post("/send-otp", async (req, res) => {
