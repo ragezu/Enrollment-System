@@ -18,7 +18,9 @@ import UploadIrregular from  "./Student/SubmissionAndSubject/UploadIrregular";
 import Profile from "./Student/Profile/Profile";
 import StatusAndScheduling from "./Student/StatusAndScheduling/StatusAndScheduling";
 import EnrollmentTeam from "./Admin/EnrollmentTeam/EnrollmentTeam";
-
+import A_Dashboard from "./Adviser/A_Dashboard/Dashboard";
+import A_Submission from "./Adviser/A_Submission/Submission";
+import Advisee from "./Adviser/Advisee/Advisee";
 function App() {
   return (
     <Router>
@@ -48,6 +50,9 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/enrollmentteam" element={<EnrollmentTeam />} />
+        <Route path="/aDashboard" element={<A_Dashboard />} />
+        <Route path="/aSubmission" element={<A_Submission />} />
+        <Route path="/Advisee" element={<Advisee />} />
       </Routes>
     </Router>
   );
