@@ -1,0 +1,416 @@
+.profile_wrapper {
+  background-color: #F2F0EF;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.profile_container {
+  display: flex;
+  padding: 100px;
+  gap: 20px;
+  height: 100vh;
+  width: 100%;
+  justify-content: center;
+}
+
+.profile_sidebar {
+  width: 25%;
+  background-color: #e4e3e2;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile_photo {
+  position: relative;
+  width: 250px; /* Adjust to your desired size */
+  height: 250px;
+  margin: 0 auto;
+  border: 2px solid black;
+  border-radius: 50%;
+  padding: 2px;
+}
+
+.file_input {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0; /* Hides the file input */
+  cursor: pointer;
+}
+
+.cameraIconWrapper {
+  position: absolute;
+  bottom: 5px;
+  right: 23px;
+  background-color: #1e1e1e;
+  border-radius: 50%;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 1px solid white;
+}
+
+.cameraIcon {
+  font-size: 30px; /* Adjust the icon size */
+  color: #fff; /* Adjust the icon color */
+}
+
+.uploaded_image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%; /* Makes the profile photo circular */
+  object-fit: cover;
+}
+
+.profile_info h3 {
+  margin: 10px 0;
+}
+
+.view_profile_btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.profile_content {
+  width: 60%;
+  background-color: #e4e3e2;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+}
+
+.tabs {
+  display: flex;
+  justify-content: space-around;
+  height: 40px;
+  align-items: center;
+}
+
+
+.tab_content {
+  height: 95%;
+}
+
+.info_wrapper {
+  height: 100%;
+}
+
+
+/* Personal Details */
+
+.personal_details_wrapper {
+  height: 100%;
+  width: 100%;
+  padding: 0 20px;
+}
+
+.form_row {
+  display: flex;           /* Enable Flexbox */
+  justify-content: space-between; /* Even spacing between elements */
+  gap: 1rem;               /* Optional: Adds space between fields */
+  width: 100%;             /* Ensure the row takes full width */
+}
+
+.form_row:nth-child(6) {
+  width: 48.5%;
+}
+
+.form_field {
+  flex: 1;                 /* Allow items to grow equally */
+  min-width: 0;            /* Prevent overflow due to content */
+}
+
+.form_field input {
+  width: 100%;             /* Ensure inputs fill their container */
+  box-sizing: border-box;  /* Include padding and border in width */
+}
+.form_row label {
+  margin-top: 20px;
+}
+
+.solo_row {
+  width: 100%;
+}
+
+.form_field {
+  display: flex;
+  flex-direction: column;
+  
+}
+
+.radio_title {
+  text-align: start; 
+}
+
+.radio_container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.radio {
+  display: flex;
+  align-items: center;  
+  margin: 0 10px;
+  justify-content: center;
+  
+}
+
+.radio label {
+  margin: 0;
+  margin-left: 5px;
+}
+
+.input {
+  height: 35px;
+  border-radius: 8px;
+  margin: 5px 0;
+  padding: 8px;
+}
+
+select {
+  border: 2px solid black;
+}
+
+/* Family Background */
+
+.family_background_wrapper {
+  height: 95%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 20px;
+}
+
+.family_background_wrapper .family_background_step1,
+.family_background_wrapper .family_background_step2,
+.family_background_wrapper .family_background_step3 {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+}
+
+.family_background_step1 .parent1_container,
+.family_background_step1 .parent2_container{
+  width: 50%;
+  height: 100%;
+}
+
+.family_background_step1 .field {
+  display: flex;
+  flex-direction: column;
+}
+
+.family_background_step1 .field .input {
+  width: 80%;
+}
+
+.family_background_step1 .field label,
+.family_background_step2 .field label {
+  margin-top: 10px;
+}
+
+.guardian {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.guardian .row_field {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.guardian .row_field:last-of-type {
+  width: 49%;
+}
+
+.row_field .field {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.field .input {
+  width: 80%;
+}
+
+
+.siblings {
+  width: 100%;
+}
+
+.siblings .title h3 {
+  margin-top: -15px;
+  margin-bottom: 15px;
+  color: var(--title-color);
+}
+
+.add_siblings_table th {
+  color: var(--title-color);
+}
+
+.siblings .add_siblings_name,
+.siblings .add_siblings_age {
+  height: 35px;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.siblings .add_siblings_name {
+  width: 400px;
+}
+
+.siblings .add_siblings_age {
+  width: 75px;
+}
+
+.add_sibling_button {
+  height: 35px;
+  width: 100px;
+  background-color: var(--title-color);
+  color: white;
+  border-radius: 8px;
+  border: none;
+}
+
+.add_sibling_button:hover {
+  background-color: var(--title-color-dark);
+  color: white;
+}
+
+.remove_button {
+  background-color:#e4e3e2;
+  border: none;
+  text-align: center;
+  font-size: 1rem;
+  width: 100%;
+  color: var(--title-color);
+}
+
+.remove_button:hover {
+  background-color: #e4e3e2;
+  color: var(--title-color-dark);
+}
+
+.navigation_buttons {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.navigation_buttons button {
+  margin: 0 5px;
+  width: 100px;
+  height: 35px;
+  background-color: var(--title-color);
+  color: white;
+  border-radius: 8px;
+  border: none;
+}
+
+.navigation_buttons button:hover{
+  background-color: var(--title-color-dark);
+
+}
+
+/* Educational Attainment */
+
+.educational_attainment_wrapper {
+  height: 95%;
+  display: flex;
+  flex-direction: column;
+  padding: 0 20px;
+}
+
+.type_of_school,
+.last_school_attended,
+.year_graduated {
+  width: 33%;
+}
+
+.educational_attainment_wrapper input,
+.educational_attainment_wrapper select {
+  width: 95%;
+  gap: 10px;
+  border-radius: 8px;
+  padding: 8px;
+  height: 35px;
+}
+
+.educational_attainment_wrapper .elementary,
+.educational_attainment_wrapper .junior_hs,
+.educational_attainment_wrapper .senior_hs {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.educational_attainment_wrapper .elementary {
+  margin-top: 1px;
+}
+
+.educational_attainment_wrapper .elementary_fields,
+.educational_attainment_wrapper .junior_hs_fields,
+.educational_attainment_wrapper .senior_hs_fields {
+  display: flex;
+
+}
+
+.educational_attainment_wrapper .navigation_buttons {
+  margin-top: 50px;
+}
+
+
+/* Account Settings */
+
+.account_settings_wrapper {
+  height: 95%;
+  display: flex;
+  flex-direction: column;
+  padding: 0 20px;
+}
+
+.account_settings_wrapper .account {
+  height: 100%;
+}
+
+
+.account_settings_wrapper .account .field {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.account .field input {
+  width: 45%;
+  height: 35px;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+
+.account .field label {
+  margin-top: 10px;
+}
+
+.navigation_buttons .change_password {
+  height: 35px;
+  width: 150px;
+  margin-bottom: auto;
+}

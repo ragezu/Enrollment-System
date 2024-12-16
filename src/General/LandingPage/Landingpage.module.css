@@ -1,0 +1,376 @@
+
+
+/* Container Styling */
+.container {
+  text-align: center;
+  color: white;
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  padding-left: 100px;
+  padding-right: 100px;
+  padding-top: 12rem;
+  max-width: 2000px;
+  margin: 0 auto;
+
+}
+
+.text_and_logo {
+  text-align: left;
+  align-items: end;
+}
+
+.top_section {
+  vertical-align: middle;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bottom_section {
+  margin-top: 2rem;
+}
+
+.bottom_heading {
+  text-align: start;
+  color: #ffffff;
+  font-size: 1.85rem;
+  letter-spacing: 4px;
+}
+
+.landing_page_buttons {
+  display: flex;
+  
+}
+
+.landing_page_buttons button {
+  margin-left: 0;
+  margin-right: 30px;
+  height: 40 px;
+  font-size:1.25rem;
+  background-color: transparent;
+  color: white;
+  border: 2px solid white;
+  padding: 5px 0;
+  width: 150px;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.container:first-child {
+  background-image: url('/assets/background.png');
+}
+
+
+
+.header {
+  color: #ffffff;
+  font-size: 4rem;
+  margin-bottom: -8px;
+  letter-spacing: 4px;
+}
+
+.subheader {
+  color: #ffffff;
+  font-weight: var(--font-normal);
+  font-size: 1.85rem;
+  margin-bottom: 12px;
+  letter-spacing: 4px;
+}
+
+
+a {
+  text-decoration: none;
+}
+
+.view_all_button {
+  font-size: 1.75rem;
+  padding: 0.75rem 1.5rem;
+  border: 3px solid white;
+  background: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 30px;
+  transition: background 0.3s ease;
+  width: 175px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 -5px;
+}
+
+button:hover {
+  background: white;
+  color: black;
+}
+
+
+.logos {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.logo_shield,
+.logo_its {
+  background-size: contain;
+  background-repeat: no-repeat;
+ 
+}
+
+.logo_shield {
+  background-image: url('/assets/CSlogo.png');
+  width: 275px;
+  height: 275px;
+}
+
+.logo_its {
+  background-image: url('/assets/ITlogo.png');
+  width: 200px;
+  height: 200px;
+}
+
+/* Announcement Box */
+.announcement {
+  padding: 1rem;
+  background-color: white;
+  color: black;
+  border-radius: 10px;
+  width: 500px;
+  text-align: left;
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+}
+
+/* Announcement Title */
+.announcement h3 {
+  font-weight: bold;
+}
+
+/* Announcement Text */
+.announcement p {
+  margin-top: 0.5rem;
+  line-height: 2;
+  font-size: 1rem;
+}
+
+/* Announcement Wrapper for Button */
+.announcement_wrapper {
+  margin-top: 2rem;  /* Space between the content and button */
+  margin-left: auto; /* Push the button to the right */
+  align-self: flex-end; /* Ensures it's aligned to the right */
+}
+
+/* View All Button */
+.view_btn_holder{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.view_all_button {
+  font-size: var(--font-normal);
+  border: 2px solid black;
+  background: #000;
+  color: #ffffff;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 0.10rem 0.30rem;
+  transition: background 0.3s ease, color 0.3s ease;
+  text-transform: uppercase;
+}
+
+.view_all_button:hover {
+  background: #fff;
+  color: #000;
+}
+
+
+@media (max-width: 992px) {
+  .header {
+    font-size: 3rem;
+    letter-spacing: 3px;
+  }
+
+  .subheader {
+    font-size: 1.65rem;
+    letter-spacing: 3px;
+  }
+
+  .logos {
+    flex-direction: column;
+  }
+
+  .logo_shield {
+    width: 250px;
+    height: 250px;
+  }
+  
+  .logo_its {
+    width: 175px;
+    height: 175px;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    min-height: auto;
+    padding: 2rem;
+  }
+
+  .header {
+    font-size: 2rem;
+    letter-spacing: 3px;
+    text-align: center;
+  
+  }
+
+  .subheader {
+    text-align: center;
+    font-size: 1rem;
+    margin-bottom: 12px;
+    margin-top: 5px;
+    letter-spacing: 4px;
+  }
+
+  .top_section {
+    flex-direction: column;
+    width: 100%;
+    margin: 0;
+    padding: 1rem;
+  }
+
+  .bottom_section {
+    margin-top: 0.5rem;
+    position: relative;
+  }
+
+  .bottom_heading {
+    font-size: 1rem;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .announcement {
+    width: 100%;
+    height:  175px;
+    position: relative;
+  }
+
+  .landing_page_buttons {
+    display: flex;
+    justify-content: center;
+  }
+
+  .landing_page_buttons button {
+    height: 35px;
+    width: 110px;
+    font-size:1.15rem;
+    margin: 0 10px;
+  }
+
+  .logos {
+    margin-top: 2rem;
+    flex-direction: row;
+   
+  }
+
+  .logo_shield {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .logo_its {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+
+@media (max-width: 440px) {
+  .container {
+    flex-direction: column;
+    min-height: auto;
+  }
+
+  .header {
+    font-size: 2rem;
+    letter-spacing: 3px;
+    text-align: center;
+  
+  }
+
+  .subheader {
+    text-align: center;
+    font-size: 1rem;
+    margin-bottom: 12px;
+    margin-top: 5px;
+    letter-spacing: 4px;
+  }
+
+  .top_section {
+    flex-direction: column;
+    width: 100%;
+    margin: 0;
+    padding: 1rem;
+  }
+
+  .bottom_section {
+    margin-top: 0.5rem;
+    position: relative;
+  }
+
+  .bottom_heading {
+    font-size: 0.85rem;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .announcement {
+    width: 100%;
+    height:  190px;
+    position: relative;
+  }
+
+  .view_all_button_holder {
+    position: absolute;
+  }
+
+  .landing_page_buttons {
+    display: flex;
+    justify-content: center;
+  }
+
+  .landing_page_buttons button {
+    height: 35px;
+    width: 110px;
+    font-size:1.15rem;
+    margin: 0 10px;
+  }
+
+  .logos {
+    margin-top: 2rem;
+  }
+
+  .logo_shield {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .logo_its {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+@media (max-width: 350px) {
+  .announcement {
+    width: 100%;
+    height:  100%;
+    position: relative;
+  }
+}

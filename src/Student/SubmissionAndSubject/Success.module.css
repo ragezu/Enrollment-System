@@ -1,0 +1,166 @@
+/* Overall Container */
+.container {
+    background-color: #f2f0ef;
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .title {
+    width: 100%;
+    margin-left: 100px;
+  }
+  
+  .container .header {
+    width: 100%;
+    background-color: #1a1a1a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 90px;
+  }
+
+  
+  /* Wrapper for Main Content */
+  .contentWrapper {
+    text-align: left;
+    padding: 5px;
+  }
+  
+ 
+  
+  
+  /* Success Message Container */
+  .successMessage {
+    text-align: center;
+    border-radius: 10px;
+    animation: fadeIn 0.8s ease-in-out;
+    margin-top: 185px;
+  }
+  
+  /* Checkmark Animation */
+  .checkmark {
+    display: inline-block;
+    width: 90px;
+    height: 90px;
+    background-color: white;
+    border: 3px solid #1e1e1e;
+    border-radius: 50%;
+    position: relative;
+    animation: scaleIn 0.5s ease-in-out;
+  }
+  
+  .checkmark::before {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 50px;
+    border: solid #1e1e1e;
+    border-width: 0 8px 8px 0;
+    transform: rotate(45deg);
+    padding: 3px;
+    top: -10px;
+    right: 12px;
+  }
+
+  /* Status Heading */
+  .status {
+    font-size: 60px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #000000;
+  }
+  
+  /* Description Text */
+  .description {
+    font-size: 20px;
+    color: #000000;
+    max-width: 600px;
+    margin: 0 auto 20px;
+    line-height: 1.6;
+  }
+  
+  .buttons {
+    display: flex; /* Change to flex to allow spacing */
+    justify-content: center; /* Center buttons horizontally */
+    gap: 15px; /* Adds space between buttons */
+    margin-top: 20px;
+  }
+  
+  /* Button Styling */
+  .button {
+    padding: 12px 24px;
+    background-color: #1e1e1e;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+    
+  }
+  
+  .button:hover {
+    background-color: #333;
+  }
+  
+  /* Animation for scaling effect */
+  @keyframes scaleIn {
+    0% {
+      transform: scale(0);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  /* Animation for fading in the success message */
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  
+  
+  /* Responsive Design */
+  @media screen and (max-width: 768px) {
+    .description {
+      font-size: 14px;
+      max-width: 90%;
+    }
+  
+    .button {
+      padding: 10px 20px;
+      font-size: 14px;
+    }
+  }
+  
+  @media screen and (max-width: 576px) {
+    .checkmark {
+      width: 60px;
+      height: 60px;
+    }
+  
+    .checkmark::before {
+      width: 15px;
+      height: 35px;
+      top: -5px;
+      right: 10px;
+    }
+  
+    .status {
+      font-size: 22px;
+    }
+  
+    .button {
+      padding: 8px 16px;
+    }
+  }
+  

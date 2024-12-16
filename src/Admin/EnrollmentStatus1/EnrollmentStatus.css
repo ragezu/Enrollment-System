@@ -1,0 +1,165 @@
+/* Background color for the entire page */
+.enrollment-status-container {
+  padding: 150px;
+  display: grid;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.enrollment-status-title {
+  font-family: 'Arial', sans-serif; /* Replace with your font */
+  font-weight: bold; /* Optional */
+}
+.status-table .table-header {
+  background-color: black; /* Black background */
+  color: white; /* White text */
+  font-weight: bold;
+  text-align: center;
+  padding: 12px; /* Adds padding for better spacing */
+  font-family: "Arial", sans-serif; /* Clean font style */
+  font-size: 16px; /* Adjusted font size */
+  border-radius: 12px; /* Rounded corners for the header cells */
+  border: none; /* Removes extra borders */
+}
+
+
+
+/* Styling for table rows */
+.table-row {
+  background-color: #000; /* Pure black background for rows */
+  color: white; /* White text */
+  border-radius: 8px; /* Rounded corners */
+  margin-bottom: 10px; /* Adds spacing between rows */
+  display: table-row; /* Ensures rows display correctly */
+  width: 100%; /* Full width */
+  font-family: "Arial", sans-serif; /* Clean font for rows */
+  font-size: 14px; /* Standard font size */
+  border-collapse: separate; /* Ensures rounded borders are applied */
+}
+
+/* Styling for table body cells */
+.table-row td {
+  padding: 10px;
+  text-align: center;
+  background-color: #111; /* Slightly lighter black for contrast */
+  color: white; /* White font for better visibility */
+  border: 1px solid #444; /* Dark gray borders */
+  border-radius: 6px; /* Subtle rounding for individual cells */
+}
+
+/* Hover effect for rows */
+.table-row:hover {
+  background-color: #222; /* Slightly lighter black for hover effect */
+  color: #fff; /* Ensures text stays white on hover */
+}
+
+
+/* Styling for the "status" cell */
+.status-cell {
+  background-color: white; /* White background for the status dropdown */
+  color: black; /* Black text for the dropdown */
+  border: 2px solid white; /* White border */
+  border-radius: 15px; /* Rounded corners */
+  padding: 5px 10px; /* Spacing inside the dropdown */
+  cursor: pointer; /* Pointer cursor for interactivity */
+}
+
+.status-select {
+  background-color: white; /* Background color */
+  color: black; /* Text color */
+  border: 2px solid black; /* Black border */
+  border-radius: 15px; /* Rounded corners */
+  padding: 5px 10px; /* Inner padding for better spacing */
+  font-size: 14px; /* Font size for the text */
+  cursor: pointer; /* Pointer cursor for interactivity */
+  outline: none; /* Remove outline on focus */
+}
+
+.status-select:hover {
+  background-color: #f0f0f0; /* Slightly lighter background on hover */
+}
+
+.status-select:focus {
+  outline: 2px solid black; /* Black outline when focused */
+}
+
+
+.status-table {
+  width: 100%;
+  border-spacing: 5px; /* Space between cells for the rounded effect */
+}
+
+.status-table th,
+.status-table td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Filter controls styling */
+.filters {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  margin-top: 20px;
+}
+
+.filters .MuiFormControl-root {
+  margin-right: 20px;
+}
+
+
+body {
+  background-color: rgb(228, 224, 224);
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Styling for the table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: rgb(247, 247, 247); /* Table background color */
+  color: black; /* Table text color */
+  margin-top: 20px;
+}
+
+/* Styling for table headers */
+th {
+  background-color: #333; /* Darker color for the header */
+  position: sticky;
+  top: 0;
+  z-index: 2; /* Ensures header stays on top of content */
+  text-align: left;
+  padding: 10px;
+  color: rgb(5, 5, 5); /* White text color for header */
+}
+
+/* Styling for table cells */
+td {
+  padding: 10px;
+  border-bottom: 1px solid #eeeeee;
+}
+
+/* Header and navigation */
+h4 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Styling for buttons */
+button {
+  background-color: #444; /* Darker button background */
+  color: white; /* White text */
+  border: none;
+  padding: 8px 12px;
+  font-family: "Arial", sans-serif;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #555; /* Lighter shade for hover effect */
+}

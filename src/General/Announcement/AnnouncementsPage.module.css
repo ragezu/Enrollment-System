@@ -1,0 +1,72 @@
+/* Main container */
+.announcements_page {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7; /* Matches light gray from your screenshot */
+    padding: 20px;
+    min-height: 100vh;
+    box-sizing: border-box;
+  }
+  
+  /* Back button styling */
+  .back_button {
+    width: 40px;
+    height: 40px;
+    background-color: black;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-bottom: 20px;
+    font-size: 18px;
+  }
+  
+  /* Title styling */
+  .announcements_title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: black; /* Text is fully black */
+  }
+  
+  /* Announcements list container */
+  .announcements_list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  /* Individual announcement cards */
+  .announcement_card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Author styling */
+  .announcement_author {
+    font-weight: bold;
+    color: black; /* Text is fully black */
+    margin-bottom: 5px;
+  }
+  
+  /* Content styling */
+  .announcement-content {
+    flex: 1;
+    margin: 0 10px;
+    font-size: 14px;
+    color: black; /* Text is fully black */
+  }
+  
+  /* Date styling */
+  .announcement_date {
+    font-size: 12px;
+    color: black; /* Text is fully black */
+    text-align: right;
+  }
+  
