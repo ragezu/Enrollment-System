@@ -1,0 +1,45 @@
+.header {
+  width: 100%;
+  background-color: #1a1a1a;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 90px;
+}
+
+.logos {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  
+}
+
+.logo_its {
+  width: 50px;
+  height: 50px;
+  margin: 0 10px;
+}
+
+.logo_shield {
+  width: 60px;
+  height: 60px;
+  margin-left: 20px;
+}
+
+.header .nav {
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+
+.nav a,
+.nav i {
+  color: white;
+  font-size: 1.10rem;
+}
+
+.nav i {
+  font-size: var(--h1-font-size);
+}

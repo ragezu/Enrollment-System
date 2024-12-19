@@ -24,6 +24,8 @@ import Advisee from "./Adviser/Advisee/Advisee";
 import EnrollmentStatus from "./Admin/EnrollmentStatus/EnrollmentStatus";
 import SetEnrollment from "./Admin/SetEnrollment/SetEnrollment";
 import Students from "./Admin/Students/Students";
+import EnrollmentStatusCS from "./SocietyOfficer/EnrollmentStatus/EnrollmentStatusCS";
+import ScheduleCS from "./SocietyOfficer/Schedule/ScheduleCS";
 
 
 function App() {
@@ -61,6 +63,8 @@ function App() {
         <Route path="/enrollmentstatus" element={<EnrollmentStatus />} />
         <Route path="/setenrollment" element={<SetEnrollment />} />
         <Route path="/students" element={<Students />} />
+        <Route path="/enrollmentstatuscs" element={<EnrollmentStatusCS />} />
+        <Route path="/schedulecs" element={<ScheduleCS />} />
       </Routes>
     </Router>
   );
