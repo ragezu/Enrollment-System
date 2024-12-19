@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import styles from "./Enrollees.module.css"; // Ensure this file exists
+import styles from "./Students.module.css"; // Ensure this file exists
 import DashboardHeader from "../Dashboard/DashboardHeader";
 
-const Enrollees = () => {
+const Students = () => {
   const [students, setStudents] = useState([
     {
       id: "20231001",
@@ -140,7 +140,7 @@ const Enrollees = () => {
 
       <div className={styles.content_holder}>
         <div className={styles.content}>
-          <h1 className={styles.title}>Enrollees</h1>
+          <h1 className={styles.title}>Students</h1>
 
           {/* Search */}
           <div className={styles.searchContainer}>
@@ -177,7 +177,10 @@ const Enrollees = () => {
                     <td className={styles.td}>{student.type}</td>
                     <td className={styles.td}>{student.yearStanding}</td>
                     <td className={styles.td}>
-                      <button
+                      <button className={styles.button}>
+                        Print COR
+                      </button>
+                      {/* <button
                         className={styles.button}
                         onClick={() => handleViewChecklist(student)}
                       >
@@ -192,7 +195,7 @@ const Enrollees = () => {
                       >
                         Mark as Enrolled
                       </button>
-                      <button className={styles.button}>Delete</button>
+                      <button className={styles.button}>Delete</button> */}
                     </td>
                   </tr>
                 ))}
@@ -299,4 +302,4 @@ const Enrollees = () => {
   );
 };
 
-export default Enrollees;
+export default Students;

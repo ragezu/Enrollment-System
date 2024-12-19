@@ -21,6 +21,11 @@ import EnrollmentTeam from "./Admin/EnrollmentTeam/EnrollmentTeam";
 import A_Dashboard from "./Adviser/A_Dashboard/Dashboard";
 import A_Submission from "./Adviser/A_Submission/Submission";
 import Advisee from "./Adviser/Advisee/Advisee";
+import EnrollmentStatus from "./Admin/EnrollmentStatus/EnrollmentStatus";
+import SetEnrollment from "./Admin/SetEnrollment/SetEnrollment";
+import Students from "./Admin/Students/Students";
+
+
 function App() {
   return (
     <Router>
@@ -46,13 +51,16 @@ function App() {
         <Route path="/SuccessIrregular" element={<SuccessIrregular />} />
         <Route path="/UploadRegular" element={<UploadRegular />} />
         <Route path="/UploadIrregular" element={<UploadIrregular />} />
-        <Route path="/enrollee" element={<Enrollees />} />
+        <Route path="/enrollees" element={<Enrollees />} />
         <Route path="/home" element={<Home />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/enrollmentteam" element={<EnrollmentTeam />} />
         <Route path="/aDashboard" element={<A_Dashboard />} />
         <Route path="/aSubmission" element={<A_Submission />} />
         <Route path="/Advisee" element={<Advisee />} />
+        <Route path="/enrollmentstatus" element={<EnrollmentStatus />} />
+        <Route path="/setenrollment" element={<SetEnrollment />} />
+        <Route path="/students" element={<Students />} />
       </Routes>
     </Router>
   );

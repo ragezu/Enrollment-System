@@ -60,7 +60,7 @@
 }
 
 .container:first-child {
-  background-image: url('/assets/background.png');
+  background-image: url('../../assets/background.png');
 }
 
 
@@ -122,13 +122,13 @@ button:hover {
 }
 
 .logo_shield {
-  background-image: url('/assets/CSlogo.png');
+  background-image: url('../../assets/CSlogo.png');
   width: 275px;
   height: 275px;
 }
 
 .logo_its {
-  background-image: url('/assets/ITlogo.png');
+  background-image: url('../../assets/ITlogo.png');
   width: 200px;
   height: 200px;
 }

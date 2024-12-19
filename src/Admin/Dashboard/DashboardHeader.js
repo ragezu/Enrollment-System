@@ -32,11 +32,16 @@ const DashboardHeader = () => {
         <Link to="/dashboard" className={styles.navLink}>
           Dashboard
         </Link>
-        <Link to="/enrollee" className={styles.navLink}>
+        <Link to="/enrollees" className={styles.navLink}>
           Enrollees
         </Link>
-        <a className={styles.navLink}>Students</a>
-        <a className={styles.navLink}>Enrollment Team</a>
+        <Link to="/students" className={styles.navLink}>
+          <a className={styles.navLink}>Students</a>
+        </Link>
+
+        <Link to="/enrollmentteam">
+          <a className={styles.navLink}>Enrollment Team</a>
+        </Link>
         <a
           className={styles.navLink}
           onClick={handleLogout}
