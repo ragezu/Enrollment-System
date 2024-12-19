@@ -62,9 +62,10 @@ const Advisee = () => {
   const [filterYear, setFilterYear] = useState(""); // For year standing filter
   const [showModal, setShowModal] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
-  const [showRejectModal, setShowRejectModal] = useState(false);
-  const [rejectReason, setRejectReason] = useState("");
-
+  const [showBondPaperModal, setShowBondPaperModal] = useState(false);
+ 
+ 
+  const [enrollmentDate, setEnrollmentDate] = useState(""); // State for enrollment date
   const filteredAndSortedStudents = students
     .filter((student) => {
       const query = searchQuery.toLowerCase();
@@ -110,19 +111,30 @@ const Advisee = () => {
     setShowModal(true);
   };
 
-  const handleRejectClick = (student) => {
+  
+
+  const handleSetEnrollmentDateClick = (student) => {
     setSelectedStudent(student);
-    setShowRejectModal(true);
+    setShowModal(true);
   };
 
-  const closeRejectModal = () => {
-    setShowRejectModal(false);
-    setRejectReason(""); // Clear textarea when modal closes
+  const handleModalClose = () => {
+    setShowModal(false);
+    setSelectedStudent(null);
+    setEnrollmentDate("");
+  };
+  const handleEnrollmentDateSubmit = () => {
+    console.log(`Enrollment date for ${selectedStudent.id}: ${enrollmentDate}`);
+    // You can add further logic to update the student's record here
+    handleModalClose();
   };
 
-  const handleRejectSubmit = () => {
-    console.log(`Rejected student ${selectedStudent.id} with reason: ${rejectReason}`);
-    closeRejectModal();
+  const handleViewPreEnrollmentClick = () => {
+    setShowBondPaperModal(true);
+  };
+  
+  const handleCloseBondPaperModal = () => {
+    setShowBondPaperModal(false);
   };
 
   return (
@@ -176,7 +188,7 @@ const Advisee = () => {
                       
                       <button
                         className={styles.button}
-                        onClick={() => handleRejectClick(student)}
+                        
                       >
                         View Subject
                       </button>
@@ -184,11 +196,23 @@ const Advisee = () => {
                       <button className={styles.button}>Update Status</button>
                       <button
                         className={styles.button}
-                        onClick={() => handleViewChecklist(student)}
+                       
                       >
                         View Checklist
                       </button>
                       <button className={styles.button}>View ISCOR</button>
+                      <button
+  className={styles.button}
+  onClick={handleViewPreEnrollmentClick}
+>
+  View Pre-Enrollment Form
+</button>
+                      <button
+                        className={styles.button}
+                        onClick={() => handleSetEnrollmentDateClick(student)}
+                      >
+                        Set Enrollment Date
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -257,26 +281,41 @@ const Advisee = () => {
         </div>
       )}
 
-      {/* Reject Modal */}
-      {showRejectModal && selectedStudent && (
+     
+
+       {/* Set Enrollment Date Modal */}
+       {showModal && selectedStudent && (
         <div className={styles.modal}>
           <div className={styles.modalContent}>
-            <h3>Reject Student: {selectedStudent.firstName} {selectedStudent.lastName}</h3>
-            <textarea
-              className={styles.textarea}
-              placeholder="Enter rejection reason..."
-              value={rejectReason}
-              onChange={(e) => setRejectReason(e.target.value)}
-            ></textarea>
-            <button className={styles.button} onClick={handleRejectSubmit}>
-              Submit
-            </button>
-            <button className={styles.closeButton} onClick={closeRejectModal}>
-              Cancel
-            </button>
+            <h3>Set Enrollment Date  </h3>
+            <h2>{selectedStudent.firstName} {selectedStudent.lastName}</h2>
+            <label for="date-input" className={styles.dateLabel} >Select Date</label>
+            <input
+              type="date"
+              className={styles.input}
+              value={enrollmentDate}
+              onChange={(e) => setEnrollmentDate(e.target.value)}
+            />
+            <div className={styles.buttonGroup}>
+              
+              <button className={styles.closeButton} onClick={handleModalClose}>
+                Done
+              </button>
+            </div>
           </div>
         </div>
       )}
+    {showBondPaperModal && (
+  <div className={styles.Premodal}>
+    <div className={styles.PremodalContent}>
+      <div className={styles.bondPaper}></div>
+      <button className={styles.PrecloseButton} onClick={handleCloseBondPaperModal}>
+        X
+      </button>
+    </div>
+  </div>
+)}
+    
     </div>
   );
 };
