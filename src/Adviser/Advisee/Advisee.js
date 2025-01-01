@@ -1,6 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useRef  } from "react";
 import styles from "./Advisee.module.css";
 import Header from "../Header/Header";
+
+const PreEnrollmentModal = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+  
+}
+ 
+
+
 
 const Advisee = () => {
   const [students, setStudents] = useState([
@@ -63,8 +74,83 @@ const Advisee = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [showBondPaperModal, setShowBondPaperModal] = useState(false);
+  const printContentRef = useRef(null);
  
- 
+  const handlePrint = () => {
+    const printContent = printContentRef.current;
+  
+    if (printContent) {
+      const printWindow = window.open("", "_blank");
+  
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Pre-Enrollment Form</title>
+            <style>
+              body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+              }
+              h2, h3, h4, p {
+                text-align: center;
+                margin-bottom: 5px;
+              }
+              img {
+              display: block;
+              margin: 0 auto;
+              width: 80px; /* Adjust size */
+              height: auto;
+              margin-bottom: -15px;
+              }
+              
+              h5 {
+                font-size: 20px;
+                margin-bottom: 5px;
+              }
+              p2 {
+                margin-left: 380px;
+                text-align: center;
+              }
+
+              p3 {
+                margin-left: 350px;
+                text-align: center;
+              }
+              table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+              }
+              th, td {
+                border: 1px solid black;
+                padding: 8px;
+                text-align: left;
+              }
+              th {
+                background-color: #f2f2f2;
+              }
+                button{
+                display: none;
+                }
+            </style>
+          </head>
+          <body>
+            ${printContent.innerHTML}
+          </body>
+        </html>
+      `);
+  
+      // Ensure content is loaded before printing
+      printWindow.document.close();
+      printWindow.onload = () => {
+        printWindow.print();
+        printWindow.close();
+      };
+    }
+  };
+  
+
+
   const [enrollmentDate, setEnrollmentDate] = useState(""); // State for enrollment date
   const filteredAndSortedStudents = students
     .filter((student) => {
@@ -136,6 +222,8 @@ const Advisee = () => {
   const handleCloseBondPaperModal = () => {
     setShowBondPaperModal(false);
   };
+
+  
 
   return (
     <div className={styles.container}>
@@ -305,16 +393,75 @@ const Advisee = () => {
           </div>
         </div>
       )}
-    {showBondPaperModal && (
-  <div className={styles.Premodal}>
-    <div className={styles.PremodalContent}>
-      <div className={styles.bondPaper}></div>
-      <button className={styles.PrecloseButton} onClick={handleCloseBondPaperModal}>
-        X
-      </button>
-    </div>
-  </div>
-)}
+     {showBondPaperModal && (
+          <div className={styles.Premodal}>
+            <div className={styles.PremodalContent} ref={printContentRef}>
+              <div className={styles.preEnrollmentForm}>
+                <img logo
+                  src="./images/cvsu.png"
+                  alt="logo"
+                  className={styles.logo}
+                />
+                <h2>Republic of the Philippines</h2>
+                <h3>CAVITE STATE UNIVERSITY</h3>
+                <h4>BACOOR CITY CAMPUS</h4>
+                <p>SHV, Molino VI, City of Bacoor</p>
+                <p>(046) 476-5029</p>
+                <p>cvsu.bacoor@cvsu.edu.ph</p>
+                <h2>PRE-ENROLLMENT FORM</h2>
+
+                <div className={styles.personalInfo}>
+                  <h5 className={styles.h5}>Personal Information</h5>
+                  <div className={styles.infoRow}>
+                    <p1>Name:</p1>
+                    <p2>Email Address:</p2>
+                  </div>
+                  <div className={styles.infoRow}>
+                    <p1>Address:</p1>
+                    <p3>Contact Number:</p3>
+                  </div>
+                  <div className={styles.infoRow}>
+                    <p1>Program:</p1>
+                  </div>
+                  <div className={styles.infoRow}>
+                    <p1>Student Category:</p1>
+                  </div>
+                </div>
+
+                <div className={styles.subjects}>
+                  <h3>Subjects</h3>
+                  <table className={styles.subjectTable}>
+                    <thead>
+                      <tr>
+                        <th>Class Code</th>
+                        <th>Course/Subject Title</th>
+                        <th>Number of Units</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {Array.from({ length: 10 }).map((_, index) => (
+                        <tr key={index}>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+               
+              </div>
+              <button  className={styles.printButton} onClick={handlePrint}>
+              Print
+            </button>
+            </div>
+            <button className={styles.PrecloseButton} onClick={handleCloseBondPaperModal}>
+              X
+            </button>
+            
+          </div>
+          
+        )}
     
     </div>
   );
