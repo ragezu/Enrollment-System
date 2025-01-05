@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import styles from "./Students.module.css"; // Ensure this file exists
+import styles from "./Student.module.css"; // Ensure this file exists
 import DashboardHeader from "../Dashboard/DashboardHeader";
+import CORPrint from "./CORPrint"; // Import CORPrint component
 
 const Students = () => {
   const [students, setStudents] = useState([
@@ -8,7 +9,7 @@ const Students = () => {
       id: "20231001",
       lastName: "Labalan",
       firstName: "Jerald",
-      program: "Computer Science",
+      middleName: "Sikip",
       type: "S6",
       yearStanding: "3rd year",
       details: "Detailed information about Jerald Labalan",
@@ -17,7 +18,7 @@ const Students = () => {
       id: "20231002",
       lastName: "Fernandez",
       firstName: "Alex",
-      program: "Computer Science",
+      middleName: "Hawak",
       type: "S6",
       yearStanding: "3rd year",
       details: "Detailed information about Alex Fernandez",
@@ -26,7 +27,7 @@ const Students = () => {
       id: "20231003",
       lastName: "Galvez",
       firstName: "Dioren",
-      program: "Computer Science",
+      middleName: "Golem",
       type: "S6",
       yearStanding: "3rd year",
       details: "Detailed information about Dioren Galvez",
@@ -35,7 +36,7 @@ const Students = () => {
       id: "20231004",
       lastName: "Dasalla",
       firstName: "Keith",
-      program: "Computer Science",
+      middleName: "Sikip",
       type: "S5",
       yearStanding: "3rd year",
       details: "Detailed information about Keith Dasalla",
@@ -44,7 +45,7 @@ const Students = () => {
       id: "20231005",
       lastName: "Bides",
       firstName: "Matthew",
-      program: "Information Technology",
+      middleName: "Tigastite",
       type: "S5",
       yearStanding: "2nd year",
       details: "Detailed information about Matthew Bides",
@@ -55,11 +56,9 @@ const Students = () => {
   const [sortCriteria, setSortCriteria] = useState("id"); // Default sorting criteria
   const [filterType, setFilterType] = useState(""); // For student type filter
   const [filterYear, setFilterYear] = useState(""); // For year standing filter
-  const [showModal, setShowModal] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
-  const [showRejectModal, setShowRejectModal] = useState(false);
-  const [rejectReason, setRejectReason] = useState("");
-  const [filterProgram, setFilterProgram] = useState(""); // For program filter
+ 
+ 
 
   const filteredAndSortedStudents = students
     .filter((student) => {
@@ -70,14 +69,9 @@ const Students = () => {
         student.firstName.toLowerCase().includes(query);
 
       const matchesType = filterType ? student.type === filterType : true;
-      const matchesYear = filterYear
-        ? student.yearStanding === filterYear
-        : true;
-      const matchesProgram = filterProgram
-        ? student.program === filterProgram
-        : true; // Add program filter
+      const matchesYear = filterYear ? student.yearStanding === filterYear : true;
 
-      return matchesSearch && matchesType && matchesYear && matchesProgram;
+      return matchesSearch && matchesType && matchesYear;
     })
     .sort((a, b) => {
       if (sortCriteria === "id") {
@@ -89,10 +83,6 @@ const Students = () => {
       }
       return 0;
     });
-
-  const handleFilterProgramChange = (e) => {
-    setFilterProgram(e.target.value);
-  };
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -110,37 +100,29 @@ const Students = () => {
     setFilterYear(e.target.value);
   };
 
-  const handleViewChecklist = (student) => {
+  const handlePrintCOR = (student) => {
     setSelectedStudent(student);
-    setShowModal(true);
   };
 
-  const handleRejectClick = (student) => {
-    setSelectedStudent(student);
-    setShowRejectModal(true);
+  const handlePrintClose = () => {
+    setSelectedStudent(null);
   };
 
-  const closeRejectModal = () => {
-    setShowRejectModal(false);
-    setRejectReason(""); // Clear textarea when modal closes
-  };
+  
 
-  const handleRejectSubmit = () => {
-    console.log(
-      `Rejected student ${selectedStudent.id} with reason: ${rejectReason}`
-    );
-    closeRejectModal();
-  };
+ 
+
+  
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
+      <div>
         <DashboardHeader />
       </div>
 
       <div className={styles.content_holder}>
         <div className={styles.content}>
-          <h1 className={styles.title}>Students</h1>
+          <h1 className={styles.title}>Student</h1>
 
           {/* Search */}
           <div className={styles.searchContainer}>
@@ -152,6 +134,7 @@ const Students = () => {
               onChange={handleSearchChange}
             />
           </div>
+          
 
           {/* Table */}
           <div className={styles.tableContainer}>
@@ -161,7 +144,7 @@ const Students = () => {
                   <th className={styles.thTd}>Student ID</th>
                   <th className={styles.thTd}>Last Name</th>
                   <th className={styles.thTd}>First Name</th>
-                  <th className={styles.thTd}>Program</th>
+                  <th className={styles.thTd}>Middle Name</th>
                   <th className={styles.thTd}>Student Type</th>
                   <th className={styles.thTd}>Year Standing</th>
                   <th className={styles.thTd}>Commands</th>
@@ -173,29 +156,13 @@ const Students = () => {
                     <td className={styles.td}>{student.id}</td>
                     <td className={styles.td}>{student.lastName}</td>
                     <td className={styles.td}>{student.firstName}</td>
-                    <td className={styles.td}>{student.program}</td>
+                    <td className={styles.td}>{student.middleName}</td>
                     <td className={styles.td}>{student.type}</td>
                     <td className={styles.td}>{student.yearStanding}</td>
                     <td className={styles.td}>
-                      <button className={styles.button}>
-                        Print COR
-                      </button>
-                      {/* <button
-                        className={styles.button}
-                        onClick={() => handleViewChecklist(student)}
-                      >
-                        Edit Credentials
-                      </button>
-                      <button className={styles.button}>
-                        Pre-Enrollment Form
-                      </button>
-                      <button
-                        className={styles.button}
-                        onClick={() => handleRejectClick(student)}
-                      >
-                        Mark as Enrolled
-                      </button>
-                      <button className={styles.button}>Delete</button> */}
+                      
+                    <button onClick={() => handlePrintCOR(student)}>Print COR</button>
+                      
                     </td>
                   </tr>
                 ))}
@@ -204,17 +171,11 @@ const Students = () => {
           </div>
           <div className={styles.filterBar}>
             <div className={styles.sort}>
-              <label className={styles.label}>Program:</label>
-              <select
-                className={styles.select}
-                value={filterProgram}
-                onChange={handleFilterProgramChange}
-              >
-                <option value="">All</option>
-                <option value="Computer Science">Computer Science</option>
-                <option value="Information Technology">
-                  Information Technology
-                </option>
+              <label className={styles.label}>Sort by:</label>
+              <select className={styles.select} value={sortCriteria} onChange={handleSortChange}>
+                <option value="id">Student ID</option>
+                <option value="lastName">Last Name</option>
+                <option value="firstName">First Name</option>
               </select>
             </div>
 
@@ -250,54 +211,15 @@ const Students = () => {
               </select>
             </div>
 
-            <button className={styles.export_button}>
-              Export as Spreadsheet
-            </button>
+            <button className={styles.export_button}>Export as Spreadsheet</button>
           </div>
         </div>
       </div>
-      {/* View Checklist Modal */}
-      {showModal && selectedStudent && (
-        <div className={styles.modal}>
-          <div className={styles.modalContent}>
-            <h3>Student Details</h3>
-            <p>
-              <strong>Student ID:</strong> {selectedStudent.id}
-            </p>
-            {/* Add more details */}
-            <button
-              className={styles.closeButton}
-              onClick={() => setShowModal(false)}
-            >
-              Close
-            </button>
-          </div>
-        </div>
+      {selectedStudent && (
+        <CORPrint student={selectedStudent} onClose={handlePrintClose} />
       )}
 
-      {/* Reject Modal */}
-      {showRejectModal && selectedStudent && (
-        <div className={styles.modal}>
-          <div className={styles.modalContent}>
-            <h3>
-              Reject Student: {selectedStudent.firstName}{" "}
-              {selectedStudent.lastName}
-            </h3>
-            <textarea
-              className={styles.textarea}
-              placeholder="Enter rejection reason..."
-              value={rejectReason}
-              onChange={(e) => setRejectReason(e.target.value)}
-            ></textarea>
-            <button className={styles.button} onClick={handleRejectSubmit}>
-              Submit
-            </button>
-            <button className={styles.closeButton} onClick={closeRejectModal}>
-              Cancel
-            </button>
-          </div>
-        </div>
-      )}
+     
     </div>
   );
 };
