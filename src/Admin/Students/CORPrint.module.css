@@ -1,0 +1,119 @@
+.printContainer {
+    font-family: "Arial", sans-serif;
+    width: 8.5in;
+    margin: auto;
+    padding: 1in;
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #000;
+  }
+  
+  .header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .header .logo {
+    width: 80px;
+    height: auto;
+    margin: 0 auto 10px;
+  }
+
+  .logo {
+    width: 40px;
+    height: auto;
+    margin: 0 auto 10px;
+  }
+
+  
+  
+  .header h1 {
+    font-size: 14px;
+    margin: 0;
+  }
+  
+  .header h2 {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 5px 0;
+  }
+  
+  .header h3 {
+    font-size: 16px;
+    margin: 5px 0;
+  }
+  
+  .header p {
+    font-size: 12px;
+    margin: 2px 0;
+  }
+  
+  .formTitle {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 10px 0;
+    text-transform: uppercase;
+  }
+  
+  .studentInfo {
+    font-size: 14px;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  
+  .studentInfo p {
+    margin: 5px 0;
+  }
+  
+  .studentInfo .floatRight {
+    float: right;
+  }
+  
+  .certification {
+    font-size: 12px;
+    text-align: justify;
+    margin: 20px 0;
+    line-height: 1.5;
+  }
+  
+  .courseTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 14px;
+  }
+  
+  .courseTable th,
+  .courseTable td {
+    border: 1px solid #000;
+    text-align: center;
+    padding: 5px;
+  }
+  
+  .courseTable th {
+    background-color: #f0f0f0;
+  }
+  
+  .courseTable .total {
+    text-align: right;
+    font-weight: bold;
+    background-color: #f0f0f0;
+  }
+  
+  .nothingFollows {
+    text-align: center;
+    font-weight: bold;
+    margin: 10px 0;
+    font-size: 12px;
+  }
+  
+  .footer {
+    font-size: 14px;
+    margin-top: 20px;
+    line-height: 1.5;
+  }
+  
+  .footer p {
+    margin: 5px 0;
+  }
+  
