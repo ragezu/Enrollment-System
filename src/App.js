@@ -21,7 +21,7 @@ import EnrollmentTeam from "./Admin/EnrollmentTeam/EnrollmentTeam";
 import A_Dashboard from "./Adviser/A_Dashboard/Dashboard";
 import A_Submission from "./Adviser/A_Submission/Submission";
 import Advisee from "./Adviser/Advisee/Advisee";
-import Student from "./Admin/Student/Student";
+import Student from "./Admin/Students/Students";
 
 function App() {
   return (
@@ -34,7 +34,7 @@ function App() {
         <Route path="/announcements" element={<AnnouncementsPage />} />
         <Route path="/homepage" element={<Homepage />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/Student" element={<Student />} />
+        <Route path="/Students" element={<Students />} />
         <Route
           path="/submissionandsubject"
           element={<SubmissionAndSubject />}
