@@ -21,12 +21,7 @@ import EnrollmentTeam from "./Admin/EnrollmentTeam/EnrollmentTeam";
 import A_Dashboard from "./Adviser/A_Dashboard/Dashboard";
 import A_Submission from "./Adviser/A_Submission/Submission";
 import Advisee from "./Adviser/Advisee/Advisee";
-import EnrollmentStatus from "./Admin/EnrollmentStatus/EnrollmentStatus";
-import SetEnrollment from "./Admin/SetEnrollment/SetEnrollment";
-import Students from "./Admin/Students/Students";
-import EnrollmentStatusCS from "./SocietyOfficer/EnrollmentStatus/EnrollmentStatusCS";
-import ScheduleCS from "./SocietyOfficer/Schedule/ScheduleCS";
-
+import Student from "./Admin/Student/Student";
 
 function App() {
   return (
@@ -39,6 +34,7 @@ function App() {
         <Route path="/announcements" element={<AnnouncementsPage />} />
         <Route path="/homepage" element={<Homepage />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/Student" element={<Student />} />
         <Route
           path="/submissionandsubject"
           element={<SubmissionAndSubject />}
@@ -53,18 +49,13 @@ function App() {
         <Route path="/SuccessIrregular" element={<SuccessIrregular />} />
         <Route path="/UploadRegular" element={<UploadRegular />} />
         <Route path="/UploadIrregular" element={<UploadIrregular />} />
-        <Route path="/enrollees" element={<Enrollees />} />
+        <Route path="/enrollee" element={<Enrollees />} />
         <Route path="/home" element={<Home />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/enrollmentteam" element={<EnrollmentTeam />} />
         <Route path="/aDashboard" element={<A_Dashboard />} />
         <Route path="/aSubmission" element={<A_Submission />} />
         <Route path="/Advisee" element={<Advisee />} />
-        <Route path="/enrollmentstatus" element={<EnrollmentStatus />} />
-        <Route path="/setenrollment" element={<SetEnrollment />} />
-        <Route path="/students" element={<Students />} />
-        <Route path="/enrollmentstatuscs" element={<EnrollmentStatusCS />} />
-        <Route path="/schedulecs" element={<ScheduleCS />} />
       </Routes>
     </Router>
   );
