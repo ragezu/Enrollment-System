@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./Student.module.css"; // Ensure this file exists
+import styles from "./Students.module.css"; // Ensure this file exists
 import DashboardHeader from "../Dashboard/DashboardHeader";
 import CORPrint from "./CORPrint"; // Import CORPrint component
 
