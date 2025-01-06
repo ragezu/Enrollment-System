@@ -116,7 +116,7 @@ const Students = () => {
 
   return (
     <div className={styles.container}>
-      <div>
+      <div className={styles.header}>
         <DashboardHeader />
       </div>
 
