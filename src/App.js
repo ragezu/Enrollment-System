@@ -21,8 +21,10 @@ import EnrollmentTeam from "./Admin/EnrollmentTeam/EnrollmentTeam";
 import A_Dashboard from "./Adviser/A_Dashboard/Dashboard";
 import A_Submission from "./Adviser/A_Submission/Submission";
 import Advisee from "./Adviser/Advisee/Advisee";
-import Student from "./Admin/Students/Students";
-
+import Students from "./Admin/Students/Students";
+import EnrollmentStatusCS from "./SocietyOfficer/EnrollmentStatus/EnrollmentStatusCS";
+import ScheduleCS from "./SocietyOfficer/Schedule/ScheduleCS";
+import AdmissionAndFaqs from "./Student/AdmissionAndFaqs/AdmissionAndFaqs";
 function App() {
   return (
     <Router>
@@ -56,6 +58,9 @@ function App() {
         <Route path="/aDashboard" element={<A_Dashboard />} />
         <Route path="/aSubmission" element={<A_Submission />} />
         <Route path="/Advisee" element={<Advisee />} />
+        <Route path="/EnrollmentStatusCS" element={<EnrollmentStatusCS />} />
+        <Route path="/ScheduleCS" element={<ScheduleCS />} />
+        <Route path="/AdmissionAndFaqs" element={<AdmissionAndFaqs />} />
       </Routes>
     </Router>
   );

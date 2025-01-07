@@ -90,14 +90,17 @@ a, button, input[type="radio"] {
   cursor: pointer;
 }
 
-h1 {
+h1, h2, h3, h4, h5, h6 {
   color: var(--title-color-dark);
 }
 
 p {
-  color: var(--text-color);
+  color: var(--title-color-dark);
 }
 
+li {
+  color: black;
+}
 
 
 
