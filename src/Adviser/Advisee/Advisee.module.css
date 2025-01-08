@@ -382,6 +382,92 @@
     background-color: #0056b3;
   }
 
+  .Emodal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1100;  /* Above header */
+  }
+  
+  .EmodalContent {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 700px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    height: 400px;
+    align-items: center;
+  }
+  
+  .EsubmitButton {
+    background-color: #070202;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 160px;
+    transition: background-color 0.3s ease;
+    margin-right: 10px;
+    
+  }
+
+
+  .EcloseButton {
+    background-color: #070202;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 160px;
+    transition: background-color 0.3s ease;
+    
+  }
+  
+  .EcloseButton:hover {
+    background-color: #3a3a3a;
+  }
+
+  .EsubmitButton:hover {
+    background-color: #3a3a3a;
+  }
+  
+  .textarea {
+    resize: vertical;
+    width: 360px;
+    height: 100px;
+    padding: 8px;
+  }
+  
+  
+  
+  .EbuttonGroup {
+    display: flex;
+    justify-content: space-between;
+    align-items: right;
+    margin-top: 90px;
+    margin-left: 345px;
+    margin-right: auto;
+  }
+  
+  .EbuttonGroup button {
+    height: 35px;
+    width: 100px;
+    margin: 0;
+    color: white;
+    
+  }
+
+
+
   @media print {
     body {
         margin: 0;
