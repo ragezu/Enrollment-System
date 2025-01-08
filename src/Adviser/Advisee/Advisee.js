@@ -10,6 +10,79 @@ const PreEnrollmentModal = () => {
   
 }
  
+const EditSubjectsModal = ({ student, onClose, onSubmit }) => {
+  const [subjects, setSubjects] = useState([
+    { id: 1, code: "MATH101", title: "Basic Mathematics", units: 3 },
+    { id: 2, code: "ENG101", title: "English Language", units: 3 },
+  ]);
+
+  const handleSubjectChange = (index, field, value) => {
+    const updatedSubjects = [...subjects];
+    updatedSubjects[index][field] = value;
+    setSubjects(updatedSubjects);
+  };
+
+  const handleSubmit = () => {
+    onSubmit({ studentId: student.id, updatedSubjects: subjects });
+    onClose();
+  };
+
+  return (
+    <div className={styles.Emodal}>
+      <div className={styles.EmodalContent}>
+        <h2>Edit Subjects for {student.firstName} {student.lastName}</h2>
+        <table className={styles.subjectTable}>
+          <thead>
+            <tr>
+              <th>Class Code</th>
+              <th>Course/Subject Title</th>
+              <th>Number of Units</th>
+            </tr>
+          </thead>
+          <tbody>
+            {subjects.map((subject, index) => (
+              <tr key={subject.id}>
+                <td>
+                  <input
+                    type="text"
+                    value={subject.code}
+                    onChange={(e) =>
+                      handleSubjectChange(index, "code", e.target.value)
+                    }
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    value={subject.title}
+                    onChange={(e) =>
+                      handleSubjectChange(index, "title", e.target.value)
+                    }
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    value={subject.units}
+                    onChange={(e) =>
+                      handleSubjectChange(index, "units", e.target.value)
+                    }
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <button className={styles.EsubmitButton} onClick={handleSubmit}>
+          Save Changes
+        </button>
+        <button className={styles.EcloseButton} onClick={onClose}>
+          Cancel
+        </button>
+      </div>
+    </div>
+  );
+};
 
 
 
@@ -75,7 +148,25 @@ const Advisee = () => {
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [showBondPaperModal, setShowBondPaperModal] = useState(false);
   const printContentRef = useRef(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isEnrollmentModalOpen, setIsEnrollmentModalOpen] = useState(false);
+  
  
+  const handleEditSubjectClick = (student) => {
+    setSelectedStudent(student);
+    setIsEditModalOpen(true);
+  };
+
+  const closeEditModal = () => {
+    setIsEditModalOpen(false);
+    setSelectedStudent(null);
+  };
+
+  const handleEditSubjectSubmit = (payload) => {
+    console.log("Submitted payload:", payload);
+    // Add logic to update subjects in your database or state
+  };
+
   const handlePrint = () => {
     const printContent = printContentRef.current;
   
@@ -280,7 +371,7 @@ const Advisee = () => {
                       >
                         View Subject
                       </button>
-                      <button className={styles.button}>Edit Subject</button>
+                      <button className={styles.button}  onClick={() => handleEditSubjectClick(student)}>Edit Subject</button>
                       <button className={styles.button}>Update Status</button>
                       <button
                         className={styles.button}
@@ -463,8 +554,16 @@ const Advisee = () => {
           
         )}
     
+    {isEditModalOpen && selectedStudent && (
+        <EditSubjectsModal
+          student={selectedStudent}
+          onClose={closeEditModal}
+          onSubmit={handleEditSubjectSubmit}
+        />
+      )}
+    
     </div>
-  );
+);
 };
 
 export default Advisee;
