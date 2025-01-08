@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from "./EnrollmentStatus.module.css"; // Ensure this file exists
 import HeaderCS from "../Header/HeaderCS";
+import ReceiptPrint from "./ReceiptPrint";
 
 const EnrollmentStatusCS = () => {
   const [students, setStudents] = useState([
@@ -132,6 +133,17 @@ const EnrollmentStatusCS = () => {
     closeRejectModal();
   };
 
+  const handleReceiptPrint = (student) => {
+    setSelectedStudent(student);
+  };
+
+  const handlePrintClose = () => {
+    setSelectedStudent(null);
+  };
+
+
+  
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -189,7 +201,7 @@ const EnrollmentStatusCS = () => {
                         Mark as Enrolled
                       </button>
                       <button 
-                        className={styles.button}
+                        className={styles.button} onClick={() => handleReceiptPrint(student)}
                       >
                         Print Receipt
                       </button>
@@ -280,7 +292,12 @@ const EnrollmentStatusCS = () => {
             </button>
           </div>
         </div>
+        
       )}
+       {selectedStudent && (
+        <ReceiptPrint student={selectedStudent} onClose={handlePrintClose} />
+      )}
+
     </div>
   );
 };
