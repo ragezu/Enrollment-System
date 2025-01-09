@@ -57,7 +57,7 @@ const Profile = () => {
     }
   };
   // Render content based on the active tab
-  const renderTabContent = () => {
+const renderTabContent = () => {
     switch (activeTab) {
       case "personal":
         return <PersonalDetails />;
@@ -78,8 +78,8 @@ const Profile = () => {
 
   return (
     <div className={styles.profile_wrapper}>
+
       <div className={styles.profile_container}>
-        {/* Left-side profile section */}
         <div className={styles.profile_sidebar}>
           <div className={styles.profile_photo}>
             {/* Display uploaded image or default placeholder */}
@@ -98,9 +98,7 @@ const Profile = () => {
               />
             </div>
           </div>
-          <div className={styles.profile_info}>
-        
-          </div>
+          <div className={styles.profile_info}></div>
         </div>
 
         {/* Right-side tab content section */}
@@ -147,10 +145,14 @@ const Profile = () => {
               Account Settings
             </a>
           </div>
-
           <div className={styles.tab_content}>{renderTabContent()}</div>
         </div>
       </div>
+
+      <div className={styles.navigation_buttons}>
+        <button>Save Changes</button>
+      </div>
+
     </div>
   );
 };
@@ -190,7 +192,7 @@ const PersonalDetails = () => (
       </div>
 
       <div className={styles.form_field}>
-        <label htmlFor="lastName">Suffix</label>
+        <label htmlFor="suffix">Suffix</label>
         <input
           type="text"
           name="lastName"
@@ -223,19 +225,34 @@ const PersonalDetails = () => (
       </div>
     </div>
 
+
+    {/* This is supposedly a two fields in a row */}
+
+
     <div className={`${styles.form_row}`}>
-      <div className={`${styles.form_field} ${styles.solo_row}`}>
-        <label htmlFor="address">Complete Address</label>
+      <div className={`${styles.form_field} ${styles.two_rows}`}>
         <input
           type="text"
-          name="address"
-          id="address"
+          name="house"
+          id="house"
           className={styles.input}
-          placeholder="Ex. B27 L16, Chesa Street, Talon Singko"
+          placeholder="House No."
         />
       </div>
-    </div>
+
+      <div className={`${styles.form_field} ${styles.two_rows}`}>
+        <input
+          type="text"
+          name="barangay"
+          id="barangay"
+          className={styles.input}
+          placeholder="Barangay"
+        />
+      </div>
+    </div>  
+
     <div className={`${styles.form_row}`}>
+      
       <div className={`${styles.form_field} ${styles.two_rows}`}>
         <input
           type="text"
@@ -248,17 +265,17 @@ const PersonalDetails = () => (
 
       <div className={`${styles.form_field} ${styles.two_rows}`}>
         <input
-          type="province"
-          name="province"
+          type="text"
+          name="Province"
           id="province"
           className={styles.input}
           placeholder="Province"
         />
       </div>
-    </div>
+    </div>  
 
     <div className={`${styles.form_row}`}>
-      <div className={`${styles.form_field}`}>
+      <div className={`${styles.form_field} ${styles.two_rows}`}>
         <input
           type="text"
           name="postal"
@@ -268,7 +285,7 @@ const PersonalDetails = () => (
         />
       </div>
 
-      <div className={`${styles.form_field}`}>
+      <div className={`${styles.form_field} ${styles.two_rows}`}>
         <input
           type="text"
           name="country"
@@ -277,7 +294,12 @@ const PersonalDetails = () => (
           placeholder="Country"
         />
       </div>
+
+      
+
     </div>
+
+    {/* Up until above this. Input tag where name attribute is equal to "country" */}
 
     <div className={`${styles.form_row}`}>
       <div className={`${styles.form_field} ${styles.solo_row}`}>
@@ -290,20 +312,35 @@ const PersonalDetails = () => (
         />
       </div>
     </div>
+<<<<<<< Updated upstream
 
     <div className={styles.navigation_buttons}>
   <button onClick={nextStep} className={styles.nav_button} disabled={isNextDisabled}>
     Next
   </button>
   </div>
+=======
+>>>>>>> Stashed changes
   </div>
+
+
 );
 
 const FamilyBackground = () => {
   const [currentStep, setCurrentStep] = useState(1);
+  const totalSteps = 3;
 
-  const nextStep = () => setCurrentStep((prev) => Math.min(prev + 1, 3));
-  const prevStep = () => setCurrentStep((prev) => Math.max(prev - 1, 1));
+  const prevStep = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
+  const nextStep = () => {
+    if (currentStep < totalSteps) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
 
   const [siblings, setSiblings] = useState([{ name: "", age: "" }]); // Initial sibling data
   const maxSiblings = 8; // Limit for number of siblings
@@ -331,7 +368,8 @@ const FamilyBackground = () => {
 
   return (
     <div className={styles.family_background_wrapper}>
-      {/* Step 1: Parent Information */}
+      <div className={styles.family_content_wrapper}>
+        {/* Step 1: Parent Information */}
       {currentStep === 1 && (
         <div className={styles.family_background_step1}>
           <div className={styles.parent1_container}>
@@ -344,11 +382,23 @@ const FamilyBackground = () => {
             </div>
             <div className={styles.field}>
               <label htmlFor="parent1Relationship">Relationship</label>
-              <input
-                type="text"
-                className={styles.input}
-                id="parent1Relationship"
-              />
+              <select className={styles.input}>
+                <option disabled>
+                  Select
+                </option>
+                <option value="uncle">
+                  Uncle
+                </option>
+                <option value="auntie">
+                  Auntie
+                </option>
+                <option value="grandparent">
+                  Grand Parent
+                </option>
+                <option value="relative">
+                  Other Relatives
+                </option>
+              </select>
             </div>
             <div className={styles.field}>
               <label htmlFor="parent1Education">Highest Education</label>
@@ -378,11 +428,23 @@ const FamilyBackground = () => {
             </div>
             <div className={styles.field}>
               <label htmlFor="parent2Relationship">Relationship</label>
-              <input
-                type="text"
-                className={styles.input}
-                id="parent2Relationship"
-              />
+              <select className={styles.input}>
+                <option disabled>
+                  Select
+                </option>
+                <option value="uncle">
+                  Uncle
+                </option>
+                <option value="auntie">
+                  Auntie
+                </option>
+                <option value="grandparent">
+                  Grand Parent
+                </option>
+                <option value="relative">
+                  Other Relatives
+                </option>
+              </select>
             </div>
             <div className={styles.field}>
               <label htmlFor="parent2Education">Highest Education</label>
@@ -418,11 +480,23 @@ const FamilyBackground = () => {
               </div>
               <div className={styles.field}>
                 <label htmlFor="guardianRelationship">Relationship</label>
-                <input
-                  type="text"
-                  className={styles.input}
-                  id="guardianRelationship"
-                />
+                <select className={styles.input}>
+                <option disabled>
+                  Select
+                </option>
+                <option value="uncle">
+                  Uncle
+                </option>
+                <option value="auntie">
+                  Auntie
+                </option>
+                <option value="grandparent">
+                  Grand Parent
+                </option>
+                <option value="relative">
+                  Other Relatives
+                </option>
+              </select>
               </div>
             </div>
             <div className={styles.row_field}>
@@ -470,6 +544,9 @@ const FamilyBackground = () => {
               <h3>
                 If you are an only child, please leave it blank and proceed to
                 the next step.
+              </h3>
+              <h3>
+                At least one sibling is required.
               </h3>
             </div>
             <div className={styles.add_siblings_container}>
@@ -535,23 +612,24 @@ const FamilyBackground = () => {
         </div>
       )}
 
+      </div>
       {/* Navigation Buttons */}
       <div className={styles.navigation_buttons}>
-        {currentStep > 1 && (
-          <button onClick={prevStep} className={styles.nav_button}>
-            Back
-          </button>
-        )}
-        {currentStep < 3 && (
-          <button onClick={nextStep} className={styles.nav_button}>
-            Next
-          </button>
-        )}
-        {currentStep === 3 && (
-          <button type="submit" className={styles.nav_button}>
-            Submit
-          </button>
-        )}
+        <div className={styles.step_count}>
+          Step <span>{currentStep}</span> out of <span>{totalSteps}</span>
+        </div>
+        <div className={styles.actual_nav_buttons_holder}>
+          {currentStep > 1 && (
+            <button onClick={prevStep} className={styles.nav_button}>
+              Back
+            </button>
+          )}
+          {currentStep < 3 && (
+            <button onClick={nextStep} className={styles.nav_button}>
+              Next
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -645,10 +723,6 @@ const Education = () => (
         </div>
       </div>
     </div>
-
-    <div className={styles.navigation_buttons}>
-      <button>Submit</button>
-    </div>
   </div>
 );
 
@@ -658,17 +732,24 @@ const AccountSettings = () => (
       <h1>Account Settings</h1>
     </div>
     <div className={styles.account}>
-      <div className={styles.field}>
-        <label htmlFor="email">Email</label>
-        <input type="email" name="email" id="email" />
+
+      <div className={styles.upper_field}>
+        <div className={styles.email}>
+          <label htmlFor="email">Email</label>
+          <div className={styles.input_and_button}>
+          <input type="email" name="email" id="email" />
+          <button className={styles.change_password}>Change Password</button>
+          </div>
+  
+        </div>
       </div>
+
+      
       <div className={styles.field}>
         <label htmlFor="password">Password</label>
         <input type="password" name="password" id="password" />
       </div>
-    </div>
-    <div className={styles.navigation_buttons}>
-      <button className={styles.change_password}>Change Password</button>
+
     </div>
   </div>
 );

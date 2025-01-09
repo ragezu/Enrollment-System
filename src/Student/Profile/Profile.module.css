@@ -1,21 +1,23 @@
 .profile_wrapper {
-  background-color: #F2F0EF;
   min-height: 100vh;
   display: flex;
   align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 100px;
+  gap: 20px;
+  background-color: white;
 }
 
 .profile_container {
   display: flex;
-  padding: 100px;
-  gap: 20px;
-  height: 100vh;
-  width: 100%;
+  width: 90%;
   justify-content: center;
+  min-height: 600px;
+  gap: 20px;
 }
 
 .profile_sidebar {
-  width: 25%;
   background-color: #e4e3e2;
   padding: 20px;
   border-radius: 8px;
@@ -25,6 +27,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  height: inherit;
 }
 
 .profile_photo {
@@ -76,7 +79,6 @@
 }
 
 .view_profile_btn {
-  background-color: #007bff;
   color: white;
   border: none;
   padding: 10px;
@@ -85,24 +87,33 @@
 }
 
 .profile_content {
-  width: 60%;
-  background-color: #e4e3e2;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #e4e3e2;
   padding: 30px;
-  height: fit-content;
 }
 
 .tabs {
   display: flex;
-  justify-content: space-around;
-  height: 40px;
+  justify-content: space-between;
   align-items: center;
+  min-width: 100%;
+}
+
+.tabs a {
+  position: relative;
+  padding-bottom: 10px;
 }
 
 
 .tab_content {
-  height: 95%;
+  height: 100%;
+  flex: 1;
 }
 
 .info_wrapper {
@@ -115,7 +126,8 @@
 .personal_details_wrapper {
   height: 100%;
   width: 100%;
-  padding: 0 20px;
+  flex: 1;
+  height: 100%;
 }
 
 .form_row {
@@ -190,11 +202,20 @@ select {
 /* Family Background */
 
 .family_background_wrapper {
-  height: 95%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0 20px;
+  flex: 1;
+  width: 100%;
+}
+
+.family_content_wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 }
 
 .family_background_wrapper .family_background_step1,
@@ -203,6 +224,8 @@ select {
   display: flex;
   height: 100%;
   justify-content: center;
+  flex: 1;
+  width: 100%;
 }
 
 .family_background_step1 .parent1_container,
@@ -313,12 +336,20 @@ select {
 .navigation_buttons {
   display: flex;
   justify-content: flex-end;
-  width: 100%;
+  width: 90%;
+}
+
+.step_count {
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
 .navigation_buttons button {
   margin: 0 5px;
-  width: 100px;
+  padding: 0 10px;
   height: 35px;
   background-color: var(--title-color);
   color: white;
@@ -334,10 +365,12 @@ select {
 /* Educational Attainment */
 
 .educational_attainment_wrapper {
-  height: 95%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   padding: 0 20px;
+  flex: 1;
+  width: 100%;
 }
 
 .type_of_school,
@@ -381,7 +414,6 @@ select {
 /* Account Settings */
 
 .account_settings_wrapper {
-  height: 95%;
   display: flex;
   flex-direction: column;
   padding: 0 20px;
@@ -389,10 +421,22 @@ select {
 
 .account_settings_wrapper .account {
   height: 100%;
+  flex: 1;
 }
 
 
 .account_settings_wrapper .account .field {
+  display: flex;
+  flex-direction: column;
+}
+
+.upper_field {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.account {
   display: flex;
   flex-direction: column;
 }
@@ -405,13 +449,83 @@ select {
   border-radius: 8px;
 }
 
+.email {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: center;
+  width: 100%;
+
+  input {
+    height: 35px;
+    border-radius: 8px;
+    width:45%;
+    padding: 8px;
+  }
+}
+
+.input_and_button {
+  display: flex;
+  gap: 20px;
+
+  button {
+    height: 35px;
+    border-radius: 8px;
+    padding: 0 8px;
+    background-color: #1e1e1e;
+    color: white;
+  }
+}
+
 
 .account .field label {
   margin-top: 10px;
 }
 
 .navigation_buttons .change_password {
+}
+
+/* Active button */
+
+.active {
+  color: black;
+}
+
+
+
+.active::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  border-radius: 50px;
+  height: 3px;
+  bottom: 0;
+  left: 0%; 
+  background-color: black; /* Change this to your desired color */
+  visibility: visible;
+  transform: scaleX(-50%);
+  transition: all 0.3s ease-in-out;
+}
+
+.navitage_to_next_form {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  button {
+    margin: 0 5px;
+  padding: 0 10px;
   height: 35px;
-  width: 150px;
-  margin-bottom: auto;
+  background-color: var(--title-color);
+  color: white;
+  border-radius: 8px;
+  border: none;
+  }
+}
+
+.legend {
+  font-weight: normal;
+  font-size: var(--normal-font-size);
+  margin-top: 15px;
+  color: #1e1e1e;
 }
