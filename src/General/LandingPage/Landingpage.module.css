@@ -2,35 +2,50 @@
 
 /* Container Styling */
 .container {
-  text-align: center;
-  color: white;
   min-height: 100vh;
   background-size: cover;
   background-position: center;
   display: flex;
   flex-direction: column;
-  padding-left: 100px;
-  padding-right: 100px;
-  padding-top: 12rem;
-  max-width: 2000px;
-  margin: 0 auto;
-
+  justify-content: center;
+  align-items: flex-start;
+  flex: 1;
+  padding: 0 75px;
+  gap: 100px;
+  padding-bottom: 50px;
 }
 
 .text_and_logo {
-  text-align: left;
-  align-items: end;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .top_section {
-  vertical-align: middle;
   display: flex;
   justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+  flex: 1;
+}
+
+.top_section_holder {
+  display: flex;
   align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.landing_page_texts {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .bottom_section {
-  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .bottom_heading {
@@ -67,19 +82,18 @@
 
 .header {
   color: #ffffff;
-  font-size: 4rem;
-  margin-bottom: -8px;
-  letter-spacing: 4px;
+  font-size: var(--big-font-size);
+  font-weight: bold;
+  margin: 0;
 }
 
 .subheader {
   color: #ffffff;
   font-weight: var(--font-normal);
-  font-size: 1.85rem;
-  margin-bottom: 12px;
-  letter-spacing: 4px;
-}
+  font-size: var(--h2-font-size);
+  margin-top: -10px;
 
+}
 
 a {
   text-decoration: none;
@@ -94,12 +108,11 @@ a {
   cursor: pointer;
   border-radius: 30px;
   transition: background 0.3s ease;
-  width: 175px;
-  height: 48px;
+  width: 100px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 -5px;
 }
 
 button:hover {
@@ -112,6 +125,7 @@ button:hover {
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  gap: 10px;
 }
 
 .logo_shield,
@@ -138,11 +152,39 @@ button:hover {
   padding: 1rem;
   background-color: white;
   color: black;
-  border-radius: 10px;
+  border-radius: 6px;
   width: 500px;
-  text-align: left;
+  height: auto;
+  max-height: 500px;
+  overflow-y: scroll;
+  text-align: justify;
   display: flex;
-  flex-direction: column; /* Stack children vertically */
+  flex-direction: column;
+  justify-content: space-between; /* Stack children vertically */
+
+}
+
+/* Scrollbar styles */
+.announcement::-webkit-scrollbar {
+  width: 12px;
+}
+
+.announcement::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.announcement::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.announcement::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.actual_announcement {
+  
 }
 
 /* Announcement Title */
@@ -154,7 +196,7 @@ button:hover {
 .announcement p {
   margin-top: 0.5rem;
   line-height: 2;
-  font-size: 1rem;
+  font-size: var(--smaller-font-size);
 }
 
 /* Announcement Wrapper for Button */
@@ -176,7 +218,7 @@ button:hover {
   background: #000;
   color: #ffffff;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 8px;
   padding: 0.10rem 0.30rem;
   transition: background 0.3s ease, color 0.3s ease;
   text-transform: uppercase;

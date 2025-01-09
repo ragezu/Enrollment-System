@@ -1,16 +1,23 @@
+.container {
+  background-color: white;
+  min-height: 100vh;
+}
 .content_holder {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     background-color: white;
-    min-height: calc(100vh - 90px);
-    width: 100%;
+    flex: 1;
     padding: 20px 50px;
   }
   
   .content {
-      padding: 20px 50px;
-      width: 100%;
+      flex: 1;
+  }
+
+  .title {
+    margin: 0;
   }
   
   
@@ -57,7 +64,7 @@
   /* Table styles */
   .tableContainer {
     height: 400px;
-    max-height:400px;
+    max-height: 400px;
     overflow-y: auto;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     border: 8px solid #1e1e1e;
@@ -89,6 +96,14 @@
     align-items: center;
     padding: 10px;
   }
+
+  tr {
+    border-bottom: 1px solid #ddd;
+  }
+
+  tr:last-of-type {
+    border-bottom: none;
+  }
   
   .table thead tr th {
     position: sticky;    /* Make header sticky */
@@ -118,19 +133,35 @@
   .thTd {
     background-color: #1e1e1e;
     font-weight: bold;
-    padding: 10px;
     text-align: left;
+    padding: 10px;
     border-bottom: 1px solid #ddd;
+    font-size: var(--small-font-size);
+    padding: 0 10px;
   }
   
+  .thTd:nth-of-type(4),
+  .thTd:nth-of-type(5), 
+  .thTd:nth-of-type(6) {
+    font-size: var(--smaller-font-size);
+    width: 8%;
+  }
+
+  .thTd:nth-of-type(6) {
+    width: 10%;
+  }
   
   .td {
     padding: 10px;
     border-bottom: 1px solid #ddd;
   }
   
-  .td:last-child {
-    text-align: center;
+  .td:last-of-type {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+    gap: 10px;
   }
   
   /* Buttons in the table */
@@ -142,6 +173,7 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    font-size: 0.725rem;
   }
   
   .button:hover {
@@ -156,6 +188,7 @@
     align-items: center;
     gap: 10px;
     justify-content: space-between;
+    width: 100%;
   }
   
   .sort {

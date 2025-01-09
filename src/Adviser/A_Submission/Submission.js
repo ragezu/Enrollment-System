@@ -200,7 +200,10 @@ const Advisee = () => {
               </tbody>
             </table>
           </div>
-          <div className={styles.filterBar}>
+          
+        </div>
+
+        <div className={styles.filterBar}>
             <div className={styles.sort}>
               <label className={styles.label}>Sort by:</label>
               <select className={styles.select} value={sortCriteria} onChange={handleSortChange}>
@@ -244,7 +247,6 @@ const Advisee = () => {
 
             
           </div>
-        </div>
       </div>
       {/* View Checklist Modal */}
       {showModal && selectedStudent && (

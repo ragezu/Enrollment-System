@@ -1,16 +1,26 @@
+.container {
+  background-color: white;
+  min-height: 100vh;
+}
+
 .content_holder {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     background-color: white;
-    min-height: calc(100vh - 90px);
     width: 100%;
+    flex: 1;
     padding: 20px 50px;
   }
-  
+
   .content {
-      padding: 20px 50px;
-      width: 100%;
+    flex: 1;
+    width: 100%;
+  }
+
+  .title {
+    margin: 0;
   }
   
   
@@ -139,12 +149,15 @@
   }
   
   /* Filter bar */
-  .filterBar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    justify-content: space-between;
-  }
+
+    .filterBar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: space-between;
+      width: 100%;
+    }
+
   
   .sort {
     display: flex;

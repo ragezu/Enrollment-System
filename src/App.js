@@ -51,7 +51,7 @@ function App() {
         <Route path="/SuccessIrregular" element={<SuccessIrregular />} />
         <Route path="/UploadRegular" element={<UploadRegular />} />
         <Route path="/UploadIrregular" element={<UploadIrregular />} />
-        <Route path="/enrollee" element={<Enrollees />} />
+        <Route path="/enrollees" element={<Enrollees />} />
         <Route path="/home" element={<Home />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/enrollmentteam" element={<EnrollmentTeam />} />
