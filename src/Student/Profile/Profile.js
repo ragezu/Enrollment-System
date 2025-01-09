@@ -313,6 +313,7 @@ const PersonalDetails = () => (
       </div>
     </div>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
     <div className={styles.navigation_buttons}>
   <button onClick={nextStep} className={styles.nav_button} disabled={isNextDisabled}>
@@ -322,6 +323,9 @@ const PersonalDetails = () => (
 =======
 >>>>>>> Stashed changes
   </div>
+=======
+  </div>
+>>>>>>> Stashed changes
 
 
 );
