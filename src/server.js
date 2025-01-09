@@ -1,14 +1,15 @@
+require('dotenv').config();
 const express = require("express");
 const cors = require("cors");
 const bcrypt = require("bcryptjs");
 const bodyParser = require('body-parser');
-const mysql = require("mysql2");
+const mysql = require('mysql2/promise');
 const app = express();
 const crypto = require("crypto");
 const nodemailer = require("nodemailer"); // Import Nodemailer
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
-const sessionStore = require('./sessionStore');
+const sessionStore = require('../src/sessionStore.js'); // Adjust the path as needed
 
 app.use(bodyParser.json());
 
@@ -24,60 +25,64 @@ app.use(cookieParser());
 require('dotenv').config();
 const sessionSecret = process.env.SESSION_SECRET;
 
+
 // Set up session
-app.use(
-  session({
-    secret: sessionSecret || "default_secret_key", // Use environment variable or fallback
-    resave: false, // Remove duplicate
-    saveUninitialized: false,
-    store: sessionStore, // Ensure this is defined
-    cookie: {
-      secure: false, // Set true if using HTTPS
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24, // 1 day
-    },
-  })
-);
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  store: sessionStore,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24, // 1 day
+    secure: false, // Set to true if using HTTPS
+    httpOnly: true
+  }
+}));
 
 // Database connection
-const db = mysql.createConnection({
+const db = mysql.createPool({
   host: "localhost", // Replace with your DB host
   user: "root", // Replace with your MySQL username
   password: "Wearefamily03", // Replace with your MySQL password
   database: "enrollment_system", // Replace with your DB name
 });
 
-// Promise-based connection
-const dbPromise = db.promise();
+// Test database connection
+(async () => {
+  try {
+    await db.query("SELECT 1");
+    console.log("Database connected successfully");
+  } catch (err) {
+    console.error("Database connection failed:", err);
+  }
+})();
 
-// Route with callback-style connection
-app.get('/callback-route', (req, res) => {
-  db.query('SELECT * FROM tbl_user_account', (err, results) => {
-    if (err) {
-      console.error('Error executing query:', err);
-      return res.status(500).json({ message: 'Internal server error.' });
-    }
-    res.status(200).json(results);
-  });
+
+// Routes
+app.get("/", (req, res) => {
+  res.send("Session store is working!");
 });
 
-// Route with promise-based connection
-app.post('/promise-route', async (req, res) => {
+
+// Route with callback-style connection
+app.get('/callback-route', async (req, res) => {
   try {
-    const [rows] = await dbPromise.query('SELECT * FROM tbl_user_account WHERE email = ?', [req.body.email]);
-    res.status(200).json(rows);
+    const [results] = await db.query('SELECT * FROM tbl_user_account');
+    res.status(200).json(results);
   } catch (err) {
     console.error('Error executing query:', err);
     res.status(500).json({ message: 'Internal server error.' });
   }
 });
 
-
-db.connect((err) => {
-  if (err) {
-    console.error("Error connecting to database:", err.message);
-  } else {
-    console.log("Connected to database!");
+// Route with promise-based connection
+app.post('/promise-route', async (req, res) => {
+  try {
+    const [rows] = await db.query('SELECT * FROM tbl_user_account WHERE email = ?', [req.body.email]);
+    res.status(200).json(rows);
+  } catch (err) {
+    console.error('Error executing query:', err);
+    res.status(500).json({ message: 'Internal server error.' });
   }
 });
 
@@ -111,38 +116,25 @@ function generateOtp() {
   return crypto.randomInt(100000, 999999).toString();
 }
 
-app.get('/announcements', (req, res) => {
-  // First, delete past announcements
-  const deleteQuery = `DELETE FROM tbl_announcements WHERE date < NOW();`;
-
-  db.query(deleteQuery, (deleteErr) => {
-    if (deleteErr) {
-      console.error('Error deleting old announcements:', deleteErr);
-      return res.status(500).json({ error: 'Failed to delete old announcements' });
-    }
-
-    // Then, fetch the current announcements
-    const selectQuery = `SELECT * FROM tbl_announcements ORDER BY date DESC;`;
-
-    db.query(selectQuery, (selectErr, results) => {
-      if (selectErr) {
-        console.error('Error fetching announcements:', selectErr);
-        return res.status(500).json({ error: 'Failed to fetch announcements' });
-      }
-
-      // Send the results as JSON
-      res.json(results || []);
-    });
-  });
+app.get('/announcements', async (req, res) => {
+  try {
+    await db.query(`DELETE FROM tbl_announcements WHERE date < NOW();`);
+    const [results] = await db.query(`SELECT * FROM tbl_announcements ORDER BY date DESC;`);
+    res.json(results || []);
+  } catch (err) {
+    console.error('Error fetching announcements:', err);
+    res.status(500).json({ error: 'Failed to fetch announcements' });
+  }
 });
 
-app.get('/latest-announcement', (req, res) => {
-  const query = `SELECT * FROM tbl_announcements ORDER BY date DESC LIMIT 1;`;
-  db.query(query, (err, results) => {
-    if (err) return res.status(500).json(err);
-    console.log('Query Results:', results); // Log results for debugging
+app.get('/latest-announcement', async (req, res) => {
+  try {
+    const [results] = await db.query(`SELECT * FROM tbl_announcements ORDER BY date DESC LIMIT 1;`);
     res.json(results[0] || null);
-  });
+  } catch (err) {
+    console.error('Error fetching latest announcement:', err);
+    res.status(500).json(err);
+  }
 });
 
 app.get('/enrolled-count', async (req, res) => {
@@ -167,57 +159,28 @@ app.get('/enrolled-count', async (req, res) => {
   const querypaidIT = `
     SELECT COUNT(*) AS paidIT
     FROM tbl_society_fee_transaction
-    WHERE payment_status = 'paid' AND program = '1'
+    WHERE payment_status = 'paid' AND program = '2'
   `;
 
   const querypaidComSci = `
-  SELECT COUNT(*) AS paidIT
-  FROM tbl_society_fee_transaction
-  WHERE payment_status = 'paid' AND program = '2'
-`;
+    SELECT COUNT(*) AS paidComSci
+    FROM tbl_society_fee_transaction
+    WHERE payment_status = 'paid' AND program = '1'
+  `;
 
   try {
-    const totalResult = await new Promise((resolve, reject) => {
-      db.query(queryTotal, (err, result) => {
-        if (err) return reject(err);
-        resolve(result);
-      });
-    });
-
-    const comSciResult = await new Promise((resolve, reject) => {
-      db.query(queryComSci, (err, result) => {
-        if (err) return reject(err);
-        resolve(result);
-      });
-    });
-
-    const itResult = await new Promise((resolve, reject) => {
-      db.query(queryIT, (err, result) => {
-        if (err) return reject(err);
-        resolve(result);
-      });
-    });
-
-    const pcomSciResult = await new Promise((resolve, reject) => {
-      db.query(querypaidComSci, (err, result) => {
-        if (err) return reject(err);
-        resolve(result);
-      });
-    });
-
-    const pitResult = await new Promise((resolve, reject) => {
-      db.query(querypaidIT, (err, result) => {
-        if (err) return reject(err);
-        resolve(result);
-      });
-    });
+    const [totalResult] = await db.query(queryTotal);
+    const [comSciResult] = await db.query(queryComSci);
+    const [itResult] = await db.query(queryIT);
+    const [paidComSciResult] = await db.query(querypaidComSci);
+    const [paidITResult] = await db.query(querypaidIT);
 
     const results = {
       totalEnrolled: totalResult[0]?.totalEnrolled || 0,
       enrolledComSci: comSciResult[0]?.enrolledComSci || 0,
       enrolledIT: itResult[0]?.enrolledIT || 0,
-      paidIT: pitResult[0]?.paidIT || 0,
-      paidComSci: pcomSciResult[0]?.paidComSci || 0,
+      paidIT: paidITResult[0]?.paidIT || 0,
+      paidComSci: paidComSciResult[0]?.paidComSci || 0,
     };
 
     res.json(results);
@@ -226,6 +189,7 @@ app.get('/enrolled-count', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch enrollment counts' });
   }
 });
+
 
 
 
@@ -520,7 +484,7 @@ app.post("/register", async (req, res) => {
 });
 
 // Login endpoint
-app.post("/login", (req, res) => {
+app.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -529,11 +493,9 @@ app.post("/login", (req, res) => {
 
   const query = `SELECT * FROM tbl_user_account WHERE email = ?`;
 
-  db.query(query, [email], async (error, results) => {
-    if (error) {
-      console.error("Database error:", error.message);
-      return res.status(500).json({ message: "Database error." });
-    }
+  try {
+    // Execute the query using async/await
+    const [results] = await db.query(query, [email]);
 
     if (results.length === 0) {
       return res.status(404).json({ message: "User not found." });
@@ -548,6 +510,7 @@ app.post("/login", (req, res) => {
 
     const isProfileComplete = user.first_name && user.last_name && user.date_of_birth && user.address_id;
 
+    // Set session data
     req.session.user = {
       user_id: user.user_id,
       email: user.email,
@@ -567,7 +530,10 @@ app.post("/login", (req, res) => {
         user: { user_id: user.user_id },
       });
     });
-  });
+  } catch (error) {
+    console.error("Database error:", error.message);
+    res.status(500).json({ message: "Internal server error." });
+  }
 });
 
 app.get("/check-session", (req, res) => {
@@ -579,25 +545,23 @@ app.get("/check-session", (req, res) => {
 });
 
 // Endpoint to get user data if authenticated
-app.get("/user/:userId", (req, res) => {
+app.get("/user/:userId", async (req, res) => {
   const { userId } = req.params;
 
   const query = `
     SELECT * FROM tbl_user_account WHERE user_id = ?
   `;
 
-  db.query(query, [userId], (error, results) => {
-    if (error) {
-      console.error("Error fetching user data:", error.message);
-      return res.status(500).json({ message: "Database error." });
-    }
-
+  try {
+    const [results] = await db.query(query, [userId]);
     if (results.length === 0) {
       return res.status(404).json({ message: "User not found." });
     }
-
     res.status(200).json(results[0]);
-  });
+  } catch (error) {
+    console.error("Error fetching user data:", error.message);
+    res.status(500).json({ message: "Database error." });
+  }
 });
 
 // Logout endpoint
@@ -614,44 +578,35 @@ app.post("/logout", (req, res) => {
 });
 
 // Create a new student
-app.post("/students", (req, res) => {
+app.post("/students", async (req, res) => {
   const { firstName, lastName, email, phoneNumber } = req.body;
 
   if (!firstName || !lastName || !email || !phoneNumber) {
     return res.status(400).json({ message: "All fields are required." });
   }
 
-  const query = `
-    INSERT INTO tbl_user_account (first_name, last_name, email, phone_number)
-    VALUES (?, ?, ?, ?)
-  `;
-
-  db.query(query, [firstName, lastName, email, phoneNumber], (err, results) => {
-    if (err) {
-      console.error("Error inserting student:", err.message);
-      return res.status(500).json({ message: "Database error." });
-    }
-
+  try {
+    await db.query(`INSERT INTO tbl_user_account (first_name, last_name, email, phone_number) VALUES (?, ?, ?, ?)`, [firstName, lastName, email, phoneNumber]);
     res.status(201).json({ message: "Student added successfully!" });
-  });
+  } catch (err) {
+    console.error("Error inserting student:", err.message);
+    res.status(500).json({ message: "Database error." });
+  }
 });
 
 // Read all students
-app.get("/students", (req, res) => {
-  const query = "SELECT * FROM tbl_user_account";
-
-  db.query(query, (err, results) => {
-    if (err) {
-      console.error("Error fetching students:", err.message);
-      return res.status(500).json({ message: "Database error." });
-    }
-
+app.get("/students", async (req, res) => {
+  try {
+    const [results] = await db.query("SELECT * FROM tbl_user_account");
     res.status(200).json(results);
-  });
+  } catch (err) {
+    console.error("Error fetching students:", err.message);
+    res.status(500).json({ message: "Database error." });
+  }
 });
 
 // Update a student
-app.put("/students/:id", (req, res) => {
+app.put("/students/:id", async (req, res) => {
   const { id } = req.params;
   const { firstName, lastName, email, phoneNumber } = req.body;
 
@@ -659,50 +614,36 @@ app.put("/students/:id", (req, res) => {
     return res.status(400).json({ message: "All fields are required." });
   }
 
-  const query = `
-    UPDATE tbl_user_account
-    SET first_name = ?, last_name = ?, email = ?, phone_number = ?
-    WHERE user_id = ?
-  `;
-
-  db.query(query, [firstName, lastName, email, phoneNumber, id], (err, results) => {
-    if (err) {
-      console.error("Error updating student:", err.message);
-      return res.status(500).json({ message: "Database error." });
-    }
-
+  try {
+    const [results] = await db.query(`UPDATE tbl_user_account SET first_name = ?, last_name = ?, email = ?, phone_number = ? WHERE user_id = ?`, [firstName, lastName, email, phoneNumber, id]);
     if (results.affectedRows === 0) {
       return res.status(404).json({ message: "Student not found." });
     }
-
     res.status(200).json({ message: "Student updated successfully!" });
-  });
+  } catch (err) {
+    console.error("Error updating student:", err.message);
+    res.status(500).json({ message: "Database error." });
+  }
 });
 
 // Delete a student
-app.delete("/students/:id", (req, res) => {
+app.delete("/students/:id", async (req, res) => {
   const { id } = req.params;
 
-  const query = `
-    DELETE FROM tbl_user_account WHERE user_id = ?
-  `;
-
-  db.query(query, [id], (err, results) => {
-    if (err) {
-      console.error("Error deleting student:", err.message);
-      return res.status(500).json({ message: "Database error." });
-    }
-
+  try {
+    const [results] = await db.query(`DELETE FROM tbl_user_account WHERE user_id = ?`, [id]);
     if (results.affectedRows === 0) {
       return res.status(404).json({ message: "Student not found." });
     }
-
     res.status(200).json({ message: "Student deleted successfully!" });
-  });
+  } catch (err) {
+    console.error("Error deleting student:", err.message);
+    res.status(500).json({ message: "Database error." });
+  }
 });
 
 // API Endpoint to post an announcement
-app.post("/api/announcements", (req, res) => {
+app.post("/api/announcements", async (req, res) => {
   if (!req.session || !req.session.user) {
     return res.status(401).json({ message: "Unauthorized: No user session found." });
   }
@@ -714,69 +655,70 @@ app.post("/api/announcements", (req, res) => {
     return res.status(400).json({ message: "Announcement content is required." });
   }
 
-  const query = `
-    INSERT INTO tbl_announcements (author, content, date)
-    VALUES (?, ?, NOW())
-  `;
+  try {
+    // Combine first name and last name for the author
+    const authorQuery = `
+      SELECT CONCAT(last_name, ', ', first_name) AS author
+      FROM tbl_user_account
+      WHERE user_id = ?
+    `;
+    const [authorResults] = await db.query(authorQuery, [user_id]);
 
-  // Combine first name and last name for the author
-  const authorQuery = `
-    SELECT CONCAT(last_name, ', ', first_name) AS author
-    FROM tbl_user_account
-    WHERE user_id = ?
-  `;
-
-  db.query(authorQuery, [user_id], (error, results) => {
-    if (error) {
-      console.error("Error fetching author details:", error.message);
-      return res.status(500).json({ message: "Database error." });
-    }
-
-    if (results.length === 0) {
+    if (authorResults.length === 0) {
       return res.status(404).json({ message: "User not found." });
     }
 
-    const author = results[0].author;
+    const author = authorResults[0].author;
 
-    db.query(query, [author, content], (err) => {
-      if (err) {
-        console.error("Error saving announcement:", err.message);
-        return res.status(500).json({ message: "Failed to save announcement." });
-      }
+    const query = `
+      INSERT INTO tbl_announcements (author, content, date)
+      VALUES (?, ?, NOW())
+    `;
+    await db.query(query, [author, content]);
 
-      res.status(200).json({ message: "Announcement posted successfully." });
-    });
-  });
+    res.status(200).json({ message: "Announcement posted successfully." });
+  } catch (error) {
+    console.error("Error saving announcement:", error.message);
+    res.status(500).json({ message: "Failed to save announcement." });
+  }
 });
 
 app.get("/api/enrollees", async (req, res) => {
   try {
-    const students = await db.query(`
-      SELECT 
-      tbl_student_data.student_id, 
-      tbl_user_account.first_name, 
-      tbl_user_account.last_name, 
-      tbl_user_account.email,
-      tbl_program.program_name,
-      tbl_student_data.student_type,
-      tbl_student_data.year_level
-    FROM 
-      tbl_student_data
-    JOIN 
-      tbl_user_account 
-    ON 
-      tbl_student_data.user_id = tbl_user_account.user_id
-    JOIN 
-      tbl_program 
-    ON 
-      tbl_student_data.program_id = tbl_program.program_id;
-    `);
+    // Execute the SQL query
+    const [students, metadata] = await db.query(
+      `
+    SELECT 
+  tbl_student_data.student_id, 
+  tbl_user_account.first_name, 
+  tbl_user_account.last_name, 
+  tbl_user_account.email,
+  tbl_program.program_name,
+  tbl_student_data.student_type,
+  tbl_student_data.year_level
+FROM 
+  tbl_student_data
+JOIN 
+  tbl_user_account 
+ON 
+  tbl_student_data.user_id = tbl_user_account.user_id
+JOIN 
+  tbl_program 
+ON 
+  tbl_student_data.program = tbl_program.program_id;
+      `
+    );
+
+    // Respond with the data
     res.json(students);
   } catch (error) {
+    // Handle any errors
     console.error("Error fetching students:", error);
-    res.status(500).send("Server error");
+    res.status(500).json({ error: "Internal server error" });
   }
 });
+
+
 
 // Start server
 const PORT = 5000;
