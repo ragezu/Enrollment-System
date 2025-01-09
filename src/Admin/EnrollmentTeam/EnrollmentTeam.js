@@ -1,9 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { SessionContext } from "../../contexts/SessionContext";
 import styles from "./EnrollmentTeam.module.css";
 import Header from "../Dashboard/DashboardHeader";
 
 function EnrollmentTeam() {
+  const { user, isLoading: sessionLoading, logout } = useContext(SessionContext);
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (!sessionLoading && !user) {
+      navigate("/login");
+    }
+  }, [sessionLoading, user, navigate]);
+  
+    const handleLogout = () => {
+      logout(navigate); // Log out and redirect to login
+    };
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);

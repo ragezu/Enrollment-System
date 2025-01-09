@@ -1,22 +1,61 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { checkSession, logout } from "../../utils/session";
+import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./Profile.module.css";
 
 const Profile = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const userId = location.state?.userId;
+
+  const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("personal"); // Default active tab
   const [profileImage, setProfileImage] = useState(null); // State to store uploaded image
+  const [isNextDisabled, setIsNextDisabled] = useState(true);
+
+  useEffect(() => {
+    const initialize = async () => {
+      const isValidSession = await checkSession(navigate); // Check if session is valid
+      if (!isValidSession) {
+        console.error("Invalid session.");
+        navigate("/login"); // Redirect to login if session is invalid
+      } else if (!userId) {
+        console.error("No userId found in location state.");
+        navigate("/login"); // Redirect if userId is missing
+      } else {
+        console.log("Session is valid. UserId:", userId);
+        setIsLoading(false); // Session is valid, stop loading
+      }
+      const isStepValid = validateCurrentStep();
+      setIsNextDisabled(!isStepValid);
+    };
+
+    initialize();
+  }, [navigate, userId]);
+
+  const handleLogout = () => {
+    logout(navigate); // Log out and redirect to login
+  };
 
   // Handle image upload
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      if (!file.type.startsWith('image/')) {
+        alert('Please upload a valid image file.');
+        return;
+      }
+      if (file.size > 2 * 1024 * 1024) { // 2MB limit
+        alert('File size exceeds 2MB.');
+        return;
+      }
       const reader = new FileReader();
       reader.onloadend = () => {
-        setProfileImage(reader.result); // Set the uploaded image
+        setProfileImage(reader.result);
       };
       reader.readAsDataURL(file);
     }
   };
-
   // Render content based on the active tab
   const renderTabContent = () => {
     switch (activeTab) {
@@ -32,6 +71,10 @@ const Profile = () => {
         return <PersonalDetails />;
     }
   };
+
+  if (isLoading) {
+    return <div>Loading...</div>; // Show a loading indicator while checking session
+  }
 
   return (
     <div className={styles.profile_wrapper}>
@@ -249,8 +292,10 @@ const PersonalDetails = () => (
     </div>
 
     <div className={styles.navigation_buttons}>
-      <button>Submit</button>
-    </div>
+  <button onClick={nextStep} className={styles.nav_button} disabled={isNextDisabled}>
+    Next
+  </button>
+  </div>
   </div>
 );
 
@@ -576,7 +621,7 @@ const Education = () => (
       </div>
       <div className={styles.senior_hs_fields}>
         <div className={styles.last_school_attended}>
-          <label htmlFor="senior-hs">Last School Attended</label>
+          <label htmlFor="senior-hs">School Attended</label>
           <input type="text" id="senior-hs" name="senior-hs" />
         </div>
 

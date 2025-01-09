@@ -3,6 +3,7 @@
 export const checkSession = async (navigate) => {
   try {
     const response = await fetch("http://localhost:5000/check-session", {
+      method: "GET",
       credentials: "include", // Include cookies
     });
 

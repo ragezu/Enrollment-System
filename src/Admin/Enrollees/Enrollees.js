@@ -1,55 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./Enrollees.module.css"; // Ensure this file exists
+import { SessionContext } from "../../contexts/SessionContext";
 import DashboardHeader from "../Dashboard/DashboardHeader";
 
 const Enrollees = () => {
-  const [students, setStudents] = useState([
-    {
-      id: "20231001",
-      lastName: "Labalan",
-      firstName: "Jerald",
-      program: "Computer Science",
-      type: "S6",
-      yearStanding: "3rd year",
-      details: "Detailed information about Jerald Labalan",
-    },
-    {
-      id: "20231002",
-      lastName: "Fernandez",
-      firstName: "Alex",
-      program: "Computer Science",
-      type: "S6",
-      yearStanding: "3rd year",
-      details: "Detailed information about Alex Fernandez",
-    },
-    {
-      id: "20231003",
-      lastName: "Galvez",
-      firstName: "Dioren",
-      program: "Computer Science",
-      type: "S6",
-      yearStanding: "3rd year",
-      details: "Detailed information about Dioren Galvez",
-    },
-    {
-      id: "20231004",
-      lastName: "Dasalla",
-      firstName: "Keith",
-      program: "Computer Science",
-      type: "S5",
-      yearStanding: "3rd year",
-      details: "Detailed information about Keith Dasalla",
-    },
-    {
-      id: "20231005",
-      lastName: "Bides",
-      firstName: "Matthew",
-      program: "Information Technology",
-      type: "S5",
-      yearStanding: "2nd year",
-      details: "Detailed information about Matthew Bides",
-    },
-  ]);
+  const { user, isLoading: sessionLoading, logout } = useContext(SessionContext);
+  const navigate = useNavigate();
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [students, setStudents] = useState([]); // Add this line
 
   const [searchQuery, setSearchQuery] = useState(""); // For search input
   const [sortCriteria, setSortCriteria] = useState("id"); // Default sorting criteria
@@ -60,6 +20,33 @@ const Enrollees = () => {
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [rejectReason, setRejectReason] = useState("");
   const [filterProgram, setFilterProgram] = useState(""); // For program filter
+
+useEffect(() => {
+    if (!sessionLoading && !user) {
+      navigate("/login");
+    }
+  }, [sessionLoading, user, navigate]);
+  
+    const handleLogout = () => {
+      logout(navigate); // Log out and redirect to login
+    };
+
+    useEffect(() => {
+      const fetchStudents = async () => {
+        setIsLoading(true);
+        try {
+          const response = await fetch("http://localhost:5000/api/students");
+          const data = await response.json();
+          setStudents(data); // Properly set the fetched data
+        } catch (error) {
+          console.error("Error fetching students:", error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+    
+      fetchStudents(); // Call the function to fetch data
+    }, []); // Empty dependency array ensures this runs only once
 
   const filteredAndSortedStudents = students
     .filter((student) => {
@@ -81,7 +68,7 @@ const Enrollees = () => {
     })
     .sort((a, b) => {
       if (sortCriteria === "id") {
-        return a.id.localeCompare(b.id);
+        return a.id - b.id; // For numeric comparison
       } else if (sortCriteria === "lastName") {
         return a.lastName.localeCompare(b.lastName);
       } else if (sortCriteria === "firstName") {
@@ -170,12 +157,12 @@ const Enrollees = () => {
               <tbody>
                 {filteredAndSortedStudents.map((student) => (
                   <tr key={student.id}>
-                    <td className={styles.td}>{student.id}</td>
-                    <td className={styles.td}>{student.lastName}</td>
-                    <td className={styles.td}>{student.firstName}</td>
-                    <td className={styles.td}>{student.program}</td>
-                    <td className={styles.td}>{student.type}</td>
-                    <td className={styles.td}>{student.yearStanding}</td>
+                    <td className={styles.td}>{student.student_id}</td>
+                    <td className={styles.td}>{student.last_name}</td>
+                    <td className={styles.td}>{student.first_fame}</td>
+                    <td className={styles.td}>{student.program_name}</td>
+                    <td className={styles.td}>{student.student_type}</td>
+                    <td className={styles.td}>{student.year_level}</td>
                     <td className={styles.td}>
                       <button
                         className={styles.button}

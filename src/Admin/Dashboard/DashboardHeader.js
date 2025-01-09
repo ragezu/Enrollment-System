@@ -32,7 +32,7 @@ const DashboardHeader = () => {
         <Link to="/dashboard" className={styles.navLink}>
           Dashboard
         </Link>
-        <Link to="/enrollee" className={styles.navLink}>
+        <Link to="/enrollees" className={styles.navLink}>
           Enrollees
         </Link>
         <Link to="/students" className={styles.navLink}>

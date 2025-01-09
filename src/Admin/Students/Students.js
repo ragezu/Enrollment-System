@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { SessionContext } from "../../contexts/SessionContext";
 import styles from "./Students.module.css"; // Ensure this file exists
 import DashboardHeader from "../Dashboard/DashboardHeader";
 import CORPrint from "./CORPrint"; // Import CORPrint component
 
 const Students = () => {
+  const { user, isLoading: sessionLoading, logout } = useContext(SessionContext);
+  const navigate = useNavigate();
+  
   const [students, setStudents] = useState([
     {
       id: "20231001",
@@ -83,6 +88,16 @@ const Students = () => {
       }
       return 0;
     });
+
+  useEffect(() => {
+      if (!sessionLoading && !user) {
+        navigate("/login");
+      }
+    }, [sessionLoading, user, navigate]);
+    
+      const handleLogout = () => {
+        logout(navigate); // Log out and redirect to login
+      };
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);

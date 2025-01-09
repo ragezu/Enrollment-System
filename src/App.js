@@ -25,6 +25,8 @@ import Students from "./Admin/Students/Students";
 import EnrollmentStatusCS from "./SocietyOfficer/EnrollmentStatus/EnrollmentStatusCS";
 import ScheduleCS from "./SocietyOfficer/Schedule/ScheduleCS";
 import AdmissionAndFaqs from "./Student/AdmissionAndFaqs/AdmissionAndFaqs";
+
+
 function App() {
   return (
     <Router>
@@ -61,6 +63,7 @@ function App() {
         <Route path="/EnrollmentStatusCS" element={<EnrollmentStatusCS />} />
         <Route path="/ScheduleCS" element={<ScheduleCS />} />
         <Route path="/AdmissionAndFaqs" element={<AdmissionAndFaqs />} />
+        <Route path="/schedulecs" element={<ScheduleCS />} />
       </Routes>
     </Router>
   );

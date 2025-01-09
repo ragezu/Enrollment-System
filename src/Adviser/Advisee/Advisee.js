@@ -362,6 +362,9 @@ const Advisee = () => {
                       >
                         Edit Subject
                       </button>
+                      
+                     
+                      <button className={styles.button}>Edit Subject</button>
                       <button className={styles.button}>Update Status</button>
                       <button className={styles.button}>View Checklist</button>
                       <button className={styles.button}>View ISCOR</button>

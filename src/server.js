@@ -8,6 +8,7 @@ const crypto = require("crypto");
 const nodemailer = require("nodemailer"); // Import Nodemailer
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
+const sessionStore = require('./sessionStore');
 
 app.use(bodyParser.json());
 
@@ -27,9 +28,9 @@ const sessionSecret = process.env.SESSION_SECRET;
 app.use(
   session({
     secret: sessionSecret || "default_secret_key", // Use environment variable or fallback
-    resave: false,
-    resave: false,
+    resave: false, // Remove duplicate
     saveUninitialized: false,
+    store: sessionStore, // Ensure this is defined
     cookie: {
       secure: false, // Set true if using HTTPS
       httpOnly: true,
@@ -143,6 +144,90 @@ app.get('/latest-announcement', (req, res) => {
     res.json(results[0] || null);
   });
 });
+
+app.get('/enrolled-count', async (req, res) => {
+  const queryTotal = `
+    SELECT COUNT(*) AS totalEnrolled
+    FROM tbl_student_data
+    WHERE status = 'enrolled'
+  `;
+
+  const queryComSci = `
+    SELECT COUNT(*) AS enrolledComSci
+    FROM tbl_student_data
+    WHERE status = 'enrolled' AND program = '1'
+  `;
+
+  const queryIT = `
+    SELECT COUNT(*) AS enrolledIT
+    FROM tbl_student_data
+    WHERE status = 'enrolled' AND program = '2'
+  `;
+
+  const querypaidIT = `
+    SELECT COUNT(*) AS paidIT
+    FROM tbl_society_fee_transaction
+    WHERE payment_status = 'paid' AND program = '1'
+  `;
+
+  const querypaidComSci = `
+  SELECT COUNT(*) AS paidIT
+  FROM tbl_society_fee_transaction
+  WHERE payment_status = 'paid' AND program = '2'
+`;
+
+  try {
+    const totalResult = await new Promise((resolve, reject) => {
+      db.query(queryTotal, (err, result) => {
+        if (err) return reject(err);
+        resolve(result);
+      });
+    });
+
+    const comSciResult = await new Promise((resolve, reject) => {
+      db.query(queryComSci, (err, result) => {
+        if (err) return reject(err);
+        resolve(result);
+      });
+    });
+
+    const itResult = await new Promise((resolve, reject) => {
+      db.query(queryIT, (err, result) => {
+        if (err) return reject(err);
+        resolve(result);
+      });
+    });
+
+    const pcomSciResult = await new Promise((resolve, reject) => {
+      db.query(querypaidComSci, (err, result) => {
+        if (err) return reject(err);
+        resolve(result);
+      });
+    });
+
+    const pitResult = await new Promise((resolve, reject) => {
+      db.query(querypaidIT, (err, result) => {
+        if (err) return reject(err);
+        resolve(result);
+      });
+    });
+
+    const results = {
+      totalEnrolled: totalResult[0]?.totalEnrolled || 0,
+      enrolledComSci: comSciResult[0]?.enrolledComSci || 0,
+      enrolledIT: itResult[0]?.enrolledIT || 0,
+      paidIT: pitResult[0]?.paidIT || 0,
+      paidComSci: pcomSciResult[0]?.paidComSci || 0,
+    };
+
+    res.json(results);
+  } catch (error) {
+    console.error('Error fetching enrollment counts:', error);
+    res.status(500).json({ error: 'Failed to fetch enrollment counts' });
+  }
+});
+
+
 
 // Endpoint to send OTP
 app.post("/send-otp", async (req, res) => {
@@ -616,6 +701,82 @@ app.delete("/students/:id", (req, res) => {
   });
 });
 
+// API Endpoint to post an announcement
+app.post("/api/announcements", (req, res) => {
+  if (!req.session || !req.session.user) {
+    return res.status(401).json({ message: "Unauthorized: No user session found." });
+  }
+
+  const { user_id } = req.session.user;
+  const { content } = req.body;
+
+  if (!content) {
+    return res.status(400).json({ message: "Announcement content is required." });
+  }
+
+  const query = `
+    INSERT INTO tbl_announcements (author, content, date)
+    VALUES (?, ?, NOW())
+  `;
+
+  // Combine first name and last name for the author
+  const authorQuery = `
+    SELECT CONCAT(last_name, ', ', first_name) AS author
+    FROM tbl_user_account
+    WHERE user_id = ?
+  `;
+
+  db.query(authorQuery, [user_id], (error, results) => {
+    if (error) {
+      console.error("Error fetching author details:", error.message);
+      return res.status(500).json({ message: "Database error." });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    const author = results[0].author;
+
+    db.query(query, [author, content], (err) => {
+      if (err) {
+        console.error("Error saving announcement:", err.message);
+        return res.status(500).json({ message: "Failed to save announcement." });
+      }
+
+      res.status(200).json({ message: "Announcement posted successfully." });
+    });
+  });
+});
+
+app.get("/api/enrollees", async (req, res) => {
+  try {
+    const students = await db.query(`
+      SELECT 
+      tbl_student_data.student_id, 
+      tbl_user_account.first_name, 
+      tbl_user_account.last_name, 
+      tbl_user_account.email,
+      tbl_program.program_name,
+      tbl_student_data.student_type,
+      tbl_student_data.year_level
+    FROM 
+      tbl_student_data
+    JOIN 
+      tbl_user_account 
+    ON 
+      tbl_student_data.user_id = tbl_user_account.user_id
+    JOIN 
+      tbl_program 
+    ON 
+      tbl_student_data.program_id = tbl_program.program_id;
+    `);
+    res.json(students);
+  } catch (error) {
+    console.error("Error fetching students:", error);
+    res.status(500).send("Server error");
+  }
+});
 
 // Start server
 const PORT = 5000;

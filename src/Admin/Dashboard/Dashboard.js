@@ -1,37 +1,118 @@
-import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
+import {useNavigate } from "react-router-dom";
 import DashboardHeader from "./DashboardHeader";
-import { checkSession, logout } from "../../utils/session";
+import { SessionContext } from "../../contexts/SessionContext";
 import styles from "./Dashboard.module.css";
 
 const Dashboard = () => {
-  const location = useLocation();
+  const { user, isLoading: sessionLoading, logout } = useContext(SessionContext);
   const navigate = useNavigate();
-  const userId = location.state?.userId;
+ 
+  const [enrolledCount, setEnrolledCount] = useState(null);
+  const [enrolledCountComSci, setEnrolledCountComSci] = useState(null); // Track enrolled Computer Science count
+  const [enrolledCountIT, setEnrolledCountIT] = useState(null); // Track enrolled Information Technology count
+  const [paidComSci, setpaidComSci] = useState(null); // Track enrolled Computer Science count
+  const [paidIT, setpaidIT] = useState(null); // Track enrolled Information Technology count
+  const [announcementText, setAnnouncementText] = useState('');
+
+  const [course, setCourse] = useState(''); // Track selected course
+  const [loading, setLoading] = useState(false); // Loading state for fetchEnrolledCount
+  const [error, setError] = useState(null); // Error state for fetchEnrolledCount
 
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const initialize = async () => {
-      const isValidSession = await checkSession(navigate); // Check if session is valid
-      if (!isValidSession) {
-        console.error("Invalid session.");
-        navigate("/login"); // Redirect to login if session is invalid
-      } else if (!userId) {
-        console.error("No userId found in location state.");
-        navigate("/login"); // Redirect if userId is missing
-      } else {
-        console.log("Session is valid. UserId:", userId);
-        setIsLoading(false); // Session is valid, stop loading
-      }
-    };
+  const data = [
+    {
+      category: "Regular Student",
+      green: { value: 45, percentage: 75 },
+      red: { value: 15, percentage: 25 },
+    },
+    {
+      category: "Irregular Student",
+      green: { value: 45, percentage: 50 },
+      red: { value: 20, percentage: 50 },
+    },
+    {
+      category: "Information Technology",
+      blue: { value: 20, percentage: 57 },
+      pink: { value: 15, percentage: 43 },
+    },
+    {
+      category: "Computer Science",
+      blue: { value: 20, percentage: 50 },
+      pink: { value: 20, percentage: 50 },
+    },
+  ];
 
-    initialize();
-  }, [navigate, userId]);
+  useEffect(() => {
+    if (!sessionLoading && !user) {
+      navigate("/login");
+    }
+  }, [sessionLoading, user, navigate]);
 
   const handleLogout = () => {
     logout(navigate); // Log out and redirect to login
   };
+
+  const fetchEnrolledCounts = async () => {
+    setIsLoading(true);
+    setError(null);
+  
+    try {
+      const response = await fetch('http://localhost:5000/enrolled-count');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+  
+      // Update state with fetched data
+      setEnrolledCount(data.totalEnrolled);
+      setEnrolledCountComSci(data.enrolledComSci);
+      setEnrolledCountIT(data.enrolledIT);
+      setpaidComSci(data.paidComSci);
+      setpaidIT(data.paidIT);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  const handleAnnouncementSubmit = async () => {
+
+    if (!announcementText.trim()) {
+      alert("Please enter an announcement.");
+      return;
+    }
+  
+    try {
+      const response = await fetch("http://localhost:5000/api/announcements", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", // Include session cookies
+        body: JSON.stringify({ content: announcementText }),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to post announcement.");
+      }
+  
+      const result = await response.json();
+      alert(result.message);
+      setAnnouncementText(""); // Clear the textarea
+    } catch (error) {
+      console.error("Failed to post announcement:", error);
+      alert(error.message);
+    }
+  };
+  // Fetch total enrolled count on initial render
+  useEffect(() => {
+    fetchEnrolledCounts();
+  }, []);
 
   if (isLoading) {
     return <div>Loading...</div>; // Show loading spinner while validating session
@@ -48,9 +129,28 @@ const Dashboard = () => {
           {/* Card 1: Enrolled Students */}
           <div className={`${styles.card} ${styles.enrolledStudents}`}>
   <h5 className={styles.cardTitle}>Enrolled Students</h5>
-  <p><span>Total Enrolled</span> <strong>25</strong></p>
-  <p><span>Total Enrolled Computer Science</span> <strong>25</strong></p>
-  <p><span>Total Enrolled Information Technology</span> <strong>25</strong></p>
+
+  {isLoading ? (
+    <p>Loading...</p> // Show loading state
+  ) : error ? (
+    <p>Error: {error}</p> // Show error state
+  ) : (
+    <>
+      <p>
+        <span>Total Enrolled</span>{' '}
+        <strong>{enrolledCount ?? 'N/A'}</strong>
+      </p>
+      <p>
+        <span>Total Enrolled Computer Science</span>{' '}
+        <strong>{enrolledCountComSci ?? 'N/A'}</strong>
+      </p>
+      <p>
+        <span>Total Enrolled Information Technology</span>{' '}
+        <strong>{enrolledCountIT ?? 'N/A'}</strong>
+      </p>
+    </>
+  )}
+
   <a href="#" className={styles.viewList}>View List</a>
 </div>
 
@@ -87,20 +187,27 @@ const Dashboard = () => {
             <textarea
               className={styles.announcementBox}
               placeholder="Make an announcement..."
+              value={announcementText} // Bind the state to the textarea
+              onChange={(e) => setAnnouncementText(e.target.value)} // Update state on input
             ></textarea>
-            <button className={styles.announcementButton}>Send</button>
+           <button
+            className={styles.announcementButton}
+            onClick={handleAnnouncementSubmit} // Attach the function to the button
+          >
+            Send
+          </button>
           </div>
 
           {/* Card 4: Total Paid (IT) */}
           <div className={`${styles.card} ${styles.totalPaid}`}>
             <h5 className={styles.cardTitle}>Total Paid (IT)</h5>
-            <p className={`${styles.paidValue} ${styles.green}`}>23</p>
+            <p className={`${styles.paidValue} ${styles.green}`}>{paidIT ?? '0'}</p>
           </div>
 
           {/* Card 5: Total Paid (CS) */}
           <div className={`${styles.card} ${styles.totalPaidCS}`}>
             <h5 className={styles.cardTitle}>Total Paid (CS)</h5>
-            <p className={`${styles.paidValue} ${styles.green}`}>23</p>
+            <p className={`${styles.paidValue} ${styles.green}`}>{paidComSci ?? '0'}</p>
           </div>
         </div>
       </div>
