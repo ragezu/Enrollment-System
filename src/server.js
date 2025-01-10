@@ -814,9 +814,13 @@ app.put("/profile/:userId", async (req, res) => {
     senior_high_school_strand,
     senior_high_year_graduated,
     parents_name,
-    parerents_relationship,
+    parents_relationship,
     parents_occupation,
     parents_contact_number,
+    parents_name1,
+    parents_relationship1,
+    parents_occupation1,
+    parents_contact_number1,
     guardians_name,
     guardians_relationship,
     guardians_occupation,
@@ -851,9 +855,13 @@ app.put("/profile/:userId", async (req, res) => {
     !senior_high_school_strand ||
     !senior_high_year_graduated ||
     !parents_name ||
-    !parerents_relationship ||
+    !parents_relationship ||
     !parents_occupation ||
     !parents_contact_number ||
+    !parents_name1 ||
+    !parents_relationship1||
+    !parents_occupation1 ||
+    !parents_contact_number1 ||
     !guardians_name ||
     !guardians_relationship ||
     !guardians_occupation ||

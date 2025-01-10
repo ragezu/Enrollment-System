@@ -163,7 +163,7 @@ const renderTabContent = () => {
       </div>
 
       <div className={styles.navigation_buttons}>
-        <button>Save Changes</button>
+        <button type="submit">Save Changes</button>
       </div>
 
     </div>
