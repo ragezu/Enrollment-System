@@ -2,60 +2,73 @@ import React, { useState, useEffect } from "react";
 import { checkSession, logout } from "../../utils/session";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./Profile.module.css";
+import axios from 'axios';
 
 const Profile = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const userId = location.state?.userId;
+  const [profile, setProfile] = useState({});
+
 
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("personal"); // Default active tab
   const [profileImage, setProfileImage] = useState(null); // State to store uploaded image
   const [isNextDisabled, setIsNextDisabled] = useState(true);
 
-  useEffect(() => {
-    const initialize = async () => {
-      const isValidSession = await checkSession(navigate); // Check if session is valid
-      if (!isValidSession) {
-        console.error("Invalid session.");
-        navigate("/login"); // Redirect to login if session is invalid
-      } else if (!userId) {
-        console.error("No userId found in location state.");
-        navigate("/login"); // Redirect if userId is missing
-      } else {
-        console.log("Session is valid. UserId:", userId);
-        setIsLoading(false); // Session is valid, stop loading
-      }
-    //   const isStepValid = validateCurrentStep();
-    //   setIsNextDisabled(!isStepValid);
-    // };
-
-    initialize();
-  }, [navigate, userId]);
-
-  const handleLogout = () => {
-    logout(navigate); // Log out and redirect to login
-  };
-
-  // Handle image upload
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      if (!file.type.startsWith('image/')) {
-        alert('Please upload a valid image file.');
-        return;
-      }
-      if (file.size > 2 * 1024 * 1024) { // 2MB limit
-        alert('File size exceeds 2MB.');
-        return;
-      }
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfileImage(reader.result);
+  
+    useEffect(() => {
+      const fetchProfile = async () => {
+        try {
+          const response = await axios.get(`/profile/${userId}`);
+          setProfile(response.data);
+        } catch (error) {
+          console.error("Error fetching profile:", error);
+        }
       };
-      reader.readAsDataURL(file);
-    }
-  };
+  
+      fetchProfile();
+    }, [userId]);
+  
+    const handleImageChange = async (e) => {
+      const file = e.target.files[0];
+      const formData = new FormData();
+      formData.append('profilePicture', file);
+  
+      try {
+        const response = await axios.post(`/upload-profile-picture/${userId}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        setProfile({ ...profile, profile_picture: response.data.profilePicture });
+      } catch (error) {
+        console.error("Error uploading profile picture:", error);
+      }
+    };
+  
+    const handleProfileUpdate = async (e) => {
+      e.preventDefault();
+      try {
+        await axios.put(`/profile/${userId}`, profile);
+        alert("Profile updated successfully.");
+      } catch (error) {
+        console.error("Error updating profile:", error);
+        alert("Failed to update profile.");
+      }
+    };
+  
+    const handleEducationChange = (index, field, value) => {
+      const updatedEducation = [...profile.education];
+      updatedEducation[index][field] = value;
+      setProfile({ ...profile, education: updatedEducation });
+    };
+  
+    const handleFamilyChange = (index, field, value) => {
+      const updatedFamily = [...profile.family];
+      updatedFamily[index][field] = value;
+      setProfile({ ...profile, family: updatedFamily });
+    };
   // Render content based on the active tab
 const renderTabContent = () => {
     switch (activeTab) {
@@ -195,8 +208,8 @@ const PersonalDetails = () => (
         <label htmlFor="suffix">Suffix</label>
         <input
           type="text"
-          name="lastName"
-          id="lastName"
+          name="suffix"
+          id="suffix"
           className={styles.input}
         />
       </div>
@@ -233,8 +246,8 @@ const PersonalDetails = () => (
       <div className={`${styles.form_field} ${styles.two_rows}`}>
         <input
           type="text"
-          name="house"
-          id="house"
+          name="address"
+          id="address"
           className={styles.input}
           placeholder="House No."
         />
@@ -369,7 +382,7 @@ const FamilyBackground = () => {
             </div>
             <div className={styles.field}>
               <label htmlFor="parent1Name">Full Name</label>
-              <input type="text" className={styles.input} id="parent1Name" />
+              <input type="text" className={styles.input} id="parents_name" name="parents_name" />
             </div>
             <div className={styles.field}>
               <label htmlFor="parent1Relationship">Relationship</label>

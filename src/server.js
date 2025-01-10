@@ -718,6 +718,244 @@ ON
   }
 });
 
+app.get("/profile/:userId", async (req, res) => {
+  const { userId } = req.params;
+
+  const userQuery = `
+    SELECT first_name, middle_name, last_name, date_of_birth, phone_number, email, address_id, profile_picture
+    FROM tbl_user_account
+    WHERE user_id = ?
+  `;
+
+  try {
+    const [userResults] = await db.query(userQuery, [userId]);
+
+    if (userResults.length === 0) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    const user = userResults[0];
+
+    // Fetch address details
+    const addressQuery = `
+      SELECT house_number, street, barangay, city, province, country, postal_code
+      FROM tbl_address
+      WHERE address_id = ?
+    `;
+    const [addressResults] = await db.query(addressQuery, [user.address_id]);
+
+    if (addressResults.length === 0) {
+      return res.status(404).json({ message: "Address not found." });
+    }
+
+    const address = addressResults[0];
+
+    // Fetch educational attainment
+    const educationQuery = `
+      SELECT 
+        el.last_school_attended AS elementary_school, el.school_type AS elementary_school_type, el.year_graduated AS elementary_year_graduated,
+        jh.last_school_attended AS junior_high_school, jh.school_type AS junior_high_school_type, jh.year_graduated AS junior_high_year_graduated,
+        sh.last_school_attended AS senior_high_school, sh.strand as senior_high_school_strand, sh.school_type AS senior_high_school_type, sh.year_graduated AS senior_high_year_graduated
+      FROM tbl_educational_attainment e
+      LEFT JOIN tbl_elementary_education el ON e.elementary_id = el.id
+      LEFT JOIN tbl_junior_highschool_education jh ON e.junior_highschool_id = jh.id
+      LEFT JOIN tbl_senior_highschool_education sh ON e.senior_highschool_id = sh.id
+      WHERE e.educational_attainment_id = (SELECT educational_attainment_id FROM tbl_profile WHERE user_id = ?)
+    `;
+    const [educationResults] = await db.query(educationQuery, [userId]);
+
+    // Fetch family background
+    const familyQuery = `
+      SELECT 
+        p.name AS parent_name, p.relationship AS parent_relationship, p.highest_education AS parent_highest_education, p.contact_number AS parent_contact_number,
+        g.name AS guardian_name, g.relationship AS guardian_relationship, g.employer as guardian_employer, g.highest_education AS guardian_highest_education, g.contact_number AS guardian_contact_number,
+        s.name AS sibling_name, s.age AS sibling_age
+      FROM tbl_family_background fb
+      LEFT JOIN tbl_parents p ON fb.parent_id = p.id
+      LEFT JOIN tbl_guardian g ON fb.guardian_id = g.id
+      LEFT JOIN tbl_siblings s ON fb.sibling_id = s.id
+      WHERE fb.family_background_id = (SELECT family_background_id FROM tbl_profile WHERE user_id = ?)
+    `;
+    const [familyResults] = await db.query(familyQuery, [userId]);
+
+    res.status(200).json({ ...user, address, education: educationResults, family: familyResults });
+  } catch (error) {
+    console.error("Error fetching user profile:", error.message);
+    res.status(500).json({ message: "Internal server error." });
+  }
+});
+
+// Endpoint to update user profile
+app.put("/profile/:userId", async (req, res) => {
+  const { userId } = req.params;
+  const {
+    firstName,
+    middleName,
+    lastName,
+    suffix,
+    sex,
+    dob,
+    contactNumber,
+    email,
+    address,
+    barangay,
+    city,
+    province,
+    postal,
+    country,
+    elementary_school,
+    elementary_school_type,
+    elementary_year_graduated,
+    junior_high_school,
+    junior_high_school_type,
+    junior_high_year_graduated,
+    senior_high_school,
+    senior_high_school_type,
+    senior_high_school_strand,
+    senior_high_year_graduated,
+    parents_name,
+    parerents_relationship,
+    parents_occupation,
+    parents_contact_number,
+    guardians_name,
+    guardians_relationship,
+    guardians_occupation,
+    guardians_contact_number,
+    guardians_employer,
+    siblings_name,
+    siblings_age,      
+    profilePicture,
+  } = req.body;
+
+  if (
+    !firstName ||
+    !lastName ||
+    !dob ||
+    !sex ||
+    !contactNumber ||
+    !email ||
+    !address ||
+    !barangay ||
+    !city ||
+    !province ||
+    !postal ||
+    !country ||
+    !elementary_school ||
+    !elementary_school_type ||
+    !elementary_year_graduated ||
+    !junior_high_school ||
+    !junior_high_school_type ||
+    !junior_high_year_graduated ||
+    !senior_high_school ||
+    !senior_high_school_type ||
+    !senior_high_school_strand ||
+    !senior_high_year_graduated ||
+    !parents_name ||
+    !parerents_relationship ||
+    !parents_occupation ||
+    !parents_contact_number ||
+    !guardians_name ||
+    !guardians_relationship ||
+    !guardians_occupation ||
+    !guardians_contact_number ||
+    !guardians_employer ||
+    !siblings_name ||
+    !siblings_age ||
+    !profilePicture
+  ) {
+    return res.status(400).json({ message: "All fields are required." });
+  }
+
+  try {
+    const { house_number, street } = splitAddress(address);
+
+    const updateUserQuery = `
+      UPDATE tbl_user_account
+      SET first_name = ?, middle_name = ?, last_name = ?, date_of_birth = ?, phone_number = ?, email = ?, profile_picture = ?
+      WHERE user_id = ?
+    `;
+
+    await db.query(updateUserQuery, [firstName, middleName, lastName, dob, contactNumber, email, profilePicture, userId]);
+
+    const updateAddressQuery = `
+      UPDATE tbl_address
+      SET house_number = ?, street = ?, barangay = ?, city = ?, province = ?, country = ?, postal_code = ?
+      WHERE address_id = (SELECT address_id FROM tbl_user_account WHERE user_id = ?)
+    `;
+
+    await db.query(updateAddressQuery, [house_number, street, barangay, city, province, country, postal, userId]);
+
+    // Update educational attainment
+    if (education) {
+      const deleteEducationQuery = `INSERT INTO tbl_profile (educational_attainment_id) VALUES (?) WHERE personal_information_id = (SELECT personal_information_id FROM tbl_profile WHERE user_id = ?)`;
+      await db.query(deleteEducationQuery, [userId]);
+
+      const insertEducationQuery = `
+        INSERT INTO tbl_education (educational_attainment_id, elementary_id, junior_high_id, senior_high_id)
+        VALUES (?, ?, ?, ?)
+      `;
+      for (const edu of education) {
+        const [elementaryResult] = await db.query(`INSERT INTO tbl_elementary (school_name, school_type ,year_graduated) VALUES (?, ?, ?)`, [edu.elementary_school, edu.elementary_year_graduated]);
+        const [juniorHighResult] = await db.query(`INSERT INTO tbl_junior_high (school_name, school_type ,year_graduated) VALUES (?, ?, ?)`, [edu.junior_high_school, edu.junior_high_year_graduated]);
+        const [seniorHighResult] = await db.query(`INSERT INTO tbl_senior_high (school_name, school_type, strand ,year_graduated) VALUES (?, ?, ?, ?)`, [edu.senior_high_school, edu.senior_high_year_graduated]);
+
+        await db.query(insertEducationQuery, [userId, edu.degree, edu.institution, edu.year_graduated, elementaryResult.insertId, juniorHighResult.insertId, seniorHighResult.insertId]);
+      }
+    }
+
+    // Update family background
+    if (family) {
+      const deleteFamilyQuery = `INSERT INTO tbl_profile (family_background_id, user_id) VALUES (?,?)`;
+      await db.query(deleteFamilyQuery, [userId]);
+
+      const insertFamilyQuery = `
+        INSERT INTO tbl_family_background (family_background_id, parent_id, guardian_id, sibling_id)
+        VALUES (?, ?, ?, ?)
+      `;
+      const [familyResult] = await db.query(insertFamilyQuery, [userId, family.parent_id, family.guardian_id, family.sibling_id]);
+
+      const familyBackgroundId = familyResult.insertId;
+
+      // Insert parents
+      if (family.parents && family.parents.length > 0) {
+        const insertParentQuery = `
+          INSERT INTO tbl_parents (parent_id, name, relationship, highest_education, contact_number)
+          VALUES (?, ?, ?, ?,?)
+        `;
+        for (const parent of family.parents) {
+          await db.query(insertParentQuery, [familyBackgroundId, parent.name, parent.occupation]);
+        }
+      }
+
+      // Insert guardians
+      if (family.guardians && family.guardians.length > 0) {
+        const insertGuardianQuery = `
+          INSERT INTO tbl_guardians (guardian_id, name, relationship, employer,  highest_education, contact_number)
+          VALUES (?, ?, ?, ?, ?, ?)
+        `;
+        for (const guardian of family.guardians) {
+          await db.query(insertGuardianQuery, [familyBackgroundId, guardian.name, guardian.occupation]);
+        }
+      }
+
+      // Insert siblings
+      if (family.siblings && family.siblings.length > 0) {
+        const insertSiblingQuery = `
+          INSERT INTO tbl_siblings (sibling_id, name, occupation)
+          VALUES (?, ?, ?)
+        `;
+        for (const sibling of family.siblings) {
+          await db.query(insertSiblingQuery, [familyBackgroundId, sibling.name, sibling.occupation]);
+        }
+      }
+    }
+
+    res.status(200).json({ message: "Profile updated successfully." });
+  } catch (error) {
+    console.error("Error updating profile:", error.message);
+    res.status(500).json({ message: "Internal server error." });
+  }
+});
 
 
 // Start server
