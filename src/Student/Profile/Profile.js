@@ -26,9 +26,9 @@ const Profile = () => {
         console.log("Session is valid. UserId:", userId);
         setIsLoading(false); // Session is valid, stop loading
       }
-      const isStepValid = validateCurrentStep();
-      setIsNextDisabled(!isStepValid);
-    };
+    //   const isStepValid = validateCurrentStep();
+    //   setIsNextDisabled(!isStepValid);
+    // };
 
     initialize();
   }, [navigate, userId]);
@@ -72,9 +72,9 @@ const renderTabContent = () => {
     }
   };
 
-  if (isLoading) {
-    return <div>Loading...</div>; // Show a loading indicator while checking session
-  }
+  // if (isLoading) {
+  //   return <div>Loading...</div>; // Show a loading indicator while checking session
+  // }
 
   return (
     <div className={styles.profile_wrapper}>
@@ -312,42 +312,9 @@ const PersonalDetails = () => (
         />
       </div>
     </div>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-
     <div className={styles.navigation_buttons}>
-  <button onClick={nextStep} className={styles.nav_button} disabled={isNextDisabled}>
-    Next
-  </button>
   </div>
-=======
->>>>>>> Stashed changes
   </div>
-=======
-  </div>
->>>>>>> Stashed changes
-=======
-  </div>
->>>>>>> Stashed changes
-=======
-  </div>
->>>>>>> Stashed changes
-=======
-  </div>
->>>>>>> Stashed changes
-=======
-  </div>
->>>>>>> Stashed changes
-=======
-  </div>
->>>>>>> Stashed changes
-
-
 );
 
 const FamilyBackground = () => {
