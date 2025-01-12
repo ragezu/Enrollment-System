@@ -96,6 +96,11 @@
   transition: background-color 0.3s ease;
 }
 
+.button:hover {
+  background-color: #ffb100;
+  color: black;
+}
+
 
 .button:last-child {
   background-color: rgb(201, 48, 44);

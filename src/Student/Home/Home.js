@@ -65,9 +65,6 @@ const Home = () => {
     <div className={styles.dashboard}>
       <header className={styles.header}>
         <Header />
-        <button className={styles.logoutButton} onClick={handleLogout}>
-          Logout
-        </button>
       </header>
       <h1 className={styles.title}>Home</h1>
       <main className={styles.content}>

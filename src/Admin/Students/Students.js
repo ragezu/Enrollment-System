@@ -176,7 +176,7 @@ const Students = () => {
                     <td className={styles.td}>{student.yearStanding}</td>
                     <td className={styles.td}>
                       
-                    <button onClick={() => handlePrintCOR(student)}>Print COR</button>
+                    <button className={styles.print_button} onClick={() => handlePrintCOR(student)}>Print COR</button>
                       
                     </td>
                   </tr>
